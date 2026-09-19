@@ -1,0 +1,11 @@
+{
+  "protocol_version": "balanced-resource-scheduling-v1",
+  "balanced_weights": [0.2, 0.2, 0.2, 0.2, 0.2],
+  "utility_direction": {"completion": "higher", "timeliness": "higher", "estimate_quality": "higher", "resource_saving": "higher", "communication_saving": "higher"},
+  "normalization": {"completed_per_tick": 2.0, "comm_bytes_per_tick": 128.0, "resource_cost_per_tick": 0.25, "source": "predeclared fixed task/executor bounds; no test min-max"},
+  "train_validation": {"split_path": "config/learning_splits_v1.json", "train_scenarios": ["rm_train_base", "rm_train_light_load", "rm_train_high_arrival", "rm_train_constrained_comm"], "train_seeds": [101, 103], "validation_scenarios": ["rm_validation_node_outage", "rm_validation_handover", "rm_validation_sensor_bias"], "validation_seeds": [211, 223, 227]},
+  "training_seeds": [811, 821, 823],
+  "test_v3_sealed": true,
+  "test_v3": {"scenarios": ["rm_test_v3_outage_loss", "rm_test_v3_bias_delay", "rm_test_v3_low_budget"], "environment_seeds": [601, 607, 613, 617, 619]},
+  "invariants": ["resource-contract-v1", "plan_controlled_feedback", "expose_all", "existing PPO config", "existing network", "existing action space", "existing action mask", "existing training budget", "validation-only checkpoint selection"]
+}

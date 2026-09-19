@@ -7,7 +7,7 @@
 | `predefined_sample` | **预定义采样**：按节点的更新周期对该节点采样 | 由调度器按周期下发，**不需要任何目标知识** |
 | `estimate_update` | **已有估计的更新**：对已存在的航迹做一次处理更新 | 只能针对观测里**已存在**的 `track_id` |
 | `process` | 处理任务（关联/滤波循环） | 同上，绑定到已有航迹 |
-| `share` | 共享任务（把本地航迹摘要发出去） | 与目标无关，只依赖节点自身 |
+| `share` | 共享任务（v1 是本地航迹摘要；v2 可发送已采样 raw outbox 测量） | 与目标无关，只依赖节点自身 |
 
 每个任务都显式带：**释放时间 / 截止时间 / 预估成本 / 所属节点 / 完成状态**，
 并且有 `created_from` 溯源字段说明它是从哪次观测/哪条规则来的。
@@ -284,6 +284,7 @@ class TaskQueue:
         update_deadline_s: Optional[float] = None,
         deadline_offsets: Optional[Dict[QueueTaskKind, float]] = None,
         allow_share: bool = True,
+        share_requires_visible_track: bool = True,
         allow_process: bool = False,
         allow_sample: bool = True,
         allow_estimate_update: bool = True,
@@ -295,7 +296,9 @@ class TaskQueue:
         1. **预定义采样**：只要节点可用就下发一次（与有没有目标无关）；
         2. **已有估计的更新**：对观测里**每一条有效航迹**各下一个更新任务，
            同一条航迹在同一观测周期内只下一次（去重键含航迹 ID 与轮次）；
-        3. **共享**：节点可用且有航迹时下发一次（把本地摘要发出去）。
+        3. **共享**：默认仅节点可用且有航迹时下发一次（历史摘要语义）；
+           当调用方显式把 `share_requires_visible_track=False` 时，真实 outbox
+           非空就是充分条件，可在本地 process 前发送已采样测量。
 
         ⚠️ 航迹为空时只下发采样任务：**不会**为看不见的目标造任务。
 
@@ -368,7 +371,11 @@ class TaskQueue:
                 note="已有估计的更新：目标必须是观测里已存在的航迹",
             )))
 
-        if visible and allow_share:
+        # 历史路径的 share 是“本地航迹摘要”，故默认仍要求可见航迹。
+        # plan-controlled v2 可显式选择 raw-measurement outbox 语义：此时
+        # RuntimeExecutor 已有真实待发测量，不能因尚未本地 process 出航迹而
+        # 平白多等一轮。默认值保持 True，绝不改变旧实验或 v1 的候选集。
+        if allow_share and (visible or not share_requires_visible_track):
             created.append(self.enqueue(QueuedTask(
                 task_id=f"{share_prefix}-{observation.node_id}-{round_key}",
                 kind=QueueTaskKind.SHARE,

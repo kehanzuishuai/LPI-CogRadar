@@ -1,0 +1,58 @@
+{
+  "protocol_version": "preference-conditioned-ppo-v3",
+  "supersedes": null,
+  "v1_status": "preserved negative result; never overwritten or reinterpreted",
+  "v2_status": "preserved negative result; v2 reward direction was supported by the controllability audit but concat PPO did not learn preference-to-action control",
+  "scope": "representation-only mechanism test; no formal test is authorized before the validation gate passes",
+  "controllability_audit": {
+    "config": "config/preference_controllability_audit_v1.json",
+    "sha256": "c3e56b1dda7882e0aa42fc58da18f27b9b7a19af03dc62d62d61e63787dd90c6",
+    "conclusion": "fixed-state reward directions were correct; frozen concat PPO failed the preference-to-action mapping"
+  },
+  "fixed_v2_mechanics": {
+    "base_utility_protocol": "balanced_protocol_v1 five preference dimensions retained",
+    "reward_version": "preference-five-objective-reward-v2",
+    "communication_cost": "1 / (1 + actual_comm_delta_bytes / 128), unchanged",
+    "delayed_estimate_quality": "actual remote process observable age/covariance proxy, unchanged",
+    "runtime_executor": "plan_controlled_feedback remains the only side-effect entry",
+    "action_space": ["idle", "sample", "process", "share"],
+    "action_mask": "unchanged",
+    "physical_model": "unchanged",
+    "ppo_core": "unchanged"
+  },
+  "conditioning": {
+    "strict_concat_baseline": "the three frozen v2 concat checkpoints; no retraining or selection",
+    "v3_model": "state 104-d observation feeds a [128,128] state trunk; preference 5-simplex feeds an 8-unit encoder; FiLM scale-and-shift modulates both hidden layers",
+    "modulation": "h = activation(raw * (1 + 0.1*tanh(scale)) + 0.1*tanh(shift))",
+    "parameter_control": "same [128,128] state trunk and actor/critic heads as v2; only a small 5->8 preference encoder and two 8->(2*hidden) FiLM projections are added",
+    "concat_input_layout": "104 observable-state values followed by the frozen five-dimensional preference"
+  },
+  "training_seeds": [1103, 1109, 1117],
+  "preference_sampling": "per training episode: deterministic pseudorandom uniform draw from the frozen set using training_seed*100003+episode_index; every listed point has equal mass",
+  "preferences": {
+    "completion": [1, 0, 0, 0, 0],
+    "timeliness": [0, 1, 0, 0, 0],
+    "estimate_quality": [0, 0, 1, 0, 0],
+    "resource_saving": [0, 0, 0, 1, 0],
+    "communication_saving": [0, 0, 0, 0, 1],
+    "balanced": [0.2, 0.2, 0.2, 0.2, 0.2],
+    "service_quality": [0.4, 0.1, 0.4, 0.05, 0.05],
+    "service_timely": [0.4, 0.4, 0.05, 0.1, 0.05],
+    "resource_communication": [0.05, 0.05, 0.1, 0.4, 0.4],
+    "quality_communication": [0.1, 0.1, 0.4, 0.1, 0.3]
+  },
+  "checkpoint_selection": "unchanged deterministic validation: conservation gate -> max validation mean_return -> lower mean cost -> earlier update",
+  "mechanism_gate": {
+    "scope": "three v3 FiLM training seeds on validation and the frozen controllability-audit states",
+    "requirements": [
+      "on stale_local_fresh_remote, estimate_quality share/process masked probability is greater than communication_saving for every seed",
+      "on stale_local_fresh_remote, communication_saving share probability is lower than estimate_quality for every seed",
+      "on resource_pressure, resource_saving sample probability is lower than completion for every seed",
+      "on sample_legal, completion service-action probability (sample+process+share) is greater than resource_saving for every seed",
+      "every seed has a nonzero raw-logit finite-difference L1 response between estimate_quality and communication_saving in the remote-information state",
+      "validation action and communication summaries are reported but cannot substitute for the fixed-state tests"
+    ],
+    "on_failure": "retain v3 as a negative result; do not tune reward, select seeds, expand the network, or release/read test-v5"
+  },
+  "test_v5_dependency": "config/preference_ppo_v3_splits.json remains sealed; test-v5 is inaccessible to this stage and all older test partitions are historical only"
+}

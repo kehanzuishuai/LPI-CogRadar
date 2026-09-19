@@ -357,6 +357,30 @@ class RuntimeExecutor:
             self.bus.deliverable_count(node_id, now_s)
         )
 
+    @staticmethod
+    def _observable_quality_proxy(center: Any, now_s: float) -> Dict[str, Any]:
+        """仅由融合航迹计算的质量代理；不读取真值或离线误差。
+
+        它用于 v2 的延迟通信回报审计：年龄越小、位置协方差越小越好。
+        0 航迹记为 0，使“远端测量首次建立可见航迹”也可被观察到。
+        """
+        tracks = list(center.tracks)
+        if not tracks:
+            return {"quality_proxy": 0.0, "mean_information_age_s": None,
+                    "mean_sigma_max_m": None, "n_tracks": 0}
+        ages = [max(0.0, float(now_s) - float(track.last_measurement_time))
+                for track in tracks]
+        sigmas = [max(track.sigma_position.x, track.sigma_position.y,
+                      track.sigma_position.z) for track in tracks]
+        age_quality = sum(1.0 / (1.0 + value) for value in ages) / len(ages)
+        # 200 m 是 v2 协议冻结的、仅用于可观测代理的尺度；绝不由 test 拟合。
+        sigma_quality = sum(1.0 / (1.0 + value / 200.0)
+                            for value in sigmas) / len(sigmas)
+        return {"quality_proxy": 0.5 * (age_quality + sigma_quality),
+                "mean_information_age_s": sum(ages) / len(ages),
+                "mean_sigma_max_m": sum(sigmas) / len(sigmas),
+                "n_tracks": len(tracks)}
+
     def submit(self, plan: ExecutionPlan) -> ExecutionResult:
         if plan.plan_id in self._submitted_plan_ids:
             raise RuntimeExecutionError(
@@ -415,6 +439,8 @@ class RuntimeExecutor:
         })
 
     def _process(self, task: Any, plan_id: str, now: float) -> None:
+        before_quality = self._observable_quality_proxy(
+            self.centers[task.node_id], now)
         messages = self.bus.consume(task.node_id, now)
         self.bus.assert_only_arrived(messages, now)
         remote = [
@@ -435,6 +461,8 @@ class RuntimeExecutor:
             )
             self.local_pending[task.node_id].clear()
         self._received_total[task.node_id] += len(remote)
+        after_quality = self._observable_quality_proxy(
+            self.centers[task.node_id], now)
         self.event_log.append({
             "time_s": round(now, 6), "node_id": task.node_id,
             "event": "process", "task_id": task.task_id,
@@ -442,6 +470,12 @@ class RuntimeExecutor:
             "n_remote_measurements": len(remote),
             "n_measurements": len(measurements),
             "fusion_updated": bool(measurements),
+            "quality_proxy_before": before_quality["quality_proxy"],
+            "quality_proxy_after": after_quality["quality_proxy"],
+            "mean_information_age_before_s": before_quality["mean_information_age_s"],
+            "mean_information_age_after_s": after_quality["mean_information_age_s"],
+            "mean_sigma_before_m": before_quality["mean_sigma_max_m"],
+            "mean_sigma_after_m": after_quality["mean_sigma_max_m"],
         })
 
     def _share(self, task: Any, plan_id: str, now: float) -> None:
@@ -667,6 +701,7 @@ def _build_feedback_world(
     scheduler_config: Optional[SchedulingConfig] = None,
     policy: SchedulerPolicy = SchedulerPolicy.RULE,
     task_gating: str = TASK_GATING_EXPOSE_ALL,
+    share_requires_visible_track: bool = True,
     target_count: int = 2,
     keep_decisions: bool = True,
 ) -> Dict[str, Any]:
@@ -692,7 +727,8 @@ def _build_feedback_world(
         executor=world["executor"], queue=world["queue"],
         scheduler=world["planner"], runtime=runtime, result=world["result"],
         keep_decisions=keep_decisions, starved_ids=world["starved_ids"],
-        task_gating=task_gating, deadline_offsets=deadline_offsets)
+        task_gating=task_gating, deadline_offsets=deadline_offsets,
+        share_requires_visible_track=share_requires_visible_track)
     return world
 
 
@@ -1016,10 +1052,12 @@ class FeedbackLoopDriver:
                  runtime: RuntimeExecutor, result: LoopResult,
                  keep_decisions: bool, starved_ids: set,
                  task_gating: str = TASK_GATING_LOOP,
-                 deadline_offsets: Optional[Dict[str, float]] = None) -> None:
+                 deadline_offsets: Optional[Dict[str, float]] = None,
+                 share_requires_visible_track: bool = True) -> None:
         if task_gating not in TASK_GATING_MODES:
             raise ValueError(f"task_gating 必须是 {list(TASK_GATING_MODES)}")
         self.task_gating = task_gating
+        self.share_requires_visible_track = bool(share_requires_visible_track)
         # 截止余量（秒）。传 None 时用基线值——**基线与旧路径逐位一致**。
         self.deadline_offsets = dict(BASELINE_DEADLINE_OFFSETS)
         if deadline_offsets:
@@ -1102,6 +1140,7 @@ class FeedbackLoopDriver:
                     now,
                     deadline_offsets=self.deadline_offsets,
                     allow_share=allow_share,
+                    share_requires_visible_track=self.share_requires_visible_track,
                     allow_process=allow_process,
                     allow_sample=allow_sample,
                     allow_estimate_update=False,

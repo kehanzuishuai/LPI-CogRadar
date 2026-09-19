@@ -1,0 +1,13 @@
+{
+  "protocol_version": "preference-conditioned-ppo-v1",
+  "base_utility_protocol": "config/balanced_protocol_v1.json",
+  "preference_sampling": "per training episode: deterministic pseudorandom uniform draw from frozen set using training_seed*100003+episode_index",
+  "training_seeds": [907, 911, 919],
+  "preferences": {
+    "completion": [1,0,0,0,0], "timeliness": [0,1,0,0,0], "estimate_quality": [0,0,1,0,0], "resource_saving": [0,0,0,1,0], "communication_saving": [0,0,0,0,1],
+    "balanced": [0.2,0.2,0.2,0.2,0.2],
+    "service_quality": [0.4,0.1,0.4,0.05,0.05], "service_timely": [0.4,0.4,0.05,0.1,0.05], "resource_communication": [0.05,0.05,0.1,0.4,0.4], "quality_communication": [0.1,0.1,0.4,0.1,0.3]
+  },
+  "test_v3_dependency": "balanced_protocol_v1 test_v3 remains sealed until mechanism gate passes",
+  "mechanism_gate": "completion preference must exceed resource_saving completion OR resource_saving must consume less resource; communication_saving must reduce share actions OR communication bytes; otherwise classify mechanism failed and do not release test-v3"
+}

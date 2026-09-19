@@ -43,6 +43,12 @@ class PolicyConfig:
     activation: str = "tanh"
     init_log_std: float = 0.0
     seed: int = 0
+    #: ``concat`` keeps the historical state+preference MLP. ``film`` keeps
+    #: state and preference inputs separate and modulates each hidden layer.
+    conditioning: str = "concat"
+    state_obs_dim: int = 0
+    preference_dim: int = 0
+    preference_hidden_size: int = 8
 
     def resolved(self) -> "PolicyConfig":
         if self.obs_dim <= 0:
@@ -50,7 +56,19 @@ class PolicyConfig:
                 obs_dim=observation_dim(self.max_nodes),
                 max_nodes=self.max_nodes, hidden_sizes=self.hidden_sizes,
                 activation=self.activation, init_log_std=self.init_log_std,
-                seed=self.seed)
+                seed=self.seed, conditioning=self.conditioning,
+                state_obs_dim=self.state_obs_dim,
+                preference_dim=self.preference_dim,
+                preference_hidden_size=self.preference_hidden_size)
+        if self.conditioning not in {"concat", "film"}:
+            raise ValueError("conditioning 只能是 'concat' 或 'film'")
+        if self.conditioning == "film":
+            if self.state_obs_dim <= 0 or self.preference_dim <= 0:
+                raise ValueError("FiLM policy 必须声明 state_obs_dim 和 preference_dim")
+            if self.state_obs_dim + self.preference_dim != self.obs_dim:
+                raise ValueError("FiLM state/preference 维度必须恰好组成 obs_dim")
+            if self.preference_hidden_size <= 0:
+                raise ValueError("FiLM preference_hidden_size 必须为正")
         return self
 
 
@@ -67,13 +85,39 @@ class ActorCritic(nn.Module):
     def __init__(self, config: Optional[PolicyConfig] = None) -> None:
         super().__init__()
         self.config = (config or PolicyConfig()).resolved()
-        layers: List[nn.Module] = []
         last = self.config.obs_dim
-        for size in self.config.hidden_sizes:
-            layers.append(nn.Linear(last, int(size)))
-            layers.append(_activation(self.config.activation))
-            last = int(size)
-        self.trunk = nn.Sequential(*layers)
+        if self.config.conditioning == "concat":
+            layers: List[nn.Module] = []
+            for size in self.config.hidden_sizes:
+                layers.append(nn.Linear(last, int(size)))
+                layers.append(_activation(self.config.activation))
+                last = int(size)
+            self.trunk: Optional[nn.Sequential] = nn.Sequential(*layers)
+            self.state_layers: Optional[nn.ModuleList] = None
+            self.film_layers: Optional[nn.ModuleList] = None
+            self.film_activations: Optional[nn.ModuleList] = None
+            self.preference_encoder: Optional[nn.Sequential] = None
+        else:
+            # v3 representation-only change: the state trunk retains [128,128]
+            # capacity, while a small preference encoder produces a scale/shift
+            # pair for every hidden layer.  The 0.1 bounded modulation keeps the
+            # initial policy numerically close to the established MLP scale.
+            self.trunk = None
+            self.state_layers = nn.ModuleList()
+            self.film_layers = nn.ModuleList()
+            self.film_activations = nn.ModuleList()
+            self.preference_encoder = nn.Sequential(
+                nn.Linear(self.config.preference_dim,
+                          self.config.preference_hidden_size),
+                _activation(self.config.activation))
+            last = self.config.state_obs_dim
+            for size in self.config.hidden_sizes:
+                width = int(size)
+                self.state_layers.append(nn.Linear(last, width))
+                self.film_layers.append(nn.Linear(
+                    self.config.preference_hidden_size, 2 * width))
+                self.film_activations.append(_activation(self.config.activation))
+                last = width
         self.actor = nn.Linear(last, self.config.max_nodes * N_ACTIONS)
         self.critic = nn.Linear(last, 1)
         self.apply(self._init_weights)
@@ -87,7 +131,23 @@ class ActorCritic(nn.Module):
     # ------------------------------------------------------------------
 
     def forward(self, obs: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
-        features = self.trunk(obs)
+        if self.config.conditioning == "concat":
+            assert self.trunk is not None
+            features = self.trunk(obs)
+        else:
+            assert (self.state_layers is not None and self.film_layers is not None
+                    and self.film_activations is not None
+                    and self.preference_encoder is not None)
+            state = obs[..., :self.config.state_obs_dim]
+            preference = obs[..., self.config.state_obs_dim:]
+            pref_features = self.preference_encoder(preference)
+            features = state
+            for layer, film, activation in zip(
+                    self.state_layers, self.film_layers, self.film_activations):
+                raw = layer(features)
+                gamma, beta = film(pref_features).chunk(2, dim=-1)
+                features = activation(raw * (1.0 + 0.1 * torch.tanh(gamma))
+                                      + 0.1 * torch.tanh(beta))
         logits = self.actor(features).view(
             -1, self.config.max_nodes, N_ACTIONS)
         value = self.critic(features).squeeze(-1)
@@ -150,6 +210,10 @@ class ActorCritic(nn.Module):
                 "max_nodes": self.config.max_nodes,
                 "hidden_sizes": list(self.config.hidden_sizes),
                 "activation": self.config.activation,
+                "conditioning": self.config.conditioning,
+                "state_obs_dim": self.config.state_obs_dim,
+                "preference_dim": self.config.preference_dim,
+                "preference_hidden_size": self.config.preference_hidden_size,
             },
             "extra": dict(extra or {}),
         }
@@ -166,6 +230,10 @@ class ActorCritic(nn.Module):
             max_nodes=int(raw.get("max_nodes", DEFAULT_MAX_NODES)),
             hidden_sizes=tuple(raw.get("hidden_sizes") or (128, 128)),
             activation=str(raw.get("activation", "tanh")),
+            conditioning=str(raw.get("conditioning", "concat")),
+            state_obs_dim=int(raw.get("state_obs_dim", 0)),
+            preference_dim=int(raw.get("preference_dim", 0)),
+            preference_hidden_size=int(raw.get("preference_hidden_size", 8)),
         ).resolved()
         model = ActorCritic(config)
         model.load_state_dict(payload["state_dict"])

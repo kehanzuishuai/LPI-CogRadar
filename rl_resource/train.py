@@ -49,7 +49,8 @@ from resource_management.learning_protocol import (  # noqa: E402
 )
 from rl_resource.actions import N_ACTIONS, pad_mask  # noqa: E402
 from rl_resource.env import (  # noqa: E402
-    CentralizedResourceSchedulingEnv, EnvConfig, REWARD_VERSION,
+    CentralizedResourceSchedulingEnv, EnvConfig, PREFERENCE_V2_REWARD_VERSION,
+    REWARD_VERSION,
 )
 from rl_resource.obs import DEFAULT_MAX_NODES, observation_dim  # noqa: E402
 from rl_resource.policy import (  # noqa: E402
@@ -88,6 +89,12 @@ class TrainConfig:
     seed: int = 0
     #: 消融组；空 = §11L 的 49 维基线观测
     arm: str = ""
+    reward_mode: str = "baseline"
+    preference_conditioned: bool = False
+    preference_set: Tuple[Tuple[float, float, float, float, float], ...] = ()
+    evaluation_preference: Tuple[float, float, float, float, float] = (0.2, 0.2, 0.2, 0.2, 0.2)
+    scenario_registry_path: str = "config/learning_splits_v1.json"
+    share_candidate_requires_track: bool = True
 
     def resolved(self) -> "TrainConfig":
         if self.smoke:
@@ -117,6 +124,14 @@ class TrainConfig:
                 tuple(sorted(NODE_LAYOUT))).output_dim
         else:
             self.policy.obs_dim = observation_dim(self.max_nodes)
+        if self.preference_conditioned:
+            self.policy.obs_dim += 5
+            if self.policy.conditioning == "film":
+                # Preference observations are deliberately appended by the
+                # environment.  The policy alone splits that frozen layout;
+                # concat arms retain their historical behavior unchanged.
+                self.policy.state_obs_dim = self.policy.obs_dim - 5
+                self.policy.preference_dim = 5
         return self
 
 
@@ -146,6 +161,12 @@ def _episode_spec(cfg: TrainConfig, index: int) -> Tuple[str, int]:
     return scenario, seed
 
 
+def _preference_for_episode(cfg: TrainConfig, index: int) -> Tuple[float, float, float, float, float]:
+    if not cfg.preference_set:
+        return cfg.evaluation_preference
+    return cfg.preference_set[random.Random(cfg.seed * 100003 + index).randrange(len(cfg.preference_set))]
+
+
 def collect_rollout(env: CentralizedResourceSchedulingEnv, model: ActorCritic,
                     cfg: TrainConfig, device: torch.device,
                     start_index: int) -> Tuple[RolloutBuffer, List[Dict[str, Any]]]:
@@ -155,6 +176,7 @@ def collect_rollout(env: CentralizedResourceSchedulingEnv, model: ActorCritic,
     for offset in range(cfg.rollout_episodes):
         scenario, seed = _episode_spec(cfg, start_index + offset)
         env.config.scenario = scenario
+        env.config.preference = _preference_for_episode(cfg, start_index + offset)
         obs, info = env.reset(seed=seed)
         done = False
         total_reward = 0.0
@@ -245,7 +267,11 @@ def evaluate(model: ActorCritic, cfg: TrainConfig, device: torch.device,
                 env = CentralizedResourceSchedulingEnv(EnvConfig(
                     scenario=scenario, seed=seed, steps=cfg.steps,
                     max_nodes=cfg.max_nodes, keep_trace=False,
-                    arm=cfg.arm))
+                    arm=cfg.arm, reward_mode=cfg.reward_mode,
+                    preference=cfg.evaluation_preference,
+                    preference_conditioned=cfg.preference_conditioned,
+                    scenario_registry_path=cfg.scenario_registry_path,
+                    share_candidate_requires_track=cfg.share_candidate_requires_track))
                 obs, info = env.reset(seed=seed)
                 done = False
                 total_reward = 0.0
@@ -254,6 +280,7 @@ def evaluate(model: ActorCritic, cfg: TrainConfig, device: torch.device,
                 illegal_mass = 0.0
                 n_node_steps_for_mass = 0
                 legal_counts = [0] * N_ACTIONS
+                action_counts = [0] * N_ACTIONS
                 while not done:
                     mask = info["mask"]
                     if use_mask:
@@ -270,6 +297,8 @@ def evaluate(model: ActorCritic, cfg: TrainConfig, device: torch.device,
                     mask_t = mask_to_tensor(effective, device).unsqueeze(0)
                     out = model.act(obs_t, mask_t, deterministic=True)
                     action = out["action"][0].tolist()
+                    for chosen in action[:len(env.node_ids)]:
+                        action_counts[int(chosen)] += 1
                     if not use_mask:
                         # 更公允的"非法倾向"度量：未加 mask 时策略分配给
                         # **非法动作**的概率质量。用 argmax 会得到 100%，
@@ -320,6 +349,8 @@ def evaluate(model: ActorCritic, cfg: TrainConfig, device: torch.device,
                                if n_node_steps else 0.0)
                         for index, name in enumerate(
                             ("idle", "sample", "process", "share"))},
+                    "action_composition": {name: action_counts[index]
+                                           for index, name in enumerate(("idle", "sample", "process", "share"))},
                     # --- 完整闭环指标（与规则基线同一口径）---
                     "n_tasks": metrics["n_tasks_total"],
                     "n_completed": metrics["n_completed"],
@@ -332,6 +363,18 @@ def evaluate(model: ActorCritic, cfg: TrainConfig, device: torch.device,
                     "mean_waiting_s": metrics["mean_waiting_s"],
                     "max_waiting_s": metrics["max_waiting_s"],
                     "estimate_quality": vector["estimate_quality"],
+                    "mean_information_age_s": _observed_quality_stats(
+                        final["result"].node_ages, "mean_track_age_s")[0],
+                    "information_age_state": (
+                        "observed" if _observed_quality_stats(
+                            final["result"].node_ages, "mean_track_age_s")[1]
+                        else "not_applicable"),
+                    "mean_sigma_m": _observed_quality_stats(
+                        final["result"].node_ages, "mean_sigma_m")[0],
+                    "sigma_state": (
+                        "observed" if _observed_quality_stats(
+                            final["result"].node_ages, "mean_sigma_m")[1]
+                        else "not_applicable"),
                     "resource_consumption": vector["resource_consumption"],
                     "comm_overhead_bytes": vector["communication_overhead"],
                 })
@@ -379,6 +422,12 @@ def evaluate(model: ActorCritic, cfg: TrainConfig, device: torch.device,
     return summary
 
 
+def _observed_quality_stats(rows: Sequence[Dict[str, Any]], key: str) -> Tuple[Optional[float], int]:
+    values = [float(value) for row in rows for value in row.get(key, [])
+              if value is not None]
+    return ((sum(values) / len(values)) if values else None, len(values))
+
+
 # ----------------------------------------------------------------------
 # checkpoint 选择（**先声明、后执行**）
 # ----------------------------------------------------------------------
@@ -419,7 +468,10 @@ def train(cfg: TrainConfig, quiet: bool = False) -> Dict[str, Any]:
 
     env = CentralizedResourceSchedulingEnv(EnvConfig(
         scenario=cfg.scenarios[0], seed=cfg.seeds[0], steps=cfg.steps,
-        max_nodes=cfg.max_nodes, keep_trace=True, arm=cfg.arm))
+        max_nodes=cfg.max_nodes, keep_trace=True, arm=cfg.arm, reward_mode=cfg.reward_mode,
+        preference=cfg.evaluation_preference, preference_conditioned=cfg.preference_conditioned,
+        scenario_registry_path=cfg.scenario_registry_path,
+        share_candidate_requires_track=cfg.share_candidate_requires_track))
 
     run_dir = os.path.join(cfg.out_dir, cfg.tag)
     os.makedirs(run_dir, exist_ok=True)
@@ -480,11 +532,10 @@ def train(cfg: TrainConfig, quiet: bool = False) -> Dict[str, Any]:
         "selection_rule": ("conservation gate -> max validation mean_return "
                            "-> lower mean cost -> earlier update"),
         "scenario_mapping_version": SCENARIO_MAPPING_VERSION,
-        "scenario_mapping_digest": mapping_digest(
-            os.path.join(ROOT, "config", "learning_splits_v1.json")),
-        "reward_version": REWARD_VERSION,
-        "split_digest": split_digest(os.path.join(
-            ROOT, "config", "learning_splits_v1.json")),
+        "scenario_mapping_digest": mapping_digest(cfg.scenario_registry_path),
+        "reward_version": (PREFERENCE_V2_REWARD_VERSION
+                           if cfg.reward_mode == "preference_v2" else REWARD_VERSION),
+        "split_digest": split_digest(cfg.scenario_registry_path),
         "scenarios": list(cfg.scenarios), "seeds": list(cfg.seeds),
         "eval_scenarios": list(cfg.eval_scenarios),
         "eval_seeds": list(cfg.eval_seeds),
@@ -502,7 +553,9 @@ def train(cfg: TrainConfig, quiet: bool = False) -> Dict[str, Any]:
             "scenarios": list(cfg.scenarios), "seeds": list(cfg.seeds),
             "episodes": cfg.episodes, "steps": cfg.steps,
             "rollout_episodes": cfg.rollout_episodes, "updates": cfg.updates,
-            "max_nodes": cfg.max_nodes, "seed": cfg.seed,
+            "max_nodes": cfg.max_nodes, "seed": cfg.seed, "reward_mode": cfg.reward_mode,
+            "scenario_registry_path": cfg.scenario_registry_path,
+            "share_candidate_requires_track": cfg.share_candidate_requires_track,
             "eval_scenarios": list(cfg.eval_scenarios),
             "eval_seeds": list(cfg.eval_seeds),
         },
@@ -512,15 +565,18 @@ def train(cfg: TrainConfig, quiet: bool = False) -> Dict[str, Any]:
             "max_nodes": cfg.policy.max_nodes,
             "hidden_sizes": list(cfg.policy.hidden_sizes),
             "activation": cfg.policy.activation,
+            "conditioning": cfg.policy.conditioning,
+            "state_obs_dim": cfg.policy.state_obs_dim,
+            "preference_dim": cfg.policy.preference_dim,
+            "preference_hidden_size": cfg.policy.preference_hidden_size,
             "n_actions_per_node": N_ACTIONS,
         },
         "provenance": {
             "scenario_mapping_version": SCENARIO_MAPPING_VERSION,
-            "scenario_mapping_digest": mapping_digest(
-                os.path.join(ROOT, "config", "learning_splits_v1.json")),
-            "reward_version": REWARD_VERSION,
-            "split_digest": split_digest(os.path.join(
-                ROOT, "config", "learning_splits_v1.json")),
+            "scenario_mapping_digest": mapping_digest(cfg.scenario_registry_path),
+            "reward_version": (PREFERENCE_V2_REWARD_VERSION
+                               if cfg.reward_mode == "preference_v2" else REWARD_VERSION),
+            "split_digest": split_digest(cfg.scenario_registry_path),
             "runtime_mode": "plan_controlled_feedback",
             "task_gating": "expose_all",
             "test_split_sealed": True,

@@ -1,0 +1,15 @@
+{
+  "protocol_version": "preference-controllability-audit-v1",
+  "purpose": "read-only causal audit of frozen preference_ppo_v2 reward and checkpoints; no training and no test-v4 access",
+  "v2_protocol_sha256": "581ea684e9c2607acc9f7917bab0165efd481d269eb4283c6729bb359ffe40cf",
+  "v2_split_sha256": "6b3a337c9a7dcd584fc0e23a3f7946dceac0c62ba032a88722de06b144073e46",
+  "test_v4": "sealed; prohibited",
+  "horizon_steps": 3,
+  "post_action_policy": "fixed per-node process > share > sample > idle; independent of preference and model",
+  "states": [
+    {"id": "sample_legal", "scenario": "rm_train_base", "seed": 101, "target_node": "NODE_B", "pre_actions": [], "required_legal": ["sample"], "tags": ["train", "sample_legal"]},
+    {"id": "share_process_legal", "scenario": "rm_validation_handover", "seed": 211, "target_node": "NODE_B", "pre_actions": [[0, 1]], "required_legal": ["sample", "process", "share"], "tags": ["validation", "share_legal", "process_legal"]},
+    {"id": "stale_local_fresh_remote", "scenario": "rm_validation_handover", "seed": 211, "target_node": "NODE_B", "pre_actions": [[1, 0], [2, 0], [0, 1], [0, 0]], "required_legal": ["share"], "tags": ["validation", "share_legal", "remote_information_value", "local_information_stale"]},
+    {"id": "resource_pressure", "scenario": "rm_train_constrained_comm", "seed": 103, "target_node": "NODE_B", "pre_actions": [[0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1]], "required_legal": ["sample", "process", "share"], "tags": ["train", "resource_pressure", "share_legal", "process_legal"]}
+  ]
+}

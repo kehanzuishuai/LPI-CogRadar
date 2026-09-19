@@ -1,0 +1,24 @@
+{
+  "protocol_version": "preference-conditioned-ppo-v2",
+  "supersedes": null,
+  "v1_status": "preserved negative result; never overwritten, reinterpreted, or used for v2 checkpoint selection",
+  "diagnostic_evidence": "v1 had 7497 legal share states with zero masked-argmax share; forced legal share sent 128 B, unlocked remote process, and improved observable information age/covariance",
+  "base_utility_protocol": "balanced_protocol_v1 five preference dimensions retained",
+  "reward_version": "preference-five-objective-reward-v2",
+  "reward_changes": {
+    "communication_saving": "1 / (1 + actual_comm_delta_bytes / 128); smooth, monotone decreasing, fixed before training",
+    "delayed_estimate_quality": "on an actual remote process only, add max(0, post_observable_quality_proxy - pre_observable_quality_proxy), capped at 1; proxy is equal age-quality and covariance-quality from arrived fusion tracks, with sigma scale 200 m",
+    "information_boundary": "no truth_id, true error, future truth, offline labels, or unarrived messages"
+  },
+  "share_candidate_rule": "raw outbox measurement permits a share candidate without first requiring a locally visible track; RuntimeExecutor remains the only sensor/communication/fusion side-effect entry and its accounting remains authoritative",
+  "network_and_ppo": "same conditioned Actor-Critic [128,128], action space, mask, PPO parameters, updates, episodes and deterministic validation selection as v1",
+  "training_seeds": [1009, 1013, 1019],
+  "preference_sampling": "per training episode: deterministic pseudorandom uniform draw from the frozen set using training_seed*100003+episode_index",
+  "preferences": {
+    "completion": [1, 0, 0, 0, 0], "timeliness": [0, 1, 0, 0, 0], "estimate_quality": [0, 0, 1, 0, 0], "resource_saving": [0, 0, 0, 1, 0], "communication_saving": [0, 0, 0, 0, 1],
+    "balanced": [0.2, 0.2, 0.2, 0.2, 0.2],
+    "service_quality": [0.4, 0.1, 0.4, 0.05, 0.05], "service_timely": [0.4, 0.4, 0.05, 0.1, 0.05], "resource_communication": [0.05, 0.05, 0.1, 0.4, 0.4], "quality_communication": [0.1, 0.1, 0.4, 0.1, 0.3]
+  },
+  "mechanism_gate": "for every training seed, legal-share masked argmax count must be nonzero; communication_saving must have no more share actions and no more bytes than estimate_quality; estimate_quality must have more share actions in validation handover than communication_saving. Otherwise retain the negative result and do not release test-v4.",
+  "test_v4_dependency": "config/preference_ppo_v2_splits.json stays sealed; old test, test-v2 and test-v3 are historical only"
+}

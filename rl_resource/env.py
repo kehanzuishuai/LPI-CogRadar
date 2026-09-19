@@ -81,6 +81,16 @@ REWARD_TERMINAL_UNRESOLVED = -1.5
 WAITING_THRESHOLD_S = 8.0
 
 REWARD_VERSION = "resource-rl-reward-v1"
+BALANCED_REWARD_VERSION = "balanced-five-objective-reward-v1"
+PREFERENCE_V2_REWARD_VERSION = "preference-five-objective-reward-v2"
+BALANCED_WEIGHTS = (0.2, 0.2, 0.2, 0.2, 0.2)
+# 预先冻结的逐 tick 上界；不从 test/test-v2/test-v3 数据做 min-max。
+BALANCED_NORMALIZATION = {"completed_per_tick": 2.0, "comm_bytes_per_tick": 128.0,
+                          "resource_cost_per_tick": 0.25}
+# v2：一条 128 B share 的通信节约为 1/(1+1)=0.5，而不是 v1 的 0；
+# 仍严格随实际通信增量单调递减。远端融合收益只由已到达的航迹年龄/协方差代理给出。
+PREFERENCE_V2_COMM_SCALE_BYTES = 128.0
+PREFERENCE_V2_REMOTE_GAIN_SCALE = 1.0
 
 
 @dataclass
@@ -98,6 +108,13 @@ class EnvConfig:
     #: 取四组之一时改用 `research_obs.ResearchObservationEncoder`，
     #: 四组维度完全相同、被消融的特征置零。
     arm: str = ""
+    reward_mode: str = "baseline"  # baseline | balanced
+    preference: Tuple[float, float, float, float, float] = (0.2, 0.2, 0.2, 0.2, 0.2)
+    preference_conditioned: bool = False
+    #: v2 使用独立场景登记表；默认仍是冻结的 v1 登记表。
+    scenario_registry_path: str = "config/learning_splits_v1.json"
+    #: False 仅由 v2 显式启用：outbox 有真实测量即可候选 share，无需先造本地航迹。
+    share_candidate_requires_track: bool = True
     #: 是否记录逐 tick 明细（训练时关掉可省内存）
     keep_trace: bool = True
 
@@ -114,6 +131,11 @@ class EnvConfig:
             raise ValueError("gamma 必须在 [0, 1]")
         if self.max_nodes <= 0:
             raise ValueError("max_nodes 必须为正")
+        if self.reward_mode not in ("baseline", "balanced", "preference_v2"):
+            raise ValueError("未知 reward_mode")
+        if (len(self.preference) != 5 or any(value < 0.0 for value in self.preference)
+                or abs(sum(self.preference) - 1.0) > 1e-9):
+            raise ValueError("preference 必须为五维非负 simplex")
 
 
 class CentralizedResourceSchedulingEnv:
@@ -136,6 +158,8 @@ class CentralizedResourceSchedulingEnv:
         self._scheduler_config = SchedulingConfig()
         self._prev_consumed: Dict[str, Dict[ResourceUnit, float]] = {}
         self._prev_counts: Dict[str, int] = {}
+        self._prev_completed_ids: set[str] = set()
+        self._prev_comm_bytes = 0.0
         self._cumulative_cost = 0.0
         self._metrics_total: Dict[str, float] = {}
         self._n_rejected_total = 0
@@ -160,8 +184,8 @@ class CentralizedResourceSchedulingEnv:
             self.config.seed = int(seed)
         from rl_resource.scenarios import closed_loop_kwargs, load_scenarios
 
-        spec = load_scenarios()[self.config.scenario]
-        kwargs = closed_loop_kwargs(spec)
+        spec = load_scenarios(self.config.scenario_registry_path)[self.config.scenario]
+        kwargs = closed_loop_kwargs(spec, path=self.config.scenario_registry_path)
         world = _build_feedback_world(
             seed=self.config.seed,
             steps=self.config.steps,
@@ -169,6 +193,7 @@ class CentralizedResourceSchedulingEnv:
             node_budgets=kwargs["node_budgets"],
             deadline_offsets=kwargs["deadline_offsets"],
             scheduler_config=self._scheduler_config,
+            share_requires_visible_track=self.config.share_candidate_requires_track,
         )
         self._world = world
         self._queue = world["queue"]
@@ -187,6 +212,9 @@ class CentralizedResourceSchedulingEnv:
             self.observation_dim = observation_dim(self.config.max_nodes)
         self._prev_consumed = self._consumed_snapshot()
         self._prev_counts = self._status_counts()
+        self._prev_completed_ids = set()
+        self._prev_comm_bytes = 0.0
+        self._runtime_event_index = len(self._runtime.event_log)
         self._cumulative_cost = 0.0
         self._metrics_total = {
             "completion": 0.0, "expiry": 0.0, "invalid": 0.0,
@@ -254,8 +282,9 @@ class CentralizedResourceSchedulingEnv:
         self._n_planned_total += int(stats["n_planned"])
         self._n_rejected_total += int(stats["n_rejected"])
 
-        reward, components = self._reward(stats)
-        self._cumulative_cost += self._cost_delta()
+        cost_delta = self._cost_delta()
+        self._cumulative_cost += cost_delta
+        reward, components = self._reward(stats, cost_delta)
 
         # --- 终止判定 ---
         #
@@ -313,13 +342,15 @@ class CentralizedResourceSchedulingEnv:
         observation = self._driver.runtime.central_observation(
             self._driver.current_time_s)
         if self._research is not None:
-            return self._research.encode(
+            values = self._research.encode(
                 observation, self._queue, self._driver.current_time_s,
                 self.config.steps, self._driver.step_index, self.config.arm)
+            return values + list(self.config.preference) if self.config.preference_conditioned else values
         encoded = encode(observation, self._queue, self._driver.current_time_s,
                          self.config.steps, self._driver.step_index,
                          self.config.max_nodes)
-        return list(encoded.values)
+        values = list(encoded.values)
+        return values + list(self.config.preference) if self.config.preference_conditioned else values
 
     def observe_with_mask(self) -> Tuple[List[float], List[List[bool]]]:
         """返回当前决策上下文（观测 + 补齐到 `max_nodes` 的 mask）。
@@ -356,7 +387,11 @@ class CentralizedResourceSchedulingEnv:
     # 奖励 / 代价 / 终止
     # ------------------------------------------------------------------
 
-    def _reward(self, stats: Dict[str, Any]) -> Tuple[float, Dict[str, float]]:
+    def _reward(self, stats: Dict[str, Any], cost_delta: float = 0.0) -> Tuple[float, Dict[str, float]]:
+        if self.config.reward_mode == "balanced":
+            return self._balanced_reward(cost_delta)
+        if self.config.reward_mode == "preference_v2":
+            return self._preference_v2_reward(cost_delta)
         counts = self._status_counts()
         completed = counts.get("completed", 0) - self._prev_counts.get(
             "completed", 0)
@@ -371,6 +406,75 @@ class CentralizedResourceSchedulingEnv:
                         / max(1, len(self.node_ids))),
         }
         return sum(components.values()), components
+
+    def _balanced_reward(self, cost_delta: float) -> Tuple[float, Dict[str, float]]:
+        """固定等权的五维任务级效用；不含计算耗时，也不读真值。"""
+        now = self._driver.current_time_s
+        completed = [task for task in self._queue.tasks
+                     if task.status is TaskStatus.COMPLETED and task.task_id not in self._prev_completed_ids]
+        self._prev_completed_ids.update(task.task_id for task in completed)
+        completion = min(1.0, len(completed) / BALANCED_NORMALIZATION["completed_per_tick"])
+        timely = min(1.0, sum(1 for task in completed if task.deadline_s is None or now <= task.deadline_s)
+                     / BALANCED_NORMALIZATION["completed_per_tick"])
+        ages = (self._driver.result.node_ages[-1].get("mean_track_age_s", [])
+                if self._driver.result.node_ages else [])
+        visible = [float(age) for age in ages if age is not None]
+        quality = (sum(1.0 / (1.0 + age) for age in visible) / len(visible)) if visible else 0.0
+        resource_saved = 1.0 - min(1.0, max(0.0, cost_delta) / BALANCED_NORMALIZATION["resource_cost_per_tick"])
+        comm_now = sum(float(node.budget.consumed.get(ResourceUnit.COMM_BYTE, 0.0))
+                       for node in self._executor.nodes.values())
+        comm_delta, self._prev_comm_bytes = max(0.0, comm_now - self._prev_comm_bytes), comm_now
+        comm_saved = 1.0 - min(1.0, comm_delta / BALANCED_NORMALIZATION["comm_bytes_per_tick"])
+        utilities = (completion, timely, quality, resource_saved, comm_saved)
+        names = ("completion", "timeliness", "estimate_quality", "resource_saving", "communication_saving")
+        components = {"balanced_" + name: utility * weight
+                      for name, utility, weight in zip(names, utilities, self.config.preference)}
+        components["balanced_utility"] = sum(components.values())
+        return components["balanced_utility"], components
+
+    def _remote_information_gain(self) -> float:
+        """本 tick 已**实际到达并 process**的远端信息增益（无真值）。"""
+        events = self._runtime.event_log[self._runtime_event_index:]
+        self._runtime_event_index = len(self._runtime.event_log)
+        gains = []
+        for event in events:
+            if event.get("event") != "process" or not event.get("n_remote_measurements", 0):
+                continue
+            gains.append(max(0.0, float(event.get("quality_proxy_after", 0.0))
+                             - float(event.get("quality_proxy_before", 0.0))))
+        return min(1.0, sum(gains) * PREFERENCE_V2_REMOTE_GAIN_SCALE)
+
+    def _preference_v2_reward(self, cost_delta: float) -> Tuple[float, Dict[str, float]]:
+        """v2 五维偏好效用：平滑通信代价 + 可观测远端融合延迟收益。"""
+        now = self._driver.current_time_s
+        completed = [task for task in self._queue.tasks
+                     if task.status is TaskStatus.COMPLETED
+                     and task.task_id not in self._prev_completed_ids]
+        self._prev_completed_ids.update(task.task_id for task in completed)
+        completion = min(1.0, len(completed) / BALANCED_NORMALIZATION["completed_per_tick"])
+        timely = min(1.0, sum(1 for task in completed
+                              if task.deadline_s is None or now <= task.deadline_s)
+                     / BALANCED_NORMALIZATION["completed_per_tick"])
+        ages = (self._driver.result.node_ages[-1].get("mean_track_age_s", [])
+                if self._driver.result.node_ages else [])
+        visible = [float(age) for age in ages if age is not None]
+        age_quality = (sum(1.0 / (1.0 + age) for age in visible) / len(visible)) if visible else 0.0
+        remote_gain = self._remote_information_gain()
+        quality = min(1.0, age_quality + remote_gain)
+        resource_saved = 1.0 - min(1.0, max(0.0, cost_delta)
+                                   / BALANCED_NORMALIZATION["resource_cost_per_tick"])
+        comm_now = sum(float(node.budget.consumed.get(ResourceUnit.COMM_BYTE, 0.0))
+                       for node in self._executor.nodes.values())
+        comm_delta, self._prev_comm_bytes = max(0.0, comm_now - self._prev_comm_bytes), comm_now
+        comm_saved = 1.0 / (1.0 + comm_delta / PREFERENCE_V2_COMM_SCALE_BYTES)
+        utilities = (completion, timely, quality, resource_saved, comm_saved)
+        names = ("completion", "timeliness", "estimate_quality", "resource_saving", "communication_saving")
+        components = {"preference_v2_" + name: utility * weight
+                      for name, utility, weight in zip(names, utilities, self.config.preference)}
+        components["preference_v2_remote_information_gain"] = remote_gain
+        components["preference_v2_utility"] = sum(
+            components["preference_v2_" + name] for name in names)
+        return components["preference_v2_utility"], components
 
     def _consumed_snapshot(self) -> Dict[str, Dict[ResourceUnit, float]]:
         return {

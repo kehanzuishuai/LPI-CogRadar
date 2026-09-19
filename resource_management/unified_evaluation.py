@@ -64,6 +64,7 @@ class FrozenEvaluation:
     runtime_mode: str = "plan_controlled_feedback"
     reference_method: str = "rule"
     confidence_level: float = 0.95
+    scenario_path: str = "config/learning_splits_v1.json"
     checkpoints: Mapping[str, str] = None  # type: ignore[assignment]
 
     def resolved_checkpoints(self) -> Dict[str, str]:
@@ -75,6 +76,7 @@ class FrozenEvaluation:
             "task_gating": self.task_gating, "runtime_mode": self.runtime_mode,
             "reference_method": self.reference_method,
             "confidence_level": self.confidence_level,
+            "scenario_path": os.path.abspath(self.scenario_path),
             "checkpoints": {key: os.path.abspath(value)
                             for key, value in self.resolved_checkpoints().items()},
             "mask_policy": "PPO deployment uses legal action mask; unmasked diagnostics are reported separately.",
@@ -106,18 +108,21 @@ def freeze_manifest(frozen: FrozenEvaluation) -> Dict[str, Any]:
         "resource_management/closed_loop.py",
         "resource_management/scheduling.py",
         "rl_resource/actions.py", "rl_resource/research_obs.py",
-        "rl_resource/scenarios.py", "config/learning_splits_v1.json",
+        "rl_resource/scenarios.py",
     )
     return {
         "freeze_version": "unified-resource-evaluation-v1",
         "frozen": frozen.to_dict(),
         "resource_contract": {"version": CONTRACT_VERSION, "digest": contract_digest()},
-        "learning_split_digest": split_digest(),
-        "scenario_mapping_digest": mapping_digest(),
+        "learning_split_digest": split_digest(frozen.scenario_path),
+        "scenario_mapping_digest": mapping_digest(frozen.scenario_path),
         "checkpoints": {method: {"path": os.path.abspath(path), "sha256": _sha256(path)}
                         for method, path in checkpoints.items()},
-        "source_sha256": {relative: _sha256(os.path.join(root, relative))
-                          for relative in source_files},
+        "source_sha256": {
+            **{relative: _sha256(os.path.join(root, relative))
+               for relative in source_files},
+            os.path.relpath(frozen.scenario_path, root): _sha256(frozen.scenario_path),
+        },
         "training_randomness": {
             "n_frozen_checkpoints_per_method": 1,
             "estimable": False,
@@ -154,8 +159,8 @@ def summary(values: Sequence[float]) -> Dict[str, Any]:
 def _build_driver(method: str, scenario: str, seed: int, frozen: FrozenEvaluation) -> Dict[str, Any]:
     if method not in METHODS:
         raise ValueError(f"未知方法 {method!r}")
-    spec = load_scenarios()[scenario]
-    kwargs = closed_loop_kwargs(spec)
+    spec = load_scenarios(frozen.scenario_path)[scenario]
+    kwargs = closed_loop_kwargs(spec, path=frozen.scenario_path)
     policy = SchedulerPolicy(method) if method in SCHEDULER_METHODS else SchedulerPolicy.RULE
     world = _build_world(policy=policy, seed=seed, steps=frozen.steps,
                          mechanisms=kwargs["mechanisms"], node_budgets=kwargs["node_budgets"],
@@ -211,6 +216,9 @@ def _ppo_tick(driver: FeedbackLoopDriver, runtime: RuntimeExecutor, model: Any,
     inference["seconds"] += time.perf_counter() - started
     n_real = len(context.node_ids)
     for index in range(n_real):
+        action_name = ("idle", "sample", "process", "share")[int(actions[index])]
+        inference.setdefault("action_counts", {}).setdefault(action_name, 0)
+        inference["action_counts"][action_name] += 1
         inference["n_node_actions"] += 1
         if not mask[index][int(actions[index])]:
             inference["masked_invalid"] += 1
@@ -229,9 +237,10 @@ def evaluate_episode(method: str, scenario: str, seed: int,
     """运行一个格子；所有方法共享同一个世界构造及任务门控。"""
     world = _build_driver(method, scenario, seed, frozen)
     driver, runtime = world["driver"], world["runtime"]
-    inference: Dict[str, float] = {"seconds": 0.0, "n_node_actions": 0.0,
+    inference: Dict[str, Any] = {"seconds": 0.0, "n_node_actions": 0.0,
                                     "masked_invalid": 0.0, "unmasked_invalid": 0.0,
-                                    "invalid_probability_mass": 0.0}
+                                    "invalid_probability_mass": 0.0,
+                                    "action_counts": {"idle": 0, "sample": 0, "process": 0, "share": 0}}
     checkpoint_extra: Dict[str, Any] = {}
     if method in PPO_METHODS:
         model, checkpoint_extra, torch = _load_ppo(method, frozen)
@@ -276,6 +285,7 @@ def evaluate_episode(method: str, scenario: str, seed: int,
         "truth_payload_violations": int(metrics["runtime_feedback"]["truth_payload_violations"]),
         "duplicate_runtime_tasks": int(metrics["runtime_feedback"]["n_duplicate_runtime_tasks"]),
         "checkpoint_extra": checkpoint_extra if method in PPO_METHODS else {},
+        "action_composition": dict(inference["action_counts"]),
     }
     return row
 

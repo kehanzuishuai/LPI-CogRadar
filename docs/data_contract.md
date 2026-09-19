@@ -54,6 +54,8 @@
 | **在线快照与离线快照分离** | ✅（本轮新增） | `ai/snapshot_boundary.py` | 见 §3.2 |
 | 远程 LLM 证据校验与回退 | ✅ | `ai/evidence_check.py` | 只拦"编造发现码/不可溯源数字"，**非语义级** |
 | DQN / 历史窗口 / 集成 / 拉格朗日 | ✅ | `rl/` | 语义审计见 §4.4 |
+| Preference-Conditioned PPO 探索分支 | 🟡 已完成探索，机制验证未通过，当前暂停 | `rl_resource/`、`config/preference_ppo_v*.json` | v1→诊断→v2→可控性审计→v3 已归档；不否定多训练 seed 基础 PPO 资源调度基线；`test-v5` 继续封存，见 `docs/preference_ppo_archive.md` |
+| 基础 PPO 资源调度基线（多训练 seed） | ✅ | `output/rl_resource/multiseed_v2/` | 固定预算下相对 rule 的完成率优势在五训练 seed 配对 CI 中复现；不应与已暂停的偏好条件化探索混写 |
 
 ### 1.5 评测与压力测试
 

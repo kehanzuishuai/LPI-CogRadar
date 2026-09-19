@@ -242,7 +242,7 @@ D:\anaconda\envs\pytorch_env\python.exe train_dqn.py --observation-mode realisti
 
 # ---------- 单元测试与端到端验收（仿真层与 AI 层零依赖，base 环境即可跑）----------
 python verify_v4.py                       # 端到端验收：19 章（模块/不变式/旧实验逐位复现/AI发现码/证据链/压力测试/资源管理/优化参考/契约冻结/真闭环/版本号/产物）
-python -m unittest discover -s tests -v   # 全量 504 项（其中 1 项为条件跳过：冻结摘要一致时无需触发严格模式）
+python -m unittest discover -s tests -v   # 最新回归：570 项通过、1 项条件跳过
 python tests/test_ai_evidence.py -v       # v4.5：AI 证据链（无真值泄漏/原因区分/证据校验/路由接线）
 python tests/test_multi_target_stress.py -v  # v4.5：多目标压力测试（关联审计/指标口径/跟踪器生命周期）
 python tests/test_system_stress.py -v     # v4.5：系统级压力场景 S5–S8
@@ -3417,6 +3417,133 @@ D:\anaconda\envs\pytorch_env\python.exe tools/evaluate_unified_resource_methods.
 
 ---
 
+## 11O. Balanced Resource Scheduling Mode（固定均衡锚点）
+
+Balanced 是为后续 preference-conditioned/Pareto 调度准备的**固定参考点**，不是
+总体最优声明。它固定等权 `[0.2,0.2,0.2,0.2,0.2]`，只优化完成度、及时性、
+估计质量、资源节约和通信节约；计算耗时只作评测指标。归一化边界在
+`config/balanced_protocol_v1.json` 预冻结，禁止按任何 test 动态 min-max。
+
+三训练 seed 的 validation 机制验证显示它退化为偏节约/及时性的策略：完成率
+0.27，低于 rule 的 0.51；虽然资源消耗为 0.20、等待 0.34 s，但这不是均衡成功。
+idle 占 59%，去 mask 非法 argmax 仍为 0.49，说明 mask 仍是承重约束。
+**失败结果保留，未改权重、奖励、PPO 参数、网络、动作、mask、预算或 seed 补救。**
+test-v3 已 SHA 封存且未读取/解封。完整口径、checkpoint 哈希与 CSV/JSON 见
+`docs/balanced_resource_mode.md` 和 `output/rl_resource/balanced/`。
+
+---
+
+## 11P. Preference-Conditioned PPO（机制未通过，test-v3 保持封存）
+
+单一 PPO 在输入末尾拼接五维偏好，奖励复用 §11O 的固定效用定义。三 seed validation
+显示完成/资源偏好存在有限响应，但所有偏好均未执行 share、通信量恒为零，通信偏好
+机制未学成。因此**不得**解封 test-v3、不得宣称 Pareto 前沿或偏好控制成功，也不得
+通过改权重、奖励、网络、PPO 参数、mask 或挑偏好补救。详见
+`docs/preference_conditioned_ppo.md`。
+
+---
+
+## 11Q. Share 机制诊断（v1 失败定位；不运行 test）
+
+独立诊断确认：share 并非一直不存在或被 mask 屏蔽。在三个冻结模型、十个偏好上，
+train/validation 分别有 **31.35% / 30.60%** 的节点决策步出现 share 候选，合法率为
+100.00% / 97.96%，但 **7,497 个合法状态的 masked argmax 均未选 share**。因此通信偏好
+失败不能归因于“没有 share 动作”。
+
+同状态反事实和最小真闭环案例均确认：强制合法 share 会真实发送 128 B、消耗同额通信
+账本、使接收节点在消息到达后获得 process 可行性并消费远端测量；资源守恒、无重复执行
+和无真值载荷检查都通过。根因是冻结 v1 中的即时通信节约惩罚、延迟的
+`share → arrival → process` 收益，以及自动候选要求先 `sample → process → share` 的
+门控链共同作用，而不是通信/融合链未接通。
+
+**仍不得**修改 v1、解封 test-v3 或直接启动 `preference_ppo_v2`；任何后继改变都必须
+新建版本化协议并重新封存 train/validation/test-v4。完整漏斗、反事实、奖励分解和最小
+场景证据见 `docs/share_mechanism_diagnosis.md`，原始 JSON 为
+`output/share_mechanism_diagnosis/share_diagnosis.json`。
+
+---
+
+## 11R. Preference-Conditioned PPO v2（机制验证失败；test-v4 封存）
+
+v2 作为**独立协议**保留 v1 的失败结果，只针对已定位的 share 信用分配问题改动：将
+128 B 通信代价改为预冻结的平滑单调函数，并在消息真实到达、远端实际 process 后以
+仅含航迹年龄/协方差的可观测代理提供延迟估计质量收益；不读取真值、未来或离线标签。
+同时只有 v2 允许 raw outbox 直接产生 share 候选，保持 `RuntimeExecutor` 是唯一副作
+入口、资源守恒和 action mask 不变。
+
+三预声明训练 seed 的 270 格 validation **未通过**机制闸门：seed 1009 从未选择 share；
+通信节约偏好反而有 90 次 share / 426.67 B，而估计质量偏好为 0 / 0，方向与假设相反。
+因此停止在 validation，**不解封 test-v4、不调参、不重训、不宣称 Pareto 或偏好控制成功**。
+完整协议、checkpoint 哈希、原始 CSV/JSON 和边界见 `docs/preference_ppo_v2.md`。
+
+---
+
+## 11S. Preference Controllability Audit（暂停 v2；不训练、不读 test-v4）
+
+审计先将“无可见航迹/协方差”的信息年龄和 σ 从 `0` 修正为 `null + not_applicable`，
+避免把没有信息写成最好信息；v2 reward 的空集估计质量本来为 0，不存在同类奖励漏洞。
+随后在四个冻结 train/validation 状态中，仅替换五维偏好、枚举首个
+idle/sample/process/share 动作，并用固定 3-tick 后续脚本做反事实。
+
+结果明确区分了两类问题：奖励方向正确——通信偏好令 share 相对 idle 回报为 −0.6584，
+质量偏好在远端信息有价值时为 +0.5228，资源偏好降低高成本 sample 回报；但三个冻结 PPO
+没有学会相同方向，质量偏好下 share 概率 0.1750 反而略低于通信偏好 0.1777，二者 argmax
+都没有 share。因此结论是**奖励因果方向正确、策略偏好—动作映射未学成**，而非通信链、
+mask 或 reward 符号错误。v2 继续暂停，test-v4 保持封存；审计不自动授权 v3。
+详见 `docs/preference_controllability_audit.md` 和
+`output/preference_controllability_audit/`。
+
+---
+
+## 11T. Preference-Conditioned PPO v3（FiLM 表示机制未通过；test-v5 封存）
+
+基于 11S 的结论，v3 **只**替换偏好条件化表示：104 维可见状态继续经 `[128,128]` 主干，
+五维 simplex 偏好经独立 `5→8` encoder，以有界 FiLM scale/shift 调制每层隐藏特征；不改
+v2 已验证方向正确的五目标 reward、通信代价、RuntimeExecutor、物理模型、动作、mask 或
+PPO。三个冻结 concat-v2 checkpoint 继续作为严格基线，未被重训或覆盖。
+
+新建、冻结的 test-v5 未被读取。三个预声明 FiLM seed 在固定远端信息有价值状态上都有
+非零的“质量偏好 vs 通信偏好”raw-logit 有限差分（0.01514、0.01961、0.03366），说明网络
+数值上看到了偏好；但仅 seed 1117 在质量偏好提升协同/share、通信偏好降低 share 的方向
+上成立，1103/1109 反向，且资源/完成服务方向也不能跨 seed 稳定复现。因此预注册机制
+闸门失败：这**不是**偏好控制成功的证据，不能解封 test-v5、不能宣称 Pareto 前沿，也不再
+通过改 reward、挑 seed 或扩大网络补救。Preference-Conditioned PPO 主线止于 v3，保留
+v1/v2/v3 全部负结果。详见 `docs/preference_ppo_v3.md` 和
+`output/rl_resource/preference_ppo_v3/`。
+
+复现/审计入口：`config/preference_ppo_v3.json`、
+`config/preference_ppo_v3_splits.json`、`tools/run_preference_ppo_v3.py`；原始
+validation 行、固定状态 logits/概率矩阵、有限差分敏感度和 checkpoint 哈希均已随报告
+保存。该入口**没有** `test` 子命令，防止在机制失败后意外读取 test-v5。
+
+---
+
+## 11U. Preference-Conditioned PPO 探索分支（已暂停）
+
+状态：**🟡 已完成探索，机制验证未通过，当前暂停。** 这不是“未实现”：v1、机制诊断、
+v2、固定状态可控性审计和 v3 FiLM 均已按各自冻结协议完成，并保留全部代码、配置、
+checkpoint、SHA 与 validation 产物。
+
+1. **v1**：五维偏好 concat 输入未能控制 `share`；诊断发现候选常出现且几乎合法，但
+   7,497 个合法状态的 masked argmax 都不选 share。
+2. **诊断**：强制合法 share 会真实发送、解锁远端 process，并改善可观测信息年龄/协方差；
+   因而不是通信链路或 mask 失效。
+3. **v2**：仅修正 share 的延迟信用归因、平滑通信代价和 v2-only 候选门控；share 开始出现，
+   但偏好方向错误，机制闸门失败。
+4. **可控性审计**：固定状态反事实证明 reward 对偏好的因果方向正确；冻结策略却未学会
+   “偏好 → 动作”映射。
+5. **v3**：FiLM 后 logits 会响应偏好，但跨三个训练 seed 仍无法稳定形成方向正确的动作控制。
+
+因此唯一允许的结论是：**策略对偏好敏感，但当前证据不支持策略可被偏好稳定控制。**
+不得据此生成正式 Pareto/test 结论；`test-v5` 继续封存，不读取、不解封。该失败也**不否定**
+基础 PPO 资源调度基线：其多训练 seed 评测已独立复现固定预算下相对 rule 的完成率优势。
+
+完整归档、SHA、路径和回归校验见 `docs/preference_ppo_archive.md`；运行
+`python tools/verify_preference_ppo_archive.py` 可验证 v1–v3 未被回写、test-v5 仍封存，
+以及基础 PPO 的独立结论仍存在。
+
+---
+
 ## 12. 实验结果汇总
 
 ### 12.1 固定干扰场景，seed=42（`evaluate_dqn.py`）
@@ -4089,6 +4216,7 @@ v4.5 的三步顺序是 **(1) AI 认知诊断接口 → (2) 多目标压力场�
 | 拉格朗日 critic 语义修复（§11I.1） | ✅ 代码完成，**未重训** | `rl/lagrangian_agent.py` / `tests/test_lagrangian_semantics.py` |
 | 信息新鲜度研究分支（§11J） | ✅ 机制检查完成，**主假设未获支持** | `information_research.py` / `config/information_research_v1.json` / `tools/evaluate_information_research.py` |
 | 多雷达资源—感知真闭环（§11K） | ✅ 本轮补完 | `RuntimeExecutor` / `runtime_mode` 开关 / `tests/test_runtime_feedback.py` / 验收第 6 项 / `verify_v4.py` §19 |
+| Preference-Conditioned PPO 探索（v1–v3） | 🟡 已完成探索，机制验证未通过，当前暂停 | `docs/preference_ppo_archive.md` / `tools/verify_preference_ppo_archive.py`；test-v5 封存 |
 
 **本轮（接手后）做的事**：
 
@@ -4107,6 +4235,11 @@ v4.5 的三步顺序是 **(1) AI 认知诊断接口 → (2) 多目标压力场�
    （窗口不能贴到运行末尾，否则"恢复"会因步数不够而假失败）；
 5. 更新 `docs/data_contract.md` §4.5、`docs/resource_management.md` §13 与本 README。
 
-**下一步（现状闸门）**：先做**集中式学习基线**——按 `docs/learning_evaluation_checklist.md`
-在 train/validation 分区上训练，用 validation 选 checkpoint，**测试分区保持封存**；
-在 §11K 解除"调度不影响感知链"限制后，**§11J 的四组消融需要重测**。
+### 16.7 下一主线：多雷达 Global Track / Track-to-Track Fusion
+
+Preference-Conditioned PPO 探索已正式暂停，后续主线切换为 **多雷达 Global Track /
+Track-to-Track Fusion**，不再创建 preference PPO v4/v5。该工作应从独立协议开始：先冻结
+全局航迹 ID、跨节点关联/去重、track-to-track 融合输入的信息边界、协方差与来源语义、
+回归场景及评测指标；再在不覆盖本分支负结果的前提下实现与验证。未来若资源允许重新研究
+多目标/Pareto RL、层次化策略、偏好课程学习、更长训练预算或更多训练 seed，也必须另立
+新协议和新的封存测试集。
