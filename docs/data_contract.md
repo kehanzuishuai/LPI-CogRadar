@@ -268,7 +268,7 @@
 - 但决策算法的观测向量仍含 §3.5 的残留项，且 `full` 模式下二者
   都不是"只看得见估计"。
 
-### 4.4 学习层语义待审计（记录，未结论） ⚠️
+### 4.4 学习层语义审计（原始问题记录）
 
 - `engine/env.py`：只有**能量耗尽**才 `terminated`，任务时长到达记 `truncated`；
 - `train_dqn.py`：bootstrap 只看 `terminated` → 任务终点与外部截断需要重新定义；
@@ -276,7 +276,53 @@
   该实现**不足以**支撑"机制正确、失败仅来自资源耦合"的归因；
 - 训练种子逐 episode 递增、默认验证种子 42 → **训练/验证/测试种子划分未定义**。
 
-以上为**审计需求**，本文不宣称已证明某个现象的唯一原因。
+以上是校核前的**原始审计需求**，本文不宣称已证明某个现象的唯一原因。现已在
+`docs/learning_protocol.md` 中冻结新语义，并由
+`tests/test_learning_protocol.py` 与 `tests/test_lagrangian_semantics.py` 校验。
+
+### 4.5 多雷达资源—感知闭环（原缺口，**现已接通**）✅
+
+**缺口原文（审计时的实际代码行为）**：
+
+- `run_closed_loop` 每个 tick 先**无条件**调用 `suite.observe`，
+  再**无条件**更新各节点 `FusionCenter`，之后才创建任务与提交计划
+  → 调度**不可能**影响当 tick 的传感器或融合行为；
+- `UnifiedExecutor._apply_task` 只改教学用 `NodeState.estimates` 与资源账本，
+  `SAMPLE` 的产出数是按任务实体数构造的**记账数**，从未调用真实 `SensorSuite`；
+- 节点航迹摘要每 tick **无条件** `publish_node_observation`；
+  `SHARE` 任务只扣账，与 `CommBus` 发送**无关**。
+
+后果很具体：**不同调度策略只改变任务与资源统计，不改变航迹质量**。
+实测旧路径下轮询 / EDF / 规则三个策略的 `estimate_quality` **完全相同**。
+
+**现已被 `plan_controlled_feedback` 模式接通**：
+
+| 环节 | 旧路径 | 新路径（`RuntimeExecutor`） |
+| --- | --- | --- |
+| 传感器 | 每 tick 无条件全传感器扫描 | **只有拿到 `sample` 任务的节点**才 `Sensor.observe` 一次 |
+| 融合 | 每 tick 无条件 `update` | **只有 `process` 任务**才 `FusionCenter.update`；未调度节点只 `predict_to` |
+| 通信 | 每 tick 无条件发布摘要 | **只有 `share` 任务**才 `CommBus.publish` 一条真实测量（128 B），且与 `comm_byte` 账本逐字节一致 |
+| 远端数据 | —— | 只从 `bus.consume(dst, now)` 取**实际到达**的测量 |
+| 计费 | —— | `UnifiedExecutor` 仍是唯一记账点；`RuntimeExecutor` 只对 `APPLIED` 结果做副作，**不二次扣费** |
+
+**默认仍是旧路径**（`runtime_mode="legacy_observation_first"`），
+历史实验逐位可复现；新路径是显式 opt-in。
+回归与端到端证据：`tests/test_runtime_feedback.py`、
+`resource_management.acceptance.check_plan_controlled_feedback`（阶段验收第 6 项）、
+`verify_v4.py` §19。
+
+**新路径带来的新限制（必须一并说明）**：
+
+1. **通信预算耗尽会停住节点**：`share` 无法执行时 outbox 永远非空，
+   门控 `allow_sample=(not processable and not shareable)` 于是不再派采样任务
+   → 节点进入纯预测。这是**资源耗尽**语义的直接后果，不是 bug，
+   但它是硬门控而非软降级（真要保留本地采样需改门控设计）；
+2. **估计误差整体变大**：旧路径等于"每个节点每 tick 免费获得一次测量"，
+   新路径按实际任务量给测量，因此同一场景下航迹更新更少、误差更大
+   （本轮 24 tick 实测：离线最近航迹误差均值由 155.68 m 变为 1000 m 量级）。
+   这**不是回归**，而是把此前被隐式补上的测量量显式化了；
+3. **多雷达功率控制仍未接通**（§4.1 不变）：本次接通的是**资源管理的多节点
+   感知/通信/融合闭环**，`radars[0]` 的联合功率动作仍未实现。
 
 ---
 
@@ -296,3 +342,7 @@
 - `terminated` / `truncated` 与 bootstrap 的有限任务终点定义；
 - 训练 / 验证 / 测试种子划分；
 - 拉格朗日双 critic 的实现审计。
+
+> 后续进展：上述四项已在 `docs/learning_protocol.md`（学习协议 v1）中冻结并校验；
+> §4.5 的多雷达资源—感知闭环也已接通（阶段验收第 6 项）。
+> 当前闸门是**集中式学习基线**：见 `docs/learning_evaluation_checklist.md`。

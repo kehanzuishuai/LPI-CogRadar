@@ -107,6 +107,7 @@ def make_env(
     expose_observation_truth: bool = False,
     measurement_max_tracks: int = 4,
     expose_measurement_truth: bool = False,
+    horizon_semantics: str = "finite_task",
 ) -> LpiPowerEnv:
     """统一的实验环境。energy_budget_j 只覆盖任务约束，不触碰物理参数。
 
@@ -129,6 +130,7 @@ def make_env(
         expose_observation_truth=expose_observation_truth,
         measurement_max_tracks=measurement_max_tracks,
         expose_measurement_truth=expose_measurement_truth,
+        horizon_semantics=horizon_semantics,
     )
 
 
@@ -471,6 +473,7 @@ def make_env_from_args(
         config_path or getattr(args, "config", CONFIG_PATH),
         energy_budget_j=energy_budget_j,
         expose_observation_truth=expose_observation_truth,
+        horizon_semantics=getattr(args, "horizon_semantics", "finite_task"),
         **observation_kwargs_from_args(args),
     )
 

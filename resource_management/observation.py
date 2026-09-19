@@ -56,6 +56,10 @@ from resource_management.units import BUDGET_UNITS, ResourceUnit
 #: 完全分开：它们的维度与语义是冻结的，本层改版不影响它们。
 SCHEMA_VERSION = "rm-obs-1.0"
 
+#: 研究分支的向后兼容可选扩展。基础 `rm-obs-1.0` 契约不改；
+#: 新字段均有默认值，且只由明确选择该研究协议的适配器消费。
+RESEARCH_EXTENSION_VERSION = "information-research-fields-v1"
+
 #: 旧路径标记（保留并可复现，但**不得**与本层混用）
 LEGACY_OBSERVATION_MODES: Tuple[str, ...] = ("full", "pomdp", "ideal",
                                              "realistic")
@@ -138,6 +142,18 @@ FIELD_SPECS: Dict[str, FieldSpec] = {
                            PROVENANCE_LOCAL_FUSION, "本地测量更新次数"),
     "remote_updates": _spec("count", "none", VISIBILITY_LOCAL,
                             PROVENANCE_LOCAL_FUSION, "远端共享更新次数"),
+    "source_consistency_indicator": _spec(
+        "1", "none", VISIBILITY_DERIVED, PROVENANCE_DERIVED,
+        "由已到达测量的预测残差/自报标准差推导的相对一致性指示量；"
+        "范围 [0,1]，越大表示近期来源与预测越一致。"
+        "**未经概率校准，不是出错概率或传感器正确率**"),
+    "source_evidence_count": _spec(
+        "count", "none", VISIBILITY_DERIVED, PROVENANCE_DERIVED,
+        "用于计算来源一致性指示量的已到达残差证据数"),
+    "normalized_residual_mean": _spec(
+        "1", "none", VISIBILITY_DERIVED, PROVENANCE_DERIVED,
+        "近期已到达来源的 mean(residual_m / reported_sigma_m)；"
+        "只是相对残差，不使用真值偏差或错误标签"),
     # --- 节点级（本地资源）---
     "capacity": _spec("resource", "none", VISIBILITY_LOCAL,
                       PROVENANCE_LOCAL_RESOURCE, "预算容量（单位见 units.py）"),
@@ -213,6 +229,9 @@ class TrackObservation:
     platforms: Tuple[str, ...]
     local_updates: int
     remote_updates: int
+    source_consistency_indicator: Optional[float] = None
+    source_evidence_count: int = 0
+    normalized_residual_mean: Optional[float] = None
 
     def to_dict(self) -> Dict[str, Any]:
         payload = {
@@ -229,6 +248,9 @@ class TrackObservation:
             "platforms": list(self.platforms),
             "local_updates": self.local_updates,
             "remote_updates": self.remote_updates,
+            "source_consistency_indicator": self.source_consistency_indicator,
+            "source_evidence_count": self.source_evidence_count,
+            "normalized_residual_mean": self.normalized_residual_mean,
         }
         assert_fields_documented(payload)
         return payload
@@ -354,6 +376,22 @@ def node_observation_from_fusion(
         sigma = track.sigma_position
         age = (max(0.0, now_s - track.last_measurement_time)
                if track.last_measurement_time is not None else float("inf"))
+        # 只使用已进入航迹溯源链的观测证据。这里不知道真实偏差、
+        # 真实关联正误或虚警标签；所得分数只是未校准的相对一致性指示量。
+        residual_ratios = [
+            float(source.residual_m) / float(source.reported_sigma_m)
+            for source in (getattr(track, "sources", []) or [])
+            if float(getattr(source, "reported_sigma_m", 0.0) or 0.0) > 0.0
+            and float(getattr(source, "residual_m", 0.0) or 0.0) >= 0.0
+        ]
+        residual_mean = (
+            sum(residual_ratios) / len(residual_ratios)
+            if residual_ratios else None
+        )
+        consistency = (
+            1.0 / (1.0 + residual_mean)
+            if residual_mean is not None else None
+        )
         tracks.append(TrackObservation(
             track_id=str(track.track_id),
             position=(float(position.x), float(position.y), float(position.z)),
@@ -373,6 +411,9 @@ def node_observation_from_fusion(
             platforms=tuple(sorted(set(getattr(track, "platforms", []) or []))),
             local_updates=int(getattr(track, "local_updates", 0)),
             remote_updates=int(getattr(track, "remote_updates", 0)),
+            source_consistency_indicator=consistency,
+            source_evidence_count=len(residual_ratios),
+            normalized_residual_mean=residual_mean,
         ))
         # 有效掩码：只有位置/时间戳齐全的航迹才可被调度器使用
         mask.append(
@@ -413,7 +454,10 @@ def node_observation_from_fusion(
 # ----------------------------------------------------------------------
 
 
-def observation_payload(observation: NodeObservation) -> Dict[str, Any]:
+def observation_payload(
+    observation: NodeObservation,
+    include_research_extension: bool = False,
+) -> Dict[str, Any]:
     """把节点观测摊平成**登记过的**扁平载荷（见通信层的按类型白名单）。"""
     payload: Dict[str, Any] = {
         "node_id": observation.node_id,
@@ -453,6 +497,15 @@ def observation_payload(observation: NodeObservation) -> Dict[str, Any]:
         payload[f"track_{index}_n_sources"] = track.n_sources
         payload[f"track_{index}_sensors"] = "|".join(track.source_sensor_ids)
         payload[f"track_{index}_platforms"] = "|".join(track.platforms)
+        if include_research_extension:
+            payload[f"track_{index}_source_consistency"] = (
+                -1.0 if track.source_consistency_indicator is None
+                else track.source_consistency_indicator)
+            payload[f"track_{index}_source_evidence_count"] = (
+                track.source_evidence_count)
+            payload[f"track_{index}_normalized_residual_mean"] = (
+                -1.0 if track.normalized_residual_mean is None
+                else track.normalized_residual_mean)
     return payload
 
 
@@ -469,6 +522,10 @@ def node_observation_from_payload(payload: Dict[str, Any],
         last_meas = float(payload.get(f"track_{index}_last_meas_s", -1.0))
         last_fusion = float(payload.get(f"track_{index}_last_fusion_s", -1.0))
         age = float(payload.get(f"track_{index}_age_s", 1e9))
+        source_consistency = float(
+            payload.get(f"track_{index}_source_consistency", -1.0))
+        normalized_residual = float(
+            payload.get(f"track_{index}_normalized_residual_mean", -1.0))
         tracks.append(TrackObservation(
             track_id=str(track_id),
             position=(float(payload[f"track_{index}_x"]),
@@ -491,6 +548,12 @@ def node_observation_from_payload(payload: Dict[str, Any],
                 payload.get(f"track_{index}_platforms", "")).split("|"))),
             local_updates=0,
             remote_updates=0,
+            source_consistency_indicator=(
+                None if source_consistency < 0.0 else source_consistency),
+            source_evidence_count=int(payload.get(
+                f"track_{index}_source_evidence_count", 0) or 0),
+            normalized_residual_mean=(
+                None if normalized_residual < 0.0 else normalized_residual),
         ))
         mask.append(True)
 
@@ -513,9 +576,14 @@ def node_observation_from_payload(payload: Dict[str, Any],
 
 def publish_node_observation(observation: NodeObservation, bus: Any,
                              src_platform_id: str, now_s: float,
-                             dst_platform_ids: Optional[Sequence[str]] = None
+                             dst_platform_ids: Optional[Sequence[str]] = None,
+                             include_research_extension: bool = False,
                              ) -> List[MeasurementMessage]:
     """把节点观测经**通信总线**发出（因此中央只能读到已到达的那些）。"""
+    payload = observation_payload(
+        observation,
+        include_research_extension=include_research_extension,
+    )
     message = MeasurementMessage(
         msg_id=f"OBS-{observation.node_id}-{int(round(now_s * 1000)):08d}",
         src_platform_id=src_platform_id,
@@ -523,8 +591,8 @@ def publish_node_observation(observation: NodeObservation, bus: Any,
         seq=0,
         generated_at=float(now_s),
         sent_at=float(now_s),
-        payload=observation_payload(observation),
-        size_bytes=float(len(observation_payload(observation))),
+        payload=payload,
+        size_bytes=float(len(payload)),
         kind=MESSAGE_KIND_NODE_OBSERVATION,
     )
     # 直接进链路：这里复用 `CommBus` 的发送语义，但不经过测量打包路径

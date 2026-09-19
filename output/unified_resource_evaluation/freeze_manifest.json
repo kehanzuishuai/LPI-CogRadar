@@ -1,0 +1,55 @@
+{
+  "freeze_version": "unified-resource-evaluation-v1",
+  "frozen": {
+    "methods": [
+      "round_robin",
+      "edf",
+      "rule",
+      "enumeration",
+      "rolling_horizon",
+      "ppo_baseline",
+      "ppo_freshness_uncertainty"
+    ],
+    "steps": 24,
+    "task_gating": "expose_all",
+    "runtime_mode": "plan_controlled_feedback",
+    "reference_method": "rule",
+    "confidence_level": 0.95,
+    "checkpoints": {
+      "ppo_baseline": "D:\\dachuang2026\\大创仿真平台\\output\\rl_resource\\ablation\\main_baseline\\policy.pt",
+      "ppo_freshness_uncertainty": "D:\\dachuang2026\\大创仿真平台\\output\\rl_resource\\ablation\\freshness_uncertainty\\policy.pt"
+    },
+    "mask_policy": "PPO deployment uses legal action mask; unmasked diagnostics are reported separately.",
+    "selection_policy": "No checkpoint, hyperparameter, reward, seed, or mask changes after this manifest is created."
+  },
+  "resource_contract": {
+    "version": "resource-contract-v1",
+    "digest": "380dad61d2efb15aaf6dadd532b831d1"
+  },
+  "learning_split_digest": "07d70ded9b224fff6c32e92daecec3fa829946a680c31f3fb4e66e164e87bc33",
+  "scenario_mapping_digest": "bd10b2c6415e590fdb158903c7f7fc08",
+  "checkpoints": {
+    "ppo_baseline": {
+      "path": "D:\\dachuang2026\\大创仿真平台\\output\\rl_resource\\ablation\\main_baseline\\policy.pt",
+      "sha256": "65ed3e30f65e51c6c199a99cc8b898c657732fd9d5fa05506fdb12b031c4b5ad"
+    },
+    "ppo_freshness_uncertainty": {
+      "path": "D:\\dachuang2026\\大创仿真平台\\output\\rl_resource\\ablation\\freshness_uncertainty\\policy.pt",
+      "sha256": "0bf231d2180cf19c26697704a72e7d6319f42de5e343c7c49e02a41fa947f013"
+    }
+  },
+  "source_sha256": {
+    "resource_management/unified_evaluation.py": "6eacf0e08f7624599fb7f0b6364fd750b68294e8f4b4d91d357d9a6f3866c2b4",
+    "resource_management/closed_loop.py": "368bbaae30a589b9db846434821be55a2142fc0ecb4ad238251cfc95a328fe41",
+    "resource_management/scheduling.py": "084b44bd72ac40d14e36e17c9bca54b572fe5d7d069d1a890b7850b6c7147d97",
+    "rl_resource/actions.py": "cd1bec71535e44b2d11a54fc073761dff59f90fb7db1e60d2b2f933fe7c95817",
+    "rl_resource/research_obs.py": "d53964d07eda6bb247727d61eea0e4e38196182a0ee177c14fa52b432187fde9",
+    "rl_resource/scenarios.py": "d8b7df4a4cd81caff121d9a07d01ca69044cd48defd204c954d978d777b92fb3",
+    "config/learning_splits_v1.json": "07d70ded9b224fff6c32e92daecec3fa829946a680c31f3fb4e66e164e87bc33"
+  },
+  "training_randomness": {
+    "n_frozen_checkpoints_per_method": 1,
+    "estimable": false,
+    "reason": "当前每种 PPO 方法只存在一个冻结 checkpoint；用户禁止重训，不能伪造多训练种子方差。"
+  }
+}

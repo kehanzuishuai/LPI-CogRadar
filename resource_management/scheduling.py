@@ -19,6 +19,7 @@
 | --- | --- | --- |
 | 新鲜度需求 | `TrackObservation.information_age_s` | 年龄越大越该更新 |
 | 估计质量需求 | `TrackObservation.sigma_position` | 协方差越大越该更新 |
+| 来源一致性 | 已到达来源的残差/自报标准差 | 一致性越低越该复核（非出错概率） |
 | 等待时间 | 任务入队时刻 | 等得越久越该服务（防饿死） |
 | 截止时间 | 任务 `deadline_s` | EDF 用 |
 
@@ -168,6 +169,12 @@ class SchedulingConfig:
     weight_waiting: float = 0.5
     weight_freshness: float = 0.6
     weight_quality: float = 0.4
+    #: 未校准的来源不一致指示量权重（不是出错概率）
+    weight_source_inconsistency: float = 0.3
+    #: 特征门控只为四组消融服务；不改编码结构。
+    use_information_age: bool = True
+    use_estimate_uncertainty: bool = True
+    use_source_consistency: bool = False
 
     def validate(self) -> None:
         if self.max_tasks_per_node_per_tick < 1:
@@ -188,6 +195,12 @@ class SchedulingConfig:
         for kind in QueueTaskKind:
             if kind not in self.task_levels:
                 raise ValueError(f"task_levels 缺少 {kind.value}")
+        for name in (
+            "weight_level", "weight_waiting", "weight_freshness",
+            "weight_quality", "weight_source_inconsistency",
+        ):
+            if float(getattr(self, name)) < 0.0:
+                raise ValueError(f"{name} 不能为负")
 
 
 @dataclass
@@ -268,15 +281,21 @@ def task_urgency(task: QueuedTask, observation: Optional[NodeObservation]
     tracks = _track_index(observation) if observation is not None else {}
     ages: List[float] = []
     sigmas: List[float] = []
+    source_consistencies: List[float] = []
     for target in task.targets:
         track = tracks.get(target)
         if track is None:
             continue
         ages.append(track.information_age_s)
         sigmas.append(max(track.sigma_position))
+        if track.source_consistency_indicator is not None:
+            source_consistencies.append(track.source_consistency_indicator)
     return {
         "information_age_s": (max(ages) if ages else None),
         "sigma_position_m": (max(sigmas) if sigmas else None),
+        # 多个目标时用最不一致的那条（最小一致性）。
+        "source_consistency_indicator": (
+            min(source_consistencies) if source_consistencies else None),
         "n_targets": len(task.targets),
         "n_targets_visible": len(ages),
     }
@@ -675,7 +694,7 @@ class EdfScheduler(SchedulerBase):
 
 
 class RuleScheduler(SchedulerBase):
-    """规则调度：**等待时间 + 数据新鲜度 + 估计质量**（+ 教学任务等级）。
+    """规则调度：等待 + 新鲜度 + 估计与来源一致性（+ 教学任务等级）。
 
     打分（全部可观测、全部可解释）：
 
@@ -683,8 +702,10 @@ class RuleScheduler(SchedulerBase):
                  + w_wait    × min(1, waiting / starvation_threshold)
                  + w_fresh   × min(1, age / max_information_age)
                  + w_quality × min(1, sigma / max_sigma_position)
+                 + w_source  × (1 - source_consistency_indicator)
 
-    三项服务需求的分母都在配置里，因此"为什么这个任务优先"可以逐项算出来。
+    各项服务需求的开关和分母都在配置里，因此"为什么这个任务优先"
+    可以逐项算出来。来源一致性只是未校准的相对指示量，不是出错概率。
     **没有**军事目标价值、威胁度、对抗效能之类的项。
     """
 
@@ -696,16 +717,28 @@ class RuleScheduler(SchedulerBase):
         level = cfg.task_levels[task.kind]
         waiting = max(0.0, now_s - task.release_time_s)
         wait_norm = min(1.0, waiting / cfg.starvation_threshold_s)
-        age = urgency.get("information_age_s")
-        sigma = urgency.get("sigma_position_m")
+        age = (urgency.get("information_age_s")
+               if cfg.use_information_age else None)
+        sigma = (urgency.get("sigma_position_m")
+                 if cfg.use_estimate_uncertainty else None)
+        source_consistency = (
+            urgency.get("source_consistency_indicator")
+            if cfg.use_source_consistency else None
+        )
         age_norm = (min(1.0, age / cfg.max_information_age_s)
                     if age is not None else 0.0)
         sigma_norm = (min(1.0, sigma / cfg.max_sigma_position_m)
                       if sigma is not None else 0.0)
+        source_inconsistency_norm = (
+            max(0.0, min(1.0, 1.0 - float(source_consistency)))
+            if source_consistency is not None else 0.0
+        )
         priority = (cfg.weight_level * level
                     + cfg.weight_waiting * wait_norm
                     + cfg.weight_freshness * age_norm
-                    + cfg.weight_quality * sigma_norm)
+                    + cfg.weight_quality * sigma_norm
+                    + cfg.weight_source_inconsistency
+                    * source_inconsistency_norm)
 
         reasons = [
             f"教学任务等级 {level}（{task.kind.value}）× 权重 "
@@ -715,19 +748,28 @@ class RuleScheduler(SchedulerBase):
             f" = {cfg.weight_waiting * wait_norm:.3f}",
         ]
         if age is None:
-            reasons.append("该任务不绑定航迹（无可观测的信息年龄项）")
+            reasons.append("新鲜度特征未启用或该任务无可观测信息年龄（计 0）")
         else:
             reasons.append(
                 f"信息年龄 {age:.2f}s → 归一化 {age_norm:.3f}（阈值 "
                 f"{cfg.max_information_age_s:g}s）× 权重 "
                 f"{cfg.weight_freshness:g} = {cfg.weight_freshness * age_norm:.3f}")
         if sigma is None:
-            reasons.append("无可见航迹协方差（估计质量项计 0）")
+            reasons.append("不确定度特征未启用或无可见航迹协方差（计 0）")
         else:
             reasons.append(
                 f"位置标准差 {sigma:.1f}m → 归一化 {sigma_norm:.3f}（阈值 "
                 f"{cfg.max_sigma_position_m:g}m）× 权重 "
                 f"{cfg.weight_quality:g} = {cfg.weight_quality * sigma_norm:.3f}")
+        if source_consistency is None:
+            reasons.append("来源一致性特征未启用或无足够的已到达残差证据（计 0）")
+        else:
+            reasons.append(
+                f"来源一致性指示量 {source_consistency:.3f} → "
+                f"不一致度 {source_inconsistency_norm:.3f} × 权重 "
+                f"{cfg.weight_source_inconsistency:g} = "
+                f"{cfg.weight_source_inconsistency * source_inconsistency_norm:.3f}；"
+                "该值未经概率校准，不是出错概率")
         return priority, reasons, {
             "task_level": level,
             "waiting_s": round(waiting, 6),
@@ -736,6 +778,15 @@ class RuleScheduler(SchedulerBase):
             "age_norm": round(age_norm, 6),
             "sigma_position_m": (None if sigma is None else round(sigma, 6)),
             "sigma_norm": round(sigma_norm, 6),
+            "source_consistency_indicator": (
+                None if source_consistency is None
+                else round(float(source_consistency), 6)),
+            "source_inconsistency_norm": round(source_inconsistency_norm, 6),
+            "feature_gates": {
+                "freshness": cfg.use_information_age,
+                "uncertainty": cfg.use_estimate_uncertainty,
+                "source_consistency": cfg.use_source_consistency,
+            },
             "priority_total": round(priority, 6),
         }
 

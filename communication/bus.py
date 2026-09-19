@@ -276,6 +276,18 @@ class CommBus:
             out.append(message)
         return out
 
+    def deliverable_count(self, dst_platform_id: str, now: float) -> int:
+        """当前已到达且尚未投递给该目的的消息数（只读）。"""
+        already = self._delivered_to.get(dst_platform_id, set())
+        return sum(
+            1 for message in self.log
+            if not message.dropped
+            and message.arrived_at is not None
+            and message.arrived_at <= now + 1e-12
+            and message.dst_platform_id == dst_platform_id
+            and message.msg_id not in already
+        )
+
     def pending_for(self, dst_platform_id: str) -> int:
         """该平台尚在途（已发送未投递）的消息数。"""
         already = self._delivered_to.get(dst_platform_id, set())

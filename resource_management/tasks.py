@@ -283,6 +283,10 @@ class TaskQueue:
         share_prefix: str = "share",
         update_deadline_s: Optional[float] = None,
         deadline_offsets: Optional[Dict[QueueTaskKind, float]] = None,
+        allow_share: bool = True,
+        allow_process: bool = False,
+        allow_sample: bool = True,
+        allow_estimate_update: bool = True,
     ) -> List[QueuedTask]:
         """按常规规则从一次观测派生任务（**唯一的自动建任务入口**）。
 
@@ -316,21 +320,40 @@ class TaskQueue:
             return created
 
         round_key = f"{int(round(now_s * 1000)):08d}"
-        created.append(self.enqueue(QueuedTask(
-            task_id=f"{sample_prefix}-{observation.node_id}-{round_key}",
-            kind=QueueTaskKind.PREDEFINED_SAMPLE,
-            node_id=observation.node_id,
-            release_time_s=now_s,
-            deadline_s=deadline_for(QueueTaskKind.PREDEFINED_SAMPLE),
-            estimated_cost=default_cost(QueueTaskKind.PREDEFINED_SAMPLE),
-            targets=(),
-            created_from=f"predefined(period={observation.update_period_s:g}s)",
-            idempotency_key=f"{observation.node_id}:sample:{round_key}",
-            note="预定义采样：只依赖节点与更新周期，不需要目标知识",
-        )))
+        if allow_sample:
+            created.append(self.enqueue(QueuedTask(
+                task_id=f"{sample_prefix}-{observation.node_id}-{round_key}",
+                kind=QueueTaskKind.PREDEFINED_SAMPLE,
+                node_id=observation.node_id,
+                release_time_s=now_s,
+                deadline_s=deadline_for(QueueTaskKind.PREDEFINED_SAMPLE),
+                estimated_cost=default_cost(QueueTaskKind.PREDEFINED_SAMPLE),
+                targets=(),
+                created_from=(
+                    f"predefined(period={observation.update_period_s:g}s)"
+                ),
+                idempotency_key=f"{observation.node_id}:sample:{round_key}",
+                note="预定义采样：只依赖节点与更新周期，不需要目标知识",
+            )))
+
+        if allow_process:
+            created.append(self.enqueue(QueuedTask(
+                task_id=f"process-{observation.node_id}-{round_key}",
+                kind=QueueTaskKind.PROCESS,
+                node_id=observation.node_id,
+                release_time_s=now_s,
+                deadline_s=deadline_for(QueueTaskKind.PROCESS),
+                estimated_cost=default_cost(QueueTaskKind.PROCESS),
+                targets=(),
+                created_from=(
+                    f"runtime_buffer(node={observation.node_id},t={now_s:g})"
+                ),
+                idempotency_key=f"{observation.node_id}:process:{round_key}",
+                note="处理已实际采样或已到达的测量；不预先假定目标 ID",
+            )))
 
         visible = observation.track_ids()
-        for track_id in visible:
+        for track_id in visible if allow_estimate_update else ():
             created.append(self.enqueue(QueuedTask(
                 task_id=f"{update_prefix}-{track_id}-{round_key}",
                 kind=QueueTaskKind.ESTIMATE_UPDATE,
@@ -345,7 +368,7 @@ class TaskQueue:
                 note="已有估计的更新：目标必须是观测里已存在的航迹",
             )))
 
-        if visible:
+        if visible and allow_share:
             created.append(self.enqueue(QueuedTask(
                 task_id=f"{share_prefix}-{observation.node_id}-{round_key}",
                 kind=QueueTaskKind.SHARE,

@@ -107,6 +107,13 @@ def build_arg_parser() -> argparse.ArgumentParser:
 
     parser.add_argument("--config", default=DEFAULT_CONFIG_PATH, help="场景配置路径")
     parser.add_argument("--out-dir", default=DEFAULT_OUT_DIR, help="输出目录")
+    parser.add_argument(
+        "--horizon-semantics",
+        choices=("finite_task", "legacy_truncation"),
+        default="finite_task",
+        help=("任务时域语义：finite_task 是自然终点且不 bootstrap；"
+              "legacy_truncation 仅用于复现旧 checkpoint"),
+    )
 
     # 训练规模
     parser.add_argument("--episodes", type=int, default=800, help="训练 episode 数")
@@ -252,7 +259,8 @@ def run_episode(
         done = terminated or truncated
 
         if train:
-            # 只把 terminated 当终止；时间截断仍要 bootstrap。
+            # Gymnasium 语义：只有 terminated 切断 bootstrap；外部
+            # truncated 仍可 bootstrap。有限任务时域由环境报 terminated。
             # next_action_mask 是**下一状态**的可行性掩码，用于对目标 Q 的 max 做 mask
             extra: Dict[str, Any] = {}
             if hasattr(agent, "reset_episode_cost"):

@@ -882,6 +882,7 @@ def main() -> int:
         run_closed_loop as _SCH_run,
     )
     from resource_management.scheduling import (
+        BASELINE_POLICIES as _SCH_BASELINES,
         SchedulingConfig as _SCHConfig,
         SchedulerPolicy as _SCHPolicy,
         build_scheduler as _SCH_build,
@@ -1037,7 +1038,7 @@ def main() -> int:
           "measured vs predicted")
 
     _accept = _OPT_accept(seeds=(42,), steps=12, quick=True)
-    check("阶段验收 5 项条件全部通过（未通过则不得进入学习算法阶段）",
+    check("阶段验收 6 项条件全部通过（未通过则不得进入学习算法阶段）",
           _accept["all_passed"],
           f"{_accept['n_passed']}/{_accept['n_checks']}：" +
           "、".join(c["name_cn"] for c in _accept["checks"] if c["ok"]))
@@ -1048,6 +1049,72 @@ def main() -> int:
           and all(_boundary["evidence"]["identical_before_cut"])
           and _boundary["evidence"]["differs_inside_window"],
           "故障窗口前逐位相同，窗口内确实不同")
+
+    print("\n===== 19. 计划控制感知链：真闭环 =====")
+    from resource_management.closed_loop import (
+        DEFAULT_NODE_BUDGETS as _RT_BUDGETS,
+        RUNTIME_MODE_FEEDBACK as _RT_FEEDBACK,
+        RUNTIME_MODE_LEGACY as _RT_LEGACY,
+        RUNTIME_MODES as _RT_MODES,
+        run_closed_loop as _RT_run,
+    )
+
+    check("新路径为显式开关，旧路径保留用于回归",
+          set(_RT_MODES) == {"legacy_observation_first",
+                             "plan_controlled_feedback"},
+          str(list(_RT_MODES)))
+
+    _legacy = _RT_run(_SCHPolicy.RULE, seed=42, steps=12,
+                      runtime_mode=_RT_LEGACY)
+    check("旧路径不产生任何运行时副作（仍是观测优先）",
+          not _legacy.runtime_log
+          and _legacy.metrics["n_tasks_total"] > 0,
+          f"任务 {_legacy.metrics['n_tasks_total']} 条，运行时事件 "
+          f"{len(_legacy.runtime_log)} 条")
+
+    _fb = _RT_run(_SCHPolicy.RULE, seed=42, steps=12,
+                  runtime_mode=_RT_FEEDBACK)
+    _rt = _fb.metrics["runtime_feedback"]
+    check("只有被分配 sample 的节点才触发传感器扫描",
+          _rt["n_sample_events"] > 0
+          and sum(_rt["sensor_scans_by_node"].values())
+          == _rt["n_sample_events"],
+          f"扫描 {_rt['sensor_scans_by_node']}，sample 事件 "
+          f"{_rt['n_sample_events']}")
+    check("只有执行 share 任务才真实发送消息并占用通信资源",
+          _rt["n_messages_sent"] <= _rt["n_share_events"]
+          and _rt["sent_comm_bytes"] == _rt["accounted_comm_bytes"]
+          == _fb.metrics["comm_overhead_bytes"],
+          f"share {_rt['n_share_events']} 次 → 消息 {_rt['n_messages_sent']} 条 "
+          f"/ {_rt['sent_comm_bytes']:.0f} B")
+    check("每任务只执行一次（运行时任务数 == 唯一去重键数）",
+          _rt["n_runtime_tasks"] == _rt["n_unique_task_keys"]
+          and _rt["n_duplicate_runtime_tasks"] == 0,
+          f"{_rt['n_runtime_tasks']} == {_rt['n_unique_task_keys']}")
+    check("真值隔离由**实际扫描**证明（载荷键 + 中央快照）",
+          _rt["observed_payload_violations"] == 0
+          and _rt["observed_context_violations"] == 0,
+          "两项扫描均为 0，非硬编码常数")
+    check("闭环下资源守恒仍成立",
+          bool(_fb.metrics["conservation_all"]))
+
+    _quality_legacy = {policy.value: round(float(_RT_run(
+        policy, seed=42, steps=12, runtime_mode=_RT_LEGACY)
+        .metrics["evaluation_vector"]["values"]["estimate_quality"]), 9)
+        for policy in _SCH_BASELINES}
+    check("旧路径下调度**无法**改变航迹质量（闭环未成立的症状）",
+          len(set(_quality_legacy.values())) == 1,
+          _SCH_json.dumps(_quality_legacy, ensure_ascii=False))
+
+    _accept6 = _OPT_accept(seeds=(42,), steps=12, quick=True)
+    _closure = [c for c in _accept6["checks"]
+                if c["key"] == "plan_controlled_feedback"][0]
+    check("⑥ 调度反向控制感知链（真闭环）验收通过",
+          _closure["ok"]
+          and _closure["evidence"]["scans_inside_outage"] == 0
+          and _closure["evidence"]["sigma_monotone_increase"],
+          f"停采样窗口内扫描 {_closure['evidence']['scans_inside_outage']} 次，"
+          f"σ 单调上升 {_closure['evidence']['sigma_monotone_increase']}")
 
     print()
     if SKIPPED:

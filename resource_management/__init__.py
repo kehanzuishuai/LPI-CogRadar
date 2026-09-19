@@ -104,6 +104,20 @@ from resource_management.units import (
     TeachingCost,
     format_cost,
 )
+from resource_management.learning_env import (
+    LearningCase,
+    LearningTaskSpec,
+    LearningTaskStatus,
+    ResourceSchedulingLearningEnv,
+    bootstrap_multiplier,
+)
+from resource_management.information_research import (
+    ABLATION_ARMS,
+    RESEARCH_HYPOTHESIS,
+    AblationArm,
+    CentralResearchFeatureAdapter,
+    rule_config_for_arm,
+)
 
 __all__ = [
     "BUDGET_UNITS", "CentralObservation", "CentralObservationStore",
@@ -123,4 +137,8 @@ __all__ = [
     "TaskKind", "TaskOutcome", "TaskRequest", "TeachingCost", "UNIT_CN",
     "UNIT_MEANING", "UNIT_SYMBOL", "UnifiedExecutor", "ValidationIssue",
     "format_cost",
+    "LearningCase", "LearningTaskSpec", "LearningTaskStatus",
+    "ResourceSchedulingLearningEnv", "bootstrap_multiplier",
+    "ABLATION_ARMS", "RESEARCH_HYPOTHESIS", "AblationArm",
+    "CentralResearchFeatureAdapter", "rule_config_for_arm",
 ]

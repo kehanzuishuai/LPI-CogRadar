@@ -29,6 +29,9 @@
   同一套动作可行性掩码与 Huber 损失；
 * 动作选择用 `Q_r − λ·Q_c` 在**可行档位**内取最大——
   这正是「在满足约束的前提下最大化收益」的贪心近似；
+* 两个 critic 的 Bellman target 在**同一个**拉格朗日贪心动作上取值。
+  旧实现分别按奖励最大和代价最大取下一动作，与部署策略不一致；
+  学习协议校核阶段已修正并用接口测试锁定；
 * `λ = 0` 时退化为普通 DQN，因此本实现与主 DQN 完全兼容、可平滑对比；
 * **不修改主 DQN**：本类继承 `DQNAgent` 只覆写训练与动作选择，
   主实验路径完全不变（旧结果可复现）。
@@ -157,6 +160,20 @@ class LagrangianDQNAgent(DQNAgent):
             ).unsqueeze(0)
             return self.cost_network(tensor).squeeze(0).cpu()
 
+    def _lagrangian_greedy_actions(
+        self, states: torch.Tensor, feasible_mask: torch.Tensor
+    ) -> torch.Tensor:
+        """批量计算部署策略 ``argmax(Q_r - λQ_c)`` 的动作。
+
+        奖励与代价 critic 的 target 共用该动作，确保二者估计同一执行策略。
+        """
+        q_reward = self.online_network(states)
+        q_cost = self.cost_network(states)
+        score = q_reward - self.lambda_cost * q_cost
+        return score.masked_fill(~feasible_mask, float("-inf")).argmax(
+            dim=1, keepdim=True
+        )
+
     # ------------------------------------------------------------------
     # 交互：额外记录代价
     # ------------------------------------------------------------------
@@ -211,31 +228,23 @@ class LagrangianDQNAgent(DQNAgent):
             has_feasible, next_mask_bool, torch.ones_like(next_mask_bool)
         )
 
-        # --- 奖励 critic ---
+        # --- 两个 critic 共用部署策略的下一动作 ---
         with torch.no_grad():
-            q_next = self.target_network(next_states)
-            if cfg.double_dqn:
-                q_online_next = self.online_network(next_states).masked_fill(
-                    ~safe_mask, float("-inf")
-                )
-                next_actions = q_online_next.argmax(dim=1, keepdim=True)
-                next_q = q_next.gather(1, next_actions)
-            else:
-                next_q = q_next.masked_fill(~safe_mask, float("-inf")).max(
-                    dim=1, keepdim=True
-                )[0]
+            next_actions = self._lagrangian_greedy_actions(
+                next_states, safe_mask
+            )
+            next_q = self.target_network(next_states).gather(1, next_actions)
+            next_q_cost = self.cost_target_network(next_states).gather(
+                1, next_actions
+            )
             reward_targets = rewards + cfg.gamma * (1.0 - dones) * next_q
+            cost_targets = costs + cfg.gamma * (1.0 - dones) * next_q_cost
 
+        # --- 奖励 critic：Q_r^{π_λ} ---
         q_values = self.online_network(states).gather(1, actions)
         reward_loss = self.loss_fn(q_values, reward_targets)
 
-        # --- 代价 critic ---
-        with torch.no_grad():
-            qc_next = self.cost_target_network(next_states).masked_fill(
-                ~safe_mask, float("-inf")
-            ).max(dim=1, keepdim=True)[0]
-            cost_targets = costs + cfg.gamma * (1.0 - dones) * qc_next
-
+        # --- 代价 critic：Q_c^{π_λ}，与奖励 critic 是同一 π_λ ---
         qc_values = self.cost_network(states).gather(1, actions)
         cost_loss = self.cost_loss_fn(qc_values, cost_targets)
 

@@ -69,6 +69,19 @@ BASELINE_RUN = {
     "tick_s": 1.0,
 }
 
+#: `resource-contract-v1` 冻结时已登记的 25 个基础字段。
+#: 后续研究可以添加带默认值的可选扩展，但不得借此改写
+#: v1 父契约的摘要。新扩展由它自己的实验契约冻结。
+FROZEN_OBSERVATION_FIELDS = frozenset({
+    "arrived_at_s", "available", "capacity", "coasting", "data_available",
+    "information_age_s", "last_fusion_time_s", "last_measurement_time_s",
+    "local_updates", "missing", "n_messages_arrived", "n_messages_inflight",
+    "n_sources", "node_content_age_s", "node_information_age_s",
+    "observed_at_s", "platforms", "position", "remaining", "remote_updates",
+    "sigma_position", "source_sensor_ids", "track_id", "update_period_s",
+    "velocity",
+})
+
 
 # ----------------------------------------------------------------------
 # 快照
@@ -79,6 +92,8 @@ def observation_schema_snapshot() -> Dict[str, Any]:
     """冻结观测 schema：版本 + 每字段的单位/坐标系/可见范围/来源。"""
     fields: Dict[str, Dict[str, Any]] = {}
     for name, spec in sorted(FIELD_SPECS.items()):
+        if name not in FROZEN_OBSERVATION_FIELDS:
+            continue
         fields[name] = {
             "unit": spec.unit,
             "frame": spec.frame,

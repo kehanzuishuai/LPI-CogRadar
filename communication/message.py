@@ -69,7 +69,8 @@ NODE_OBSERVATION_TRACK_FIELDS: Tuple[str, ...] = (
     "id", "x", "y", "z", "vx", "vy", "vz",
     "sigma_x", "sigma_y", "sigma_z",
     "last_meas_s", "last_fusion_s", "age_s", "coasting", "n_sources",
-    "sensors", "platforms",
+    "sensors", "platforms", "source_consistency", "source_evidence_count",
+    "normalized_residual_mean",
 )
 
 #: `track_<序号>_<字段>` 的键形状

@@ -1,0 +1,45 @@
+{
+  "protocol_version": "learning-protocol-v1",
+  "created_at": "2026-09-19",
+  "test_sealed": true,
+  "selection_rule": "checkpoint selection uses validation only; test is opened once after all choices are frozen",
+  "scenario_catalog": {
+    "rm_train_base": {"load_multiplier": 1.0, "budget_multiplier": 1.0, "comm_delay_ticks": 0, "comm_drop_probability": 0.0, "node_outage_windows": [], "sensor_bias_sigma_multiplier": 0.0},
+    "rm_train_light_load": {"load_multiplier": 0.7, "budget_multiplier": 1.0, "comm_delay_ticks": 0, "comm_drop_probability": 0.0, "node_outage_windows": [], "sensor_bias_sigma_multiplier": 0.0},
+    "rm_train_high_arrival": {"load_multiplier": 1.4, "budget_multiplier": 1.0, "comm_delay_ticks": 0, "comm_drop_probability": 0.0, "node_outage_windows": [], "sensor_bias_sigma_multiplier": 0.0},
+    "rm_train_constrained_comm": {"load_multiplier": 1.0, "budget_multiplier": 1.0, "comm_delay_ticks": 2, "comm_drop_probability": 0.1, "node_outage_windows": [], "sensor_bias_sigma_multiplier": 0.0},
+    "rm_validation_node_outage": {"load_multiplier": 1.0, "budget_multiplier": 1.0, "comm_delay_ticks": 0, "comm_drop_probability": 0.0, "node_outage_windows": [[8, 12]], "sensor_bias_sigma_multiplier": 0.0},
+    "rm_validation_handover": {"load_multiplier": 1.1, "budget_multiplier": 1.0, "comm_delay_ticks": 1, "comm_drop_probability": 0.05, "node_outage_windows": [], "sensor_bias_sigma_multiplier": 0.0},
+    "rm_validation_sensor_bias": {"load_multiplier": 1.0, "budget_multiplier": 1.0, "comm_delay_ticks": 0, "comm_drop_probability": 0.0, "node_outage_windows": [], "sensor_bias_sigma_multiplier": 1.0},
+    "rm_test_mixed_shift_a": {"load_multiplier": 1.25, "budget_multiplier": 0.9, "comm_delay_ticks": 1, "comm_drop_probability": 0.08, "node_outage_windows": [], "sensor_bias_sigma_multiplier": 0.5},
+    "rm_test_mixed_shift_b": {"load_multiplier": 0.9, "budget_multiplier": 0.8, "comm_delay_ticks": 2, "comm_drop_probability": 0.12, "node_outage_windows": [[10, 13]], "sensor_bias_sigma_multiplier": 0.0},
+    "rm_test_mixed_shift_c": {"load_multiplier": 1.3, "budget_multiplier": 1.1, "comm_delay_ticks": 3, "comm_drop_probability": 0.15, "node_outage_windows": [[6, 8]], "sensor_bias_sigma_multiplier": 1.0}
+  },
+  "splits": {
+    "train": {
+      "scenarios": [
+        "rm_train_base",
+        "rm_train_light_load",
+        "rm_train_high_arrival",
+        "rm_train_constrained_comm"
+      ],
+      "seeds": [101, 103, 107, 109, 113, 127, 131, 137]
+    },
+    "validation": {
+      "scenarios": [
+        "rm_validation_node_outage",
+        "rm_validation_handover",
+        "rm_validation_sensor_bias"
+      ],
+      "seeds": [211, 223, 227]
+    },
+    "test": {
+      "scenarios": [
+        "rm_test_mixed_shift_a",
+        "rm_test_mixed_shift_b",
+        "rm_test_mixed_shift_c"
+      ],
+      "seeds": [401, 409, 419, 421, 431]
+    }
+  }
+}

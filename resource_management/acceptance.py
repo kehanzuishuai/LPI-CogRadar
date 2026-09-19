@@ -361,6 +361,149 @@ def check_reproducibility(seeds: Sequence[int] = (42, 7),
     )
 
 
+def check_plan_controlled_feedback(steps: int = 16, seed: int = 42) -> Check:
+    """⑥ 计划**真的**反向控制了感知链（闭环成立）。
+
+    这一条不是"多了个开关"，而是回答一个此前无法回答的问题：
+    **调度结果会不会改变航迹质量？**
+
+    * 旧路径（`legacy_observation_first`）每 tick 无条件扫描与融合，
+      因此三个策略的估计质量**完全相同**——调度只改任务统计，
+      闭环并未成立（这是本项检查要抓出的症状）；
+    * 新路径（`plan_controlled_feedback`）由 `ExecutionPlan` 驱动
+      `RuntimeExecutor`：只有拿到 `sample` 任务的节点才触发传感器，
+      未调度节点只做航迹预测（年龄与 σ 自然增长），只有执行 `share`
+      任务才向 `CommBus` 发送消息且真实占用通信资源，
+      融合只消费**实际到达**的测量。
+
+    同时校验：每任务只执行一次、资源守恒、无真值泄漏。
+    """
+    from resource_management.closed_loop import (
+        RUNTIME_MODE_FEEDBACK,
+        RUNTIME_MODE_LEGACY,
+    )
+
+    policies = (SchedulerPolicy.ROUND_ROBIN, SchedulerPolicy.EDF,
+                SchedulerPolicy.RULE)
+    quality: Dict[str, Dict[str, Any]] = {
+        RUNTIME_MODE_LEGACY: {}, RUNTIME_MODE_FEEDBACK: {}}
+    feedback_result = None
+    for mode in (RUNTIME_MODE_LEGACY, RUNTIME_MODE_FEEDBACK):
+        for policy in policies:
+            result = run_closed_loop(policy, seed=seed, steps=steps,
+                                     runtime_mode=mode)
+            runtime = result.metrics.get("runtime_feedback") or {}
+            quality[mode][policy.value] = {
+                "estimate_quality":
+                    round(float(result.metrics["evaluation_vector"]["values"]
+                                ["estimate_quality"]), 9),
+                "n_sensor_measurements":
+                    int(runtime.get("n_sensor_measurements", -1)),
+                "n_messages_sent": int(runtime.get("n_messages_sent", -1)),
+            }
+            if mode == RUNTIME_MODE_FEEDBACK and policy is SchedulerPolicy.RULE:
+                feedback_result = result
+
+    legacy_signatures = {
+        (value["estimate_quality"], value["n_sensor_measurements"])
+        for value in quality[RUNTIME_MODE_LEGACY].values()}
+    feedback_signatures = {
+        (value["estimate_quality"], value["n_sensor_measurements"])
+        for value in quality[RUNTIME_MODE_FEEDBACK].values()}
+    legacy_insensitive = len(legacy_signatures) == 1
+    feedback_sensitive = len(feedback_signatures) > 1
+
+    # 停采样 → 测量下降 / 不确定度上升；恢复 → 重新采样
+    #
+    # 窗口取 [3, 6]：前 3 个 tick 用来建立航迹，中间 4 个 tick 足够让
+    # σ 明显增长，窗口之后还留够恢复所需的 tick。恢复不是一步就完成的——
+    # 节点的门控顺序是 process（融合已有数据）→ share（发出去）→ sample
+    # （再采一次），因此**窗口不能贴到末尾**，否则"恢复"这一半会因为
+    # 步数不够而假失败。第一版取 [3, 9] 且这里允许 12 步，
+    # 结果 `scans_after_outage=0` 被判失败——那是窗口设计问题，不是闭环问题。
+    outage = (3.0, 6.0)
+    outage_steps = max(steps, 12)
+    outage_result = run_closed_loop(
+        SchedulerPolicy.RULE, seed=seed, steps=outage_steps,
+        runtime_mode=RUNTIME_MODE_FEEDBACK,
+        mechanisms={"unavailable_windows": {"NODE_B": [outage]}})
+    outage_runtime = outage_result.metrics.get("runtime_feedback") or {}
+    inside_scans = [row for row in outage_result.runtime_log
+                    if row.get("event") == "sample"
+                    and row.get("node_id") == "NODE_B"
+                    and outage[0] <= float(row["time_s"]) <= outage[1]]
+    resumed = [row for row in outage_result.runtime_log
+               if row.get("event") == "sample"
+               and row.get("node_id") == "NODE_B"
+               and float(row["time_s"]) > outage[1]]
+    series = []
+    for row in outage_result.node_ages:
+        if "NODE_B" not in row["node_ids"]:
+            continue
+        index = row["node_ids"].index("NODE_B")
+        # **严格在窗口内**统计：窗口之后第一个 tick 节点已恢复，
+        # σ 本来就该回落，把它算进来会让"单调上升"必然失败。
+        if outage[0] < float(row["time_s"]) <= outage[1]:
+            if row["mean_sigma_m"][index] is not None:
+                series.append(round(float(row["mean_sigma_m"][index]), 6))
+    sigma_monotone = (len(series) >= 3 and series == sorted(series)
+                      and series[-1] > series[0])
+
+    runtime = (feedback_result.metrics.get("runtime_feedback")
+               if feedback_result is not None else {}) or {}
+    dedup_ok = (runtime.get("n_runtime_tasks")
+                == runtime.get("n_unique_task_keys")
+                and runtime.get("n_duplicate_runtime_tasks") == 0)
+    truth_ok = (runtime.get("truth_payload_violations") == 0
+                and runtime.get("observed_payload_violations") == 0
+                and runtime.get("observed_context_violations") == 0)
+    comm_ok = (runtime.get("sent_comm_bytes")
+               == runtime.get("accounted_comm_bytes"))
+    conservation_ok = bool(
+        feedback_result is not None
+        and feedback_result.metrics.get("conservation_all"))
+
+    ok = all((legacy_insensitive, feedback_sensitive, not inside_scans,
+              bool(resumed), sigma_monotone, dedup_ok, truth_ok, comm_ok,
+              conservation_ok))
+    return Check(
+        key="plan_controlled_feedback",
+        name_cn="调度反向控制感知链（真闭环）",
+        ok=ok,
+        evidence={
+            "legacy_quality_identical_across_policies": legacy_insensitive,
+            "feedback_quality_differs_across_policies": feedback_sensitive,
+            "per_policy_by_mode": quality,
+            "outage_window": list(outage),
+            "outage_steps": outage_steps,
+            "scans_inside_outage": len(inside_scans),
+            "scans_after_outage": len(resumed),
+            "sigma_series_inside_outage": series,
+            "sigma_monotone_increase": sigma_monotone,
+            "runtime": {
+                key: runtime.get(key) for key in
+                ("n_sample_events", "n_process_events", "n_share_events",
+                 "n_sensor_measurements", "n_fusion_measurements",
+                 "n_messages_sent", "sent_comm_bytes",
+                 "n_runtime_tasks", "n_unique_task_keys",
+                 "n_duplicate_runtime_tasks", "truth_payload_violations")
+            } if runtime else {},
+            "no_duplicate_execution": dedup_ok,
+            "no_truth_leak": truth_ok,
+            "comm_bytes_match_ledger": comm_ok,
+            "resource_conserved": conservation_ok,
+            "legacy_path_still_available": bool(
+                not (legacy_signatures & {(-1, -1)})),
+            "note": ("判据是「调度能否改变航迹质量」：旧路径下三策略估计质量"
+                     "完全相同（闭环未成立），新路径下至少两个策略不同。"
+                     "停采样窗口内不得有任何传感器扫描，且 σ 必须单调上升。"),
+        },
+        detail=("旧路径保留且调度对感知链无影响、新路径下调度改变测量数与估计质量；"
+                "停采样→测量下降/σ 上升、恢复→重新采样；"
+                "无重复执行、无真值泄漏、通信字节与账本一致、资源守恒"),
+    )
+
+
 # ----------------------------------------------------------------------
 # 汇总
 # ----------------------------------------------------------------------
@@ -368,7 +511,7 @@ def check_reproducibility(seeds: Sequence[int] = (42, 7),
 
 def run_acceptance(seeds: Sequence[int] = (42,), steps: int = 24,
                    quick: bool = False) -> Dict[str, Any]:
-    """跑全部 5 项检查，返回清单（含总体结论）。"""
+    """跑全部 6 项检查，返回清单（含总体结论）。"""
     checks: List[Check] = [
         check_multi_node_execution(seed=seeds[0], steps=min(steps, 12)),
         check_resource_conservation(seeds=tuple(seeds), steps=steps),
@@ -376,6 +519,7 @@ def run_acceptance(seeds: Sequence[int] = (42,), steps: int = 24,
         check_queue_traceability(seed=seeds[0], steps=steps),
         check_reproducibility(seeds=tuple(seeds) if not quick else (seeds[0],),
                               steps=min(steps, 16)),
+        check_plan_controlled_feedback(seed=seeds[0], steps=min(steps, 16)),
     ]
     passed = [check for check in checks if check.ok]
     return {
@@ -431,7 +575,7 @@ def _short(value: Any) -> str:
 
 __all__ = [
     "Check", "check_information_boundary", "check_multi_node_execution",
-    "check_queue_traceability", "check_reproducibility",
-    "check_resource_conservation", "render_acceptance_markdown",
-    "run_acceptance",
+    "check_plan_controlled_feedback", "check_queue_traceability",
+    "check_reproducibility", "check_resource_conservation",
+    "render_acceptance_markdown", "run_acceptance",
 ]

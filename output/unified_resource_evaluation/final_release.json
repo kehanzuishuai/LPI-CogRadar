@@ -1,0 +1,40 @@
+{
+  "release_version": "unified-resource-evaluation-v1-final",
+  "purpose": "Frozen fair seven-method comparison after validation preflight and one formal test release.",
+  "supersedes": "superseded_pre_static_dependency_fix: identical model/configuration evaluation attempted before a static dependency-boundary repair; retained for audit and not used for conclusions.",
+  "evaluation_matrix": {
+    "methods": ["round_robin", "edf", "rule", "enumeration", "rolling_horizon", "ppo_baseline", "ppo_freshness_uncertainty"],
+    "validation_records": 63,
+    "test_records": 105,
+    "test_released_once": true,
+    "post_test_model_selection_or_tuning_forbidden": true
+  },
+  "frozen_inputs": {
+    "manifest_sha256": "8D26E60550592D082541747CE6793A337AC50E5EEDFF2BFC0D639A5AF81D1A01",
+    "manifest": "freeze_manifest.json",
+    "resource_contract": "resource-contract-v1",
+    "runtime_mode": "plan_controlled_feedback"
+  },
+  "artifacts_sha256": {
+    "validation_report.json": "D480E2A02384DF28AA498989440D49E835822F4B43622A4A07534D44F816A54D",
+    "validation_per_episode.csv": "8EEA596C18737380DDC14285319EA9F08DA1D1F394975C6694C7E1DED71C1EF8",
+    "validation_report.html": "74C0F7284B127B0AAB0D989344C1B84E7989F3AF4F027C8A25693B4EC0D7FF2E",
+    "test_report.json": "E6393F8AD5996D20741E3951D62CE4C55D3670DD61605FE115E2A4B71991BAC2",
+    "test_per_episode.csv": "4692839CE2D31CA12BB028806877F1C88E37BA50230A8F0E85B3F221FF04EA5D",
+    "test_report.html": "994F8DF4F5745E2CB396AC62168E7222DB47AE396E118489525615C88FE06C95",
+    "unified_evaluation_protocol.md": "1D28338EF145BADB14007D72DD31D0908DAE919C212F6D9D51EA8291099D1BF8",
+    "unified_evaluation_conclusions.md": "0106A6A3A0EC6C0052011E6F1CD118183ED96EEEDB4ADD299C75970D5C3DE418"
+  },
+  "integrity_assertions": {
+    "resource_conservation": "passed for every recorded episode",
+    "no_truth_payload": "passed for every recorded episode",
+    "no_duplicate_runtime_execution": "passed for every recorded episode",
+    "resource_violation_rate": 0.0
+  },
+  "honesty_boundaries": [
+    "One frozen training checkpoint exists per PPO candidate, so training-seed variability and its confidence interval are not estimable.",
+    "PPO legality at deployment depends on the action mask; masked legality is not claimed as a constraint learned solely by the policy.",
+    "Cross-scenario averages are descriptive; the JSON report contains same-scenario, same-environment-seed paired differences against the rule reference.",
+    "No composite score or overall winner is asserted."
+  ]
+}

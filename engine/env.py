@@ -9,8 +9,12 @@
     obs    ∈ Box(D)               定长浮点向量，D 由 observation_mode 决定
 
 终止语义遵循 Gymnasium 约定：
-    terminated=True —— 能量耗尽等真实终止（由配置 terminate_on_energy_exhausted 控制）
-    truncated=True  —— 到达场景时长上限（时间截断，不是 MDP 的终止态）
+    terminated=True —— 能量耗尽或有限任务的自然时域结束
+    truncated=True  —— 任务外部强制截断
+
+默认 ``horizon_semantics="finite_task"``：场景配置中的任务时长是有限
+任务的终点，因此不 bootstrap。仅为复现旧 checkpoint 保留显式的
+``legacy_truncation`` 模式；新实验不得默默使用它。
 
 奖励与离线指标（metrics.collector）共用 models.reward.composite_reward，
 保证「训练时优化的目标」和「实验报告里汇报的综合收益」是同一个定义。
@@ -85,6 +89,12 @@ class _SharedMeasurement:
 
 
 DEFAULT_CONFIG_PATH = "config/radar_scenario_v1.json"
+HORIZON_FINITE_TASK = "finite_task"
+HORIZON_LEGACY_TRUNCATION = "legacy_truncation"
+HORIZON_SEMANTICS: Tuple[str, ...] = (
+    HORIZON_FINITE_TASK,
+    HORIZON_LEGACY_TRUNCATION,
+)
 
 # 观测向量各维含义（顺序即维度顺序，便于论文与调试时对齐）
 OBSERVATION_FEATURES: List[str] = [
@@ -203,6 +213,7 @@ class LpiPowerEnv:
         measurement_max_tracks: int = 4,
         expose_measurement_truth: bool = False,
         enable_tracker: bool = True,
+        horizon_semantics: str = HORIZON_FINITE_TASK,
     ) -> None:
         if observation_mode not in OBSERVATION_MODES:
             raise ValueError(
@@ -210,6 +221,12 @@ class LpiPowerEnv:
             )
         if history_len < 1:
             raise ValueError("history_len 至少为 1")
+        if horizon_semantics not in HORIZON_SEMANTICS:
+            raise ValueError(
+                f"horizon_semantics={horizon_semantics!r} 非法，"
+                f"只能是 {HORIZON_SEMANTICS}"
+            )
+        self.horizon_semantics = horizon_semantics
 
         #: 是否在 info 里附带观测量的真值。
         #: 默认 False —— 真值若出现在 info 里，策略代码就有可能顺手读它，
@@ -412,6 +429,7 @@ class LpiPowerEnv:
             "history_len": self.history_len,
             "observation_space_dim": len(self.observation_features),
             "observation_quality": 1.0,
+            "horizon_semantics": self.horizon_semantics,
         }
         return self._stacked_observation(), info
 
@@ -458,8 +476,15 @@ class LpiPowerEnv:
             self.sim.radar.terminate_on_energy_exhausted  # type: ignore[union-attr]
             and self.sim.terminated_by_energy
         )
-        terminated = energy_terminated
-        truncated = bool(self.sim.is_done and not terminated)
+        horizon_reached = bool(self.sim.is_done and not energy_terminated)
+        horizon_terminated = bool(
+            horizon_reached and self.horizon_semantics == HORIZON_FINITE_TASK
+        )
+        terminated = bool(energy_terminated or horizon_terminated)
+        truncated = bool(
+            horizon_reached
+            and self.horizon_semantics == HORIZON_LEGACY_TRUNCATION
+        )
 
         info = {
             "step_index": result.step_index,
@@ -485,7 +510,14 @@ class LpiPowerEnv:
             "energy_exhausted": result.energy_exhausted,
             "terminal_penalty": result.terminal_penalty,
             "required_snr_db": result.required_snr_db,
-            "terminated_reason": "energy" if energy_terminated else ("horizon" if truncated else ""),
+            "terminated_reason": (
+                "energy" if energy_terminated
+                else "task_horizon" if horizon_terminated
+                else ""
+            ),
+            "truncated_reason": "legacy_horizon" if truncated else "",
+            "horizon_semantics": self.horizon_semantics,
+            "bootstrap_allowed": not terminated,
             "observation_mode": self.observation_mode,
             "observation_quality": self._last_quality,
         }

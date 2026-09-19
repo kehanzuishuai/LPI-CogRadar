@@ -27,6 +27,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from resource_management.acceptance import (  # noqa: E402
     check_information_boundary,
     check_multi_node_execution,
+    check_plan_controlled_feedback,
     check_queue_traceability,
     check_reproducibility,
     check_resource_conservation,
@@ -682,13 +683,14 @@ def json_roundtrip(payload):
 
 
 class TestAcceptanceChecks(unittest.TestCase):
-    def test_all_five_checks_are_defined_and_named(self) -> None:
+    def test_all_six_checks_are_defined_and_named(self) -> None:
         report = run_acceptance(seeds=(42,), steps=12, quick=True)
         names = [check["name_cn"] for check in report["checks"]]
         for expected in ("多节点执行真实生效", "资源不超支", "信息不越权",
-                         "任务队列可追溯", "规则与优化参考可复现"):
+                         "任务队列可追溯", "规则与优化参考可复现",
+                         "调度反向控制感知链（真闭环）"):
             self.assertIn(expected, names)
-        self.assertEqual(report["n_checks"], 5)
+        self.assertEqual(report["n_checks"], 6)
 
     def test_each_check_passes_on_the_baseline_config(self) -> None:
         report = run_acceptance(seeds=(42,), steps=12, quick=True)
@@ -722,6 +724,26 @@ class TestAcceptanceChecks(unittest.TestCase):
         check = check_resource_conservation(seeds=(42,), steps=12)
         self.assertTrue(check.ok, check.evidence)
         self.assertEqual(check.evidence["n_violations"], 0)
+
+    def test_plan_controlled_feedback_proves_the_loop_is_closed(self) -> None:
+        """第 6 项验收：**调度真的能改变航迹质量**。
+
+        这是"闭环成立与否"的判据，不是"多了个开关"：
+        旧路径下三策略估计质量完全相同（闭环未成立），
+        新路径下至少两个策略不同。
+        """
+        check = check_plan_controlled_feedback(seed=42, steps=16)
+        self.assertTrue(check.ok, check.evidence)
+        evidence = check.evidence
+        self.assertTrue(evidence["legacy_quality_identical_across_policies"])
+        self.assertTrue(evidence["feedback_quality_differs_across_policies"])
+        self.assertEqual(evidence["scans_inside_outage"], 0)
+        self.assertGreater(evidence["scans_after_outage"], 0)
+        self.assertTrue(evidence["sigma_monotone_increase"])
+        self.assertTrue(evidence["no_duplicate_execution"])
+        self.assertTrue(evidence["no_truth_leak"])
+        self.assertTrue(evidence["comm_bytes_match_ledger"])
+        self.assertTrue(evidence["resource_conserved"])
 
     def test_reproducibility_requires_deterministic_search(self) -> None:
         """可复现检查必须**显式**要求优化参考的搜索是确定性的。"""
