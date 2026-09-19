@@ -1,0 +1,33 @@
+# Python bytecode and test caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+
+# Local Python environments and secrets
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# Generated experiment data, reports, and local scratch space
+/output/
+/tmp*/
+*.log
+
+# Historical local snapshots
+/backup_iter2/
+/backup_iter3/
+/backup_original/
+
+# Editor and tool state
+/.vscode/
+/.dsh/
+
+# Agent-local working notes
+/task_plan.md
+/findings.md
+/progress.md

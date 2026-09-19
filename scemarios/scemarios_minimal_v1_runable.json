@@ -1,0 +1,92 @@
+{
+  "scenario_name": "minimal_comm_jam_runable",
+  "area_width": 1000,
+  "area_height": 1000,
+  "sim_duration": 60,
+  "time_step": 1,
+  "random_seed": 42,
+  "background_noise": 0.05,
+  "max_comm_distance": 400.0,
+
+  "nodes": [
+    {
+      "node_id": "TX1",
+      "x": 100,
+      "y": 100,
+      "vx": 0,
+      "vy": 0,
+      "tx_power": 10.0,
+      "rx_threshold": 0.35,
+      "freq_list": ["f1", "f2", "f3"],
+      "current_freq": "f1",
+      "bandwidth": 1.0,
+      "rate_level": "mid",
+      "is_active": true
+    },
+    {
+      "node_id": "RX1",
+      "x": 260,
+      "y": 120,
+      "vx": 0,
+      "vy": 0,
+      "tx_power": 10.0,
+      "rx_threshold": 0.35,
+      "freq_list": ["f1", "f2", "f3"],
+      "current_freq": "f1",
+      "bandwidth": 1.0,
+      "rate_level": "mid",
+      "is_active": true
+    },
+    {
+      "node_id": "JAM1",
+      "x": 220,
+      "y": 140,
+      "vx": 0,
+      "vy": 0,
+      "tx_power": 10.0,
+      "rx_threshold": 0.35,
+      "freq_list": ["f1", "f2", "f3"],
+      "current_freq": "f1",
+      "bandwidth": 1.0,
+      "rate_level": "mid",
+      "is_active": true
+    },
+    {
+      "node_id": "OBS1",
+      "x": 700,
+      "y": 700,
+      "vx": 0,
+      "vy": 0,
+      "tx_power": 10.0,
+      "rx_threshold": 0.35,
+      "freq_list": ["f1", "f2", "f3"],
+      "current_freq": "f2",
+      "bandwidth": 1.0,
+      "rate_level": "mid",
+      "is_active": true
+    }
+  ],
+
+  "flows": [
+    {
+      "flow_id": "F1",
+      "src": "TX1",
+      "dst": "RX1",
+      "priority": 1
+    }
+  ],
+
+  "disturbances": [
+    {
+      "disturb_id": "D1",
+      "center_x": 220,
+      "center_y": 140,
+      "radius": 120,
+      "start_time": 20,
+      "end_time": 45,
+      "freq_range": ["f1"],
+      "intensity": 0.25,
+      "duty_cycle": 1.0
+    }
+  ]
+}

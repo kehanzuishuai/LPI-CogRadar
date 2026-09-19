@@ -1,0 +1,251 @@
+{
+  "scenario_name": "multi_platform_v1",
+  "description": "v4.1 多平台几何场景：2 雷达 + 3 目标 + 2 敌方侦察接收机 + 2 干扰源，含三维位置、航向/姿态、平台归属。本阶段只用于验证实体模型、坐标体系与几何关系，不做多雷达协同决策（物理评估仍只针对主雷达 RADAR_A）。",
+  "sim_duration": 60,
+  "time_step": 1.0,
+  "random_seed": 42,
+
+  "radars": [
+    {
+      "radar_id": "RADAR_A",
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "tx_power_w": 18.0,
+
+      "peak_gain_db": 30.0,
+      "sidelobe_gain_db": 10.0,
+      "main_beam_width_deg": 10.0,
+
+      "wavelength_m": 0.1,
+      "bandwidth_hz": 1000000.0,
+      "noise_figure_db": 3.0,
+      "system_loss_db": 3.0,
+      "temperature_k": 290.0,
+
+      "snr50_db": 6.0,
+      "pd_slope_db": 2.0,
+
+      "required_pd": 0.8,
+      "energy_budget_j": 1400.0,
+      "terminate_on_energy_exhausted": true,
+
+      "velocity_x": 0.0,
+      "velocity_y": 0.0,
+      "velocity_z": 0.0,
+      "heading_deg": 45.0,
+      "pitch_deg": 0.0,
+      "roll_deg": 0.0,
+      "timestamp_s": 0.0,
+      "platform_id": "SITE_ALPHA",
+
+      "freq_hz": 3000000000.0,
+      "is_active": true
+    },
+    {
+      "radar_id": "RADAR_B",
+      "x": 25000.0,
+      "y": 12000.0,
+      "z": 300.0,
+      "tx_power_w": 12.0,
+
+      "peak_gain_db": 28.0,
+      "sidelobe_gain_db": 8.0,
+      "main_beam_width_deg": 12.0,
+
+      "wavelength_m": 0.1,
+      "bandwidth_hz": 1000000.0,
+      "noise_figure_db": 4.0,
+      "system_loss_db": 3.5,
+      "temperature_k": 290.0,
+
+      "snr50_db": 6.5,
+      "pd_slope_db": 2.0,
+
+      "required_pd": 0.75,
+      "energy_budget_j": 1200.0,
+      "terminate_on_energy_exhausted": true,
+
+      "velocity_x": -5.0,
+      "velocity_y": 3.0,
+      "velocity_z": 0.0,
+      "heading_deg": 120.0,
+      "pitch_deg": 1.5,
+      "roll_deg": 0.0,
+      "timestamp_s": 0.0,
+      "platform_id": "SITE_BRAVO",
+
+      "freq_hz": 3000000000.0,
+      "is_active": true
+    }
+  ],
+
+  "targets": [
+    {
+      "target_id": "TGT_HIGH_FAST",
+      "x": 6000.0,
+      "y": 0.0,
+      "z": 3000.0,
+      "rcs_m2": 2.0,
+      "vx": -10.0,
+      "vy": 0.0,
+      "vz": -2.0,
+      "heading_deg": 270.0,
+      "pitch_deg": -5.0,
+      "roll_deg": 0.0,
+      "timestamp_s": 0.0,
+      "platform_id": "AIRCRAFT_1",
+      "is_active": true
+    },
+    {
+      "target_id": "TGT_LOW_SLOW",
+      "x": 0.0,
+      "y": 4000.0,
+      "z": 120.0,
+      "rcs_m2": 1.5,
+      "vx": 0.0,
+      "vy": 5.0,
+      "vz": 0.0,
+      "heading_deg": 0.0,
+      "pitch_deg": 0.0,
+      "roll_deg": 0.0,
+      "timestamp_s": 0.0,
+      "platform_id": "AIRCRAFT_2",
+      "is_active": true
+    },
+    {
+      "target_id": "TGT_ESCORT",
+      "x": 9000.0,
+      "y": 9000.0,
+      "z": 2800.0,
+      "rcs_m2": 0.8,
+      "vx": -8.0,
+      "vy": -3.0,
+      "vz": -2.0,
+      "heading_deg": 250.0,
+      "pitch_deg": -4.0,
+      "roll_deg": 10.0,
+      "timestamp_s": 0.0,
+      "platform_id": "AIRCRAFT_1",
+      "is_active": true
+    }
+  ],
+
+  "interceptors": [
+    {
+      "interceptor_id": "ESM_NORTH",
+      "x": 80000.0,
+      "y": -60000.0,
+      "z": 0.0,
+      "gain_db": 12.0,
+      "bandwidth_hz": 2000000.0,
+      "noise_figure_db": 6.0,
+      "system_loss_db": 2.0,
+      "temperature_k": 290.0,
+      "snr50_db": 27.3,
+      "pint_slope_db": 2.8,
+      "vx": 0.0,
+      "vy": 0.0,
+      "vz": 0.0,
+      "heading_deg": 30.0,
+      "pitch_deg": 0.0,
+      "roll_deg": 0.0,
+      "timestamp_s": 0.0,
+      "platform_id": "EW_SITE_1",
+      "freq_hz": 3000000000.0,
+      "is_active": true
+    },
+    {
+      "interceptor_id": "ESM_AIR",
+      "x": 30000.0,
+      "y": 45000.0,
+      "z": 8000.0,
+      "gain_db": 14.0,
+      "bandwidth_hz": 2000000.0,
+      "noise_figure_db": 5.0,
+      "system_loss_db": 2.0,
+      "temperature_k": 290.0,
+      "snr50_db": 26.5,
+      "pint_slope_db": 3.0,
+      "vx": -20.0,
+      "vy": -15.0,
+      "vz": 0.0,
+      "heading_deg": 235.0,
+      "pitch_deg": -3.0,
+      "roll_deg": 0.0,
+      "timestamp_s": 0.0,
+      "platform_id": "EW_AIRCRAFT",
+      "freq_hz": 3000000000.0,
+      "is_active": true
+    }
+  ],
+
+  "jammers": [
+    {
+      "jammer_id": "JAM_ESCORT",
+      "x": 8000.0,
+      "y": 6000.0,
+      "z": 2600.0,
+      "peak_power_w": 200.0,
+      "gain_db": 10.0,
+      "system_loss_db": 3.0,
+      "suppression_db": 57.6,
+      "start_time": 20.0,
+      "end_time": 45.0,
+      "intensity": 1.0,
+      "duty_cycle": 1.0,
+      "dynamic": true,
+      "fluctuation": 0.1,
+      "fluctuation_step": 0.25,
+      "vx": -8.0,
+      "vy": -3.0,
+      "vz": -2.0,
+      "heading_deg": 250.0,
+      "pitch_deg": -4.0,
+      "roll_deg": 0.0,
+      "timestamp_s": 0.0,
+      "platform_id": "AIRCRAFT_1",
+      "is_active": true
+    },
+    {
+      "jammer_id": "JAM_GROUND",
+      "x": -5000.0,
+      "y": 15000.0,
+      "z": 50.0,
+      "peak_power_w": 400.0,
+      "gain_db": 12.0,
+      "system_loss_db": 3.0,
+      "suppression_db": 57.6,
+      "start_time": 30.0,
+      "end_time": 55.0,
+      "intensity": 0.8,
+      "duty_cycle": 0.7,
+      "dynamic": true,
+      "fluctuation": 0.15,
+      "fluctuation_step": 0.3,
+      "vx": 0.0,
+      "vy": 0.0,
+      "vz": 0.0,
+      "heading_deg": 90.0,
+      "pitch_deg": 0.0,
+      "roll_deg": 0.0,
+      "timestamp_s": 0.0,
+      "platform_id": "EW_SITE_2",
+      "is_active": true
+    }
+  ],
+
+  "power_levels_w": [0.5, 1.0, 2.0, 4.0, 8.0, 12.0, 18.0, 25.0, 35.0, 50.0, 80.0],
+  "fixed_power_level": 10,
+  "lpi_pint_threshold": 0.5,
+
+  "exposure_decay": 0.85,
+  "exposure_gain": 0.15,
+
+  "reward_weights": {
+    "detection": 1.0,
+    "intercept": 0.6,
+    "energy": 0.3,
+    "violation": 1.5
+  }
+}

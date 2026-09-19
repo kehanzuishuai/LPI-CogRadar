@@ -1,0 +1,454 @@
+{
+  "contract_version": "resource-contract-v1",
+  "digest": "380dad61d2efb15aaf6dadd532b831d1",
+  "snapshot": {
+    "baseline_config": {
+      "baseline_run": {
+        "seeds": [
+          42,
+          7,
+          13
+        ],
+        "steps": 24,
+        "tick_s": 1.0
+      },
+      "delay_offsets_s": {
+        "estimate_update": 3.0,
+        "predefined_sample": 6.0,
+        "share": 2.0
+      },
+      "mechanisms": {
+        "bias": {},
+        "comm": {
+          "base_delay_s": 1.2,
+          "expiry_s": 10.0,
+          "jitter_s": 0.4,
+          "loss_prob": 0.0
+        },
+        "share_policy": "ideal_share",
+        "unavailable_windows": {}
+      },
+      "node_budgets": {
+        "NODE_A": {
+          "comm_byte": 12288.0,
+          "processing_op": 40.0,
+          "sample_slot": 30.0
+        },
+        "NODE_B": {
+          "comm_byte": 8192.0,
+          "processing_op": 26.0,
+          "sample_slot": 18.0
+        }
+      },
+      "node_layout": {
+        "NODE_A": {
+          "heading_deg": 0.0,
+          "max_range_m": 11000.0,
+          "x": 0.0,
+          "y": -6000.0
+        },
+        "NODE_B": {
+          "heading_deg": 180.0,
+          "max_range_m": 11000.0,
+          "x": 0.0,
+          "y": 6000.0
+        }
+      },
+      "policies": {
+        "baselines": [
+          "round_robin",
+          "edf",
+          "rule"
+        ],
+        "optimization_references": [
+          "enumeration",
+          "rolling_horizon"
+        ]
+      },
+      "scheduling_defaults": {
+        "abandon_after_s": 20.0,
+        "allow_multi_node_same_task": false,
+        "charge_duplicate_as_overhead": true,
+        "max_information_age_s": 3.0,
+        "max_sigma_position_m": 150.0,
+        "max_tasks_per_node_per_tick": 1,
+        "max_tasks_per_tick": null,
+        "starvation_threshold_s": 8.0,
+        "task_levels": {
+          "estimate_update": 3,
+          "predefined_sample": 2,
+          "process": 3,
+          "share": 1
+        },
+        "weights": {
+          "freshness": 0.6,
+          "level": 0.3,
+          "quality": 0.4,
+          "waiting": 0.5
+        }
+      }
+    },
+    "completion_semantics": {
+      "abandon_definition": "等待超过 abandon_after_s 且该节点仍无法服务；状态置 cancelled，任务保留在队列中",
+      "completion_rate_denominator": "完成 + 过期 + 主动放弃 + 执行器拒绝 + 长期未获服务",
+      "duplicate_definition": "同 task_id / 同去重键已成功执行过 → 计划级致命拒绝；同一 (kind, targets) 在多个节点出现由配置规则决定",
+      "expiry_definition": "now > deadline_s 且未完成/未取消",
+      "no_deletion_rule": "任何失败/放弃/过期都**不得**从队列中删除任务——删掉难任务只会让完成率下降，不可能把它做高",
+      "starvation_definition": "等待超过 starvation_threshold_s，且**不是**因截止时间到期而离开队列；与'过期'互斥",
+      "status_cn": {
+        "cancelled": "主动放弃（**仍在队列**，分母不变）",
+        "completed": "完成（计入分子）",
+        "expired": "过期（**不删除**，仍计入分母）",
+        "pending": "待释放（未到释放时间）",
+        "rejected": "被执行器拒绝",
+        "released": "已释放",
+        "submitted": "已排入计划"
+      },
+      "task_statuses": [
+        "pending",
+        "released",
+        "submitted",
+        "completed",
+        "rejected",
+        "expired",
+        "cancelled"
+      ]
+    },
+    "contract_version": "resource-contract-v1",
+    "evaluation": {
+      "metrics": [
+        {
+          "definition": "已完成任务数 / (已完成 + 过期 + 主动放弃 + 执行器拒绝 + 长期未获服务)。分母与被冻结的任务完成口径一致，**主动放弃不缩小分母**。",
+          "direction": "higher",
+          "key": "service_completion",
+          "name_cn": "服务完成度",
+          "scale": 1.0,
+          "unit": "比值"
+        },
+        {
+          "definition": "截止时间前完成的任务数 / 已完成任务数；没有已完成任务时记 0。只统计**真的完成**的任务，因此它回答「做成的那些及时吗」，与完成度互补、不可互相替代。",
+          "direction": "higher",
+          "key": "task_timeliness",
+          "name_cn": "任务及时性",
+          "scale": 1.0,
+          "unit": "比值"
+        },
+        {
+          "definition": "1 / (1 + 可见航迹的平均信息年龄)。取值落在 (0,1]，年龄 0 时为 1。用这个形式是为了避免「年龄无上界」导致量纲失控；**这个函数形式是声明的约定，不是拟合出来的**。",
+          "direction": "higher",
+          "key": "estimate_quality",
+          "name_cn": "估计质量",
+          "scale": 1.0,
+          "unit": "1/(1+秒)"
+        },
+        {
+          "definition": "对三类预算单位各算 consumed/capacity，再取算术平均。逐单位的明细必须一并给出（见 per_unit），避免「平均」把某一类单位吃穿的事实掩盖掉。",
+          "direction": "lower",
+          "key": "resource_consumption",
+          "name_cn": "资源消耗",
+          "scale": 1.0,
+          "unit": "容量占比"
+        },
+        {
+          "definition": "通信字节的实际消耗总量（来自账本，不从计划反推）。",
+          "direction": "lower",
+          "key": "communication_overhead",
+          "name_cn": "通信开销",
+          "scale": 1024.0,
+          "unit": "字节"
+        },
+        {
+          "definition": "本方法在该次运行中花在**规划**上的墙钟时间总和（不含执行、不含仿真推进）。它是优化参考的**代价项**，必须与收益一起报告。",
+          "direction": "lower",
+          "key": "compute_time",
+          "name_cn": "计算耗时",
+          "scale": 1.0,
+          "unit": "秒"
+        }
+      ],
+      "objective_default": {
+        "compute_time_weight_is_zero_reason": "同一次规划内所有候选的计算耗时相同，对候选排序无区分能力；它仍作为独立维度记录与对照。",
+        "normalize": {
+          "communication_overhead": 1024.0,
+          "compute_time": 1.0,
+          "estimate_quality": 1.0,
+          "resource_consumption": 1.0,
+          "service_completion": 1.0,
+          "task_timeliness": 1.0
+        },
+        "note": "这是**声明的偏好**，不是「唯一正确的目标」；换一组权重就会换一个最优解。综合分只用于搜索内部排序，报告一律给 6 维向量。",
+        "weights": {
+          "communication_overhead": -0.2,
+          "compute_time": 0.0,
+          "estimate_quality": 0.5,
+          "resource_consumption": -0.3,
+          "service_completion": 1.0,
+          "task_timeliness": 0.5
+        }
+      },
+      "rule": "评价一律给完整向量；综合分只是搜索内部的**声明式偏好**，不得作为「方法好不好」的结论"
+    },
+    "observation_schema": {
+      "fields": {
+        "arrived_at_s": {
+          "frame": "none",
+          "note": "该节点摘要的到达时刻",
+          "provenance": "remote_message",
+          "unit": "s",
+          "visibility": "shared"
+        },
+        "available": {
+          "frame": "none",
+          "note": "节点是否可用",
+          "provenance": "local_resource",
+          "unit": "1",
+          "visibility": "local"
+        },
+        "capacity": {
+          "frame": "none",
+          "note": "预算容量（单位见 units.py）",
+          "provenance": "local_resource",
+          "unit": "resource",
+          "visibility": "local"
+        },
+        "coasting": {
+          "frame": "none",
+          "note": "是否处于**预测保持**（外推）状态",
+          "provenance": "local_fusion",
+          "unit": "1",
+          "visibility": "local"
+        },
+        "data_available": {
+          "frame": "none",
+          "note": "该节点的摘要是否**已经到达**过",
+          "provenance": "derived",
+          "unit": "1",
+          "visibility": "derived"
+        },
+        "information_age_s": {
+          "frame": "none",
+          "note": "当前时刻 − 最后测量时刻；航迹被外推时它会持续增大",
+          "provenance": "derived",
+          "unit": "s",
+          "visibility": "derived"
+        },
+        "last_fusion_time_s": {
+          "frame": "none",
+          "note": "最后一次**融合更新**的时刻",
+          "provenance": "local_fusion",
+          "unit": "s",
+          "visibility": "local"
+        },
+        "last_measurement_time_s": {
+          "frame": "none",
+          "note": "最后一次**测量**的时刻（消息延迟大时它显著落后于当前时刻）",
+          "provenance": "local_fusion",
+          "unit": "s",
+          "visibility": "local"
+        },
+        "local_updates": {
+          "frame": "none",
+          "note": "本地测量更新次数",
+          "provenance": "local_fusion",
+          "unit": "count",
+          "visibility": "local"
+        },
+        "missing": {
+          "frame": "none",
+          "note": "缺失原因说明（没到达 / 从未收到 / 航迹为空）",
+          "provenance": "derived",
+          "unit": "1",
+          "visibility": "derived"
+        },
+        "n_messages_arrived": {
+          "frame": "none",
+          "note": "**已到达**本节点的消息条数",
+          "provenance": "local_resource",
+          "unit": "count",
+          "visibility": "local"
+        },
+        "n_messages_inflight": {
+          "frame": "none",
+          "note": "在途消息条数（只报数量，**不看内容**）",
+          "provenance": "local_resource",
+          "unit": "count",
+          "visibility": "local"
+        },
+        "n_sources": {
+          "frame": "none",
+          "note": "溯源记录条数",
+          "provenance": "local_fusion",
+          "unit": "count",
+          "visibility": "local"
+        },
+        "node_content_age_s": {
+          "frame": "none",
+          "note": "**内容年龄**：现在 − 摘要**生成**时刻。通信延迟不会让到达年龄变大（送达瞬间仍为 0），但会让内容年龄正好等于链路延迟；调度器判「数据还新不新」应当看这一项",
+          "provenance": "derived",
+          "unit": "s",
+          "visibility": "derived"
+        },
+        "node_information_age_s": {
+          "frame": "none",
+          "note": "**到达年龄**：现在 − 摘要到达时刻。刚送达的摘要为 0，断开消息后它会持续增大",
+          "provenance": "derived",
+          "unit": "s",
+          "visibility": "derived"
+        },
+        "observed_at_s": {
+          "frame": "none",
+          "note": "该节点观测自身的生成时刻",
+          "provenance": "local_fusion",
+          "unit": "s",
+          "visibility": "local"
+        },
+        "platforms": {
+          "frame": "none",
+          "note": "支持该航迹的平台集合",
+          "provenance": "local_fusion",
+          "unit": "1",
+          "visibility": "local"
+        },
+        "position": {
+          "frame": "ENU",
+          "note": "估计位置",
+          "provenance": "local_fusion",
+          "unit": "m",
+          "visibility": "local"
+        },
+        "remaining": {
+          "frame": "none",
+          "note": "预算余量",
+          "provenance": "local_resource",
+          "unit": "resource",
+          "visibility": "local"
+        },
+        "remote_updates": {
+          "frame": "none",
+          "note": "远端共享更新次数",
+          "provenance": "local_fusion",
+          "unit": "count",
+          "visibility": "local"
+        },
+        "sigma_position": {
+          "frame": "ENU",
+          "note": "位置标准差（对角）",
+          "provenance": "local_fusion",
+          "unit": "m",
+          "visibility": "local"
+        },
+        "source_sensor_ids": {
+          "frame": "none",
+          "note": "支持该航迹的传感器集合",
+          "provenance": "local_fusion",
+          "unit": "1",
+          "visibility": "local"
+        },
+        "track_id": {
+          "frame": "none",
+          "note": "融合中心分配的**稳定**航迹 ID（单调递增、不随排序变化）",
+          "provenance": "local_fusion",
+          "unit": "1",
+          "visibility": "local"
+        },
+        "update_period_s": {
+          "frame": "none",
+          "note": "采样更新周期",
+          "provenance": "local_resource",
+          "unit": "s",
+          "visibility": "local"
+        },
+        "velocity": {
+          "frame": "ENU",
+          "note": "估计速度",
+          "provenance": "local_fusion",
+          "unit": "m/s",
+          "visibility": "local"
+        }
+      },
+      "legacy_observation_modes": [
+        "full",
+        "pomdp",
+        "ideal",
+        "realistic"
+      ],
+      "n_fields": 25,
+      "schema_version": "rm-obs-1.0"
+    },
+    "resource_model": {
+      "budget_units": [
+        "sample_slot",
+        "processing_op",
+        "comm_byte"
+      ],
+      "conservation_invariant": "对每个预算单位：consumed + reserved + remaining == capacity，且三者均非负",
+      "default_duration_s": {
+        "idle": 0.0,
+        "process": 1.0,
+        "sample": 1.0,
+        "share": 0.5
+      },
+      "note": "教学成本模型是**教学设定**，与真实装备参数无关；occupancy_second 是时间占用量，**不是**预算单位",
+      "queue_task_kind_cn": {
+        "estimate_update": "已有估计的更新",
+        "predefined_sample": "预定义采样",
+        "process": "处理",
+        "share": "共享"
+      },
+      "task_kind_cn": {
+        "idle": "空闲",
+        "process": "处理",
+        "sample": "采样",
+        "share": "共享"
+      },
+      "teaching_cost_model": {
+        "idle": {
+          "comm_byte": 0.0,
+          "processing_op": 0.0,
+          "sample_slot": 0.0
+        },
+        "process": {
+          "comm_byte": 0.0,
+          "processing_op": 1.0,
+          "sample_slot": 0.0
+        },
+        "sample": {
+          "comm_byte": 0.0,
+          "processing_op": 1.0,
+          "sample_slot": 1.0
+        },
+        "share": {
+          "comm_byte": 128.0,
+          "processing_op": 0.0,
+          "sample_slot": 0.0
+        }
+      },
+      "units": {
+        "comm_byte": {
+          "is_budget_unit": true,
+          "meaning": "一字节共享载荷",
+          "name_cn": "通信字节",
+          "symbol": "B"
+        },
+        "occupancy_second": {
+          "is_budget_unit": false,
+          "meaning": "节点被该任务独占 1 秒",
+          "name_cn": "占用秒",
+          "symbol": "s"
+        },
+        "processing_op": {
+          "is_budget_unit": true,
+          "meaning": "一次关联 + 一次滤波更新",
+          "name_cn": "处理配额",
+          "symbol": "op"
+        },
+        "sample_slot": {
+          "is_budget_unit": true,
+          "meaning": "一次驻留观测（对场景扫一遍）",
+          "name_cn": "采样时隙",
+          "symbol": "slot"
+        }
+      }
+    }
+  }
+}

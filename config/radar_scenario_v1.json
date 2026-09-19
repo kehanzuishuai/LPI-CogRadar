@@ -1,0 +1,135 @@
+{
+  "scenario_name": "lpi_radar_power_v1",
+  "description": "低截获雷达智能功率调控仿真第一版：单雷达 / 双目标 / 单敌方侦察接收机 / 单动态干扰源；动作 = 11 档离散发射功率。",
+  "sim_duration": 60,
+  "time_step": 1.0,
+  "random_seed": 42,
+
+  "radar": {
+    "radar_id": "RADAR1",
+    "x": 0.0,
+    "y": 0.0,
+    "tx_power_w": 18.0,
+
+    "peak_gain_db": 30.0,
+    "sidelobe_gain_db": 10.0,
+    "main_beam_width_deg": 10.0,
+
+    "wavelength_m": 0.1,
+    "bandwidth_hz": 1000000.0,
+    "noise_figure_db": 3.0,
+    "system_loss_db": 3.0,
+    "temperature_k": 290.0,
+
+    "snr50_db": 6.0,
+    "pd_slope_db": 2.0,
+
+    "required_pd": 0.8,
+    "energy_budget_j": 1400.0,
+    "terminate_on_energy_exhausted": true,
+
+    "velocity_x": 0.0,
+    "velocity_y": 0.0,
+    "freq_hz": 3000000000.0,
+    "is_active": true
+  },
+
+  "targets": [
+    {
+      "target_id": "TGT1",
+      "x": 6000.0,
+      "y": 0.0,
+      "rcs_m2": 2.0,
+      "vx": -10.0,
+      "vy": 0.0,
+      "is_active": true
+    },
+    {
+      "target_id": "TGT2",
+      "x": 0.0,
+      "y": 4000.0,
+      "rcs_m2": 1.5,
+      "vx": 0.0,
+      "vy": 5.0,
+      "is_active": true
+    }
+  ],
+
+  "interceptors": [
+    {
+      "interceptor_id": "ESM1",
+      "x": 80000.0,
+      "y": -60000.0,
+      "gain_db": 12.0,
+      "bandwidth_hz": 2000000.0,
+      "noise_figure_db": 6.0,
+      "system_loss_db": 2.0,
+      "temperature_k": 290.0,
+      "snr50_db": 27.3,
+      "pint_slope_db": 2.8,
+      "vx": 0.0,
+      "vy": 0.0,
+      "freq_hz": 3000000000.0,
+      "is_active": true
+    }
+  ],
+
+  "jammers": [
+    {
+      "jammer_id": "JAM1",
+      "x": 8000.0,
+      "y": 6000.0,
+      "peak_power_w": 200.0,
+      "gain_db": 10.0,
+      "system_loss_db": 3.0,
+      "suppression_db": 57.6,
+      "start_time": 20.0,
+      "end_time": 45.0,
+      "intensity": 1.0,
+      "duty_cycle": 1.0,
+      "dynamic": true,
+      "fluctuation": 0.1,
+      "fluctuation_step": 0.25,
+      "vx": 0.0,
+      "vy": 0.0,
+      "is_active": true
+    }
+  ],
+
+  "power_levels_w": [0.5, 1.0, 2.0, 4.0, 8.0, 12.0, 18.0, 25.0, 35.0, 50.0, 80.0],
+  "fixed_power_level": 10,
+  "lpi_pint_threshold": 0.5,
+
+  "exposure_decay": 0.85,
+  "exposure_gain": 0.15,
+
+  "observation": {
+    "_comment": "v4.0 部分可观测测量模型。mode=full 时不生效（旧实验逐位可复现）；mode=pomdp 时 env 读取本段。所有 sigma 均为 1 sigma，物理参数与真值演进不受影响。",
+    "mode": "full",
+    "enabled": true,
+    "range_sigma_m": 120.0,
+    "rcs_sigma_m2": 0.12,
+    "jam_ratio_sigma": 0.10,
+    "energy_sigma_j": 15.0,
+    "interceptor_range_sigma_m": 4000.0,
+    "pint_sigma": 0.05,
+    "exposure_sigma": 0.05,
+    "pd_sigma": 0.03,
+    "delay_steps": 1,
+    "dropout_prob": 0.10,
+    "hold_last_on_dropout": true,
+    "hide_interceptor_truth": true,
+    "hide_pint_truth": true,
+    "hide_exposure_truth": true,
+    "report_honest_sigma": true,
+    "sigma_underreport_factor": 0.5,
+    "seed": 42
+  },
+
+  "reward_weights": {
+    "detection": 1.0,
+    "intercept": 0.6,
+    "energy": 0.3,
+    "violation": 1.5
+  }
+}

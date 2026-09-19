@@ -1,0 +1,67 @@
+# LPI-CogRadar 依赖说明
+#
+# 项目：LPI-CogRadar
+#      An AI-Driven Cognitive Radar Power Control
+#      and Electromagnetic Adversarial Simulation Platform
+#
+# 工程分三层，依赖要求逐层升高：
+#
+#  ① 仿真层（main.py / diagnose_temporal_coupling.py / evaluate_jammer_modes.py 的
+#     脚本策略部分）
+#     仅使用 Python 标准库：
+#       json / math / random / csv / dataclasses / typing / html / datetime / os
+#     Python 3.10+（用到 X | None 类型语法），**不需要安装任何第三方库**。
+#
+#  ② 学习层（train_dqn.py / evaluate_dqn.py / evaluate_multiseed.py /
+#     sensitivity_energy_budget.py）
+#     需要 torch。`rl/` 包**刻意不使用 numpy**（观测是 List[float]，
+#     直接 torch.tensor() 转换即可），因此对 numpy 版本不敏感。
+#
+#  ③ AI 认知诊断层（ai/ / diagnose_ai.py / ai_server.py）
+#     默认 provider = rule，**纯标准库实现，零依赖、无需 API Key**；
+#     HTTP 服务用标准库 http.server；远程 provider 用标准库 urllib。
+#     也就是说整个 AI 层不引入任何新依赖。
+#
+# ---------------------------------------------------------------------------
+# 学习层必需
+# ---------------------------------------------------------------------------
+# torch>=2.0            # 本机可用环境：D:\anaconda\envs\pytorch_env（torch 2.3.1+cu118）
+#
+# ---------------------------------------------------------------------------
+# 可选（缺失时自动降级，不影响主流程）
+# ---------------------------------------------------------------------------
+# matplotlib>=3.5      # 仅用于输出各 *_curves.png；缺失时跳过，HTML 曲线仍会生成
+#
+# ---------------------------------------------------------------------------
+# 可选：把 LpiPowerEnv 包装成标准 gym.Env 时需要
+# ---------------------------------------------------------------------------
+# gymnasium>=0.29      # 非必需，engine/spaces.py 已提供同名同形的最小实现
+#
+# ---------------------------------------------------------------------------
+# AI 层：**不需要任何新依赖**
+# ---------------------------------------------------------------------------
+# 默认 rule provider   : 纯标准库，无需 API Key，离线确定
+# mock provider        : 纯标准库，用于测试与降级路径验证
+# 远程 provider        : 标准库 urllib，OpenAI 兼容协议
+#                        （OpenAI / DeepSeek / 通义 或任何自建兼容网关）
+#                        需要 API Key，通过参数或环境变量注入：
+#                          OPENAI_API_KEY / DEEPSEEK_API_KEY / DASHSCOPE_API_KEY
+#                        ⚠️ 请勿把 Key 写进任何提交到仓库的文件
+# HTTP 服务            : 标准库 http.server（ai_server.py）
+#
+# ---------------------------------------------------------------------------
+# 可选：运行遗留脚本（通信抗干扰阶段的历史实验与文档生成）
+# ---------------------------------------------------------------------------
+# python-docx>=1.1     # create_ep_docx.py / create_ep_cn_docx.py
+# pandas>=2.0          # translate_and_create_excel.py
+# openpyxl>=3.1        # translate_and_create_excel.py 写 xlsx
+# 另需 Node.js + docx 包  # create_ep_docx.js
+#
+# ---------------------------------------------------------------------------
+# 环境提示
+# ---------------------------------------------------------------------------
+# 若在 D:\anaconda\envs\pytorch_env 中运行，启动时会看到一行：
+#   "A module that was compiled using NumPy 1.x cannot be run in NumPy 2.2.6 ..."
+# 这是 numpy C 层的 ABI 检查提示（该环境 torch 2.3.1 按 NumPy 1.x 编译，
+# 而 numpy 为 2.2.6）。本工程 RL 路径与 AI 层都不使用 numpy，**该提示无害**。
+# 如要彻底消除：pip install "numpy<2"（会改动该环境，请自行评估）。
