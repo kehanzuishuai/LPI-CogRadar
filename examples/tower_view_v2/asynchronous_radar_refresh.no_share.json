@@ -1,0 +1,2953 @@
+{
+  "comparison_metrics": {
+    "communication_bytes": 0.0,
+    "coverage": 0.0,
+    "duplicate": 0.0,
+    "evaluation_note": "aggregate nearest-track evaluation only; never a runtime input",
+    "fragmentation": 0,
+    "id_switch": 0,
+    "information_age_s": null,
+    "message_utilization": null,
+    "rmse_m": null
+  },
+  "coordinate_frame": {
+    "display_axes": [
+      "east_x",
+      "north_y"
+    ],
+    "name": "ENU",
+    "position_unit": "m",
+    "velocity_unit": "m/s"
+  },
+  "events": [
+    {
+      "event_type": "LOCAL_TRACK_CREATED",
+      "last_measurement_time_s": 1.0,
+      "local_track_id": "NODE_A-T1",
+      "source_node_id": "NODE_A",
+      "time_s": 2.0,
+      "track_status": "tentative"
+    },
+    {
+      "event_type": "LOCAL_TRACK_CREATED",
+      "last_measurement_time_s": 2.0,
+      "local_track_id": "NODE_B-T1",
+      "source_node_id": "NODE_B",
+      "time_s": 3.0,
+      "track_status": "tentative"
+    }
+  ],
+  "frames": [
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 1,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 0,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": false,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 1.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [
+        {
+          "event_type": "LOCAL_TRACK_CREATED",
+          "last_measurement_time_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 2.0,
+          "track_status": "tentative"
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 1,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            118.522424,
+            -916.488199,
+            -21.447467
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            71.63162,
+            71.63162,
+            71.63162
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 2.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [
+        {
+          "event_type": "LOCAL_TRACK_CREATED",
+          "last_measurement_time_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B",
+          "time_s": 3.0,
+          "track_status": "tentative"
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            118.522424,
+            -916.488199,
+            -21.447467
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            87.358966,
+            87.358966,
+            87.358966
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            293.848087,
+            -745.072874,
+            -33.801849
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            93.57382,
+            93.57382,
+            93.57382
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 3.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 2,
+          "mapped_global_track_id": null,
+          "position_m": [
+            383.097344,
+            -766.22143,
+            32.083676
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            63.994736,
+            63.994736,
+            63.994736
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            87.468626,
+            49.678283,
+            17.697427
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            293.848087,
+            -745.072874,
+            -33.801849
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            106.096936,
+            106.096936,
+            106.096936
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 4.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 2,
+          "mapped_global_track_id": null,
+          "position_m": [
+            470.56597,
+            -716.543147,
+            49.781103
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            96.476219,
+            96.476219,
+            96.476219
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            87.468626,
+            49.678283,
+            17.697427
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 2,
+          "mapped_global_track_id": null,
+          "position_m": [
+            534.384012,
+            -678.24174,
+            -37.189348
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            76.113714,
+            76.113714,
+            76.113714
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            64.156385,
+            17.825379,
+            -0.903523
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 5.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 3,
+          "mapped_global_track_id": null,
+          "position_m": [
+            739.570015,
+            -474.027087,
+            53.108467
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            68.749533,
+            68.749533,
+            68.749533
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            146.635108,
+            112.528458,
+            13.0139
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 2,
+          "mapped_global_track_id": null,
+          "position_m": [
+            598.540397,
+            -660.416361,
+            -38.092871
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            106.715534,
+            106.715534,
+            106.715534
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            64.156385,
+            17.825379,
+            -0.903523
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 6.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 3,
+          "mapped_global_track_id": null,
+          "position_m": [
+            886.205124,
+            -361.498628,
+            66.122368
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            101.56743,
+            101.56743,
+            101.56743
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            146.635108,
+            112.528458,
+            13.0139
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 3,
+          "mapped_global_track_id": null,
+          "position_m": [
+            936.838102,
+            -384.323978,
+            -99.452353
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            75.955912,
+            75.955912,
+            75.955912
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            145.883654,
+            94.820182,
+            -18.92671
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 7.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 4,
+          "mapped_global_track_id": null,
+          "position_m": [
+            1209.874596,
+            -197.641657,
+            45.182654
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            72.007846,
+            72.007846,
+            72.007846
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            202.138455,
+            128.620838,
+            2.368853
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 3,
+          "mapped_global_track_id": null,
+          "position_m": [
+            1082.721757,
+            -289.503796,
+            -118.379063
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            108.248322,
+            108.248322,
+            108.248322
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            145.883654,
+            94.820182,
+            -18.92671
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 8.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 4,
+          "mapped_global_track_id": null,
+          "position_m": [
+            1412.013051,
+            -69.020819,
+            47.551507
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            104.636927,
+            104.636927,
+            104.636927
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            202.138455,
+            128.620838,
+            2.368853
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 4,
+          "mapped_global_track_id": null,
+          "position_m": [
+            1405.104398,
+            -52.721225,
+            -73.765505
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            74.744158,
+            74.744158,
+            74.744158
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            198.3208,
+            136.996642,
+            -0.04915
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 9.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 5,
+          "mapped_global_track_id": null,
+          "position_m": [
+            1577.743988,
+            130.413751,
+            4.477531
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            75.352944,
+            75.352944,
+            75.352944
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            190.996094,
+            150.29307,
+            -11.538725
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 4,
+          "mapped_global_track_id": null,
+          "position_m": [
+            1603.425198,
+            84.275418,
+            -73.814655
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            106.858577,
+            106.858577,
+            106.858577
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            198.3208,
+            136.996642,
+            -0.04915
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 10.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 5,
+          "mapped_global_track_id": null,
+          "position_m": [
+            1768.740082,
+            280.706821,
+            -7.061194
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            108.028055,
+            108.028055,
+            108.028055
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            190.996094,
+            150.29307,
+            -11.538725
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 5,
+          "mapped_global_track_id": null,
+          "position_m": [
+            1821.099567,
+            188.790963,
+            -60.863574
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            73.594627,
+            73.594627,
+            73.594627
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            204.130464,
+            127.246282,
+            3.853333
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 11.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 6,
+          "mapped_global_track_id": null,
+          "position_m": [
+            1982.809753,
+            325.331672,
+            33.487336
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            78.250605,
+            78.250605,
+            78.250605
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            197.881908,
+            118.758659,
+            4.005598
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 5,
+          "mapped_global_track_id": null,
+          "position_m": [
+            2025.230031,
+            316.037245,
+            -57.010241
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            105.756238,
+            105.756238,
+            105.756238
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            204.130464,
+            127.246282,
+            3.853333
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 12.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 6,
+          "mapped_global_track_id": null,
+          "position_m": [
+            2180.691661,
+            444.090331,
+            37.492933
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            110.897731,
+            110.897731,
+            110.897731
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            197.881908,
+            118.758659,
+            4.005598
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 5,
+          "mapped_global_track_id": null,
+          "position_m": [
+            2229.360495,
+            443.283528,
+            -53.156908
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            148.285517,
+            148.285517,
+            148.285517
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            204.130464,
+            127.246282,
+            3.853333
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 13.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 7,
+          "mapped_global_track_id": null,
+          "position_m": [
+            2348.493444,
+            550.363195,
+            -41.017061
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            81.4829,
+            81.4829,
+            81.4829
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            189.093104,
+            115.110562,
+            -20.103788
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 6,
+          "mapped_global_track_id": null,
+          "position_m": [
+            2405.897133,
+            504.654824,
+            -49.799136
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            76.265382,
+            76.265382,
+            76.265382
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            197.432834,
+            111.256971,
+            3.73305
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 14.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 7,
+          "mapped_global_track_id": null,
+          "position_m": [
+            2537.586548,
+            665.473757,
+            -61.120849
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            114.209441,
+            114.209441,
+            114.209441
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            189.093104,
+            115.110562,
+            -20.103788
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 6,
+          "mapped_global_track_id": null,
+          "position_m": [
+            2603.329967,
+            615.911795,
+            -46.066086
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            105.652495,
+            105.652495,
+            105.652495
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            197.432834,
+            111.256971,
+            3.73305
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 15.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 8,
+          "mapped_global_track_id": null,
+          "position_m": [
+            2696.763557,
+            714.720168,
+            -51.09181
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            84.462718,
+            84.462718,
+            84.462718
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            180.555564,
+            96.314064,
+            -11.504396
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 7,
+          "mapped_global_track_id": null,
+          "position_m": [
+            2829.236006,
+            701.394456,
+            -21.752331
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            71.906172,
+            71.906172,
+            71.906172
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            205.965316,
+            103.533259,
+            9.900409
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 16.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 8,
+          "mapped_global_track_id": null,
+          "position_m": [
+            2877.319121,
+            811.034232,
+            -62.596206
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            117.19328,
+            117.19328,
+            117.19328
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            180.555564,
+            96.314064,
+            -11.504396
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 7,
+          "mapped_global_track_id": null,
+          "position_m": [
+            3035.201322,
+            804.927714,
+            -11.851921
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            103.903096,
+            103.903096,
+            103.903096
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            205.965316,
+            103.533259,
+            9.900409
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 17.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 9,
+          "mapped_global_track_id": null,
+          "position_m": [
+            3057.654755,
+            997.668728,
+            -58.620907
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            88.074666,
+            88.074666,
+            88.074666
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            180.49411,
+            121.551946,
+            -7.178966
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 7,
+          "mapped_global_track_id": null,
+          "position_m": [
+            3241.166638,
+            908.460973,
+            -1.951512
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            146.551046,
+            146.551046,
+            146.551046
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            205.965316,
+            103.533259,
+            9.900409
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 18.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 9,
+          "mapped_global_track_id": null,
+          "position_m": [
+            3238.148864,
+            1119.220673,
+            -65.799874
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            120.932811,
+            120.932811,
+            120.932811
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            180.49411,
+            121.551946,
+            -7.178966
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 8,
+          "mapped_global_track_id": null,
+          "position_m": [
+            3220.444565,
+            1143.437143,
+            48.47944
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            74.62852,
+            74.62852,
+            74.62852
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            150.318007,
+            135.799916,
+            19.849863
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 19.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 10,
+          "mapped_global_track_id": null,
+          "position_m": [
+            3436.162567,
+            1189.032364,
+            111.612391
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            91.214284,
+            91.214284,
+            91.214284
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            185.266784,
+            107.456904,
+            43.107241
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 8,
+          "mapped_global_track_id": null,
+          "position_m": [
+            3370.762572,
+            1279.23706,
+            68.329302
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            104.097459,
+            104.097459,
+            104.097459
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            150.318007,
+            135.799916,
+            19.849863
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 20.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 10,
+          "mapped_global_track_id": null,
+          "position_m": [
+            3621.429351,
+            1296.489267,
+            154.719632
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            124.054935,
+            124.054935,
+            124.054935
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            185.266784,
+            107.456904,
+            43.107241
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 9,
+          "mapped_global_track_id": null,
+          "position_m": [
+            3560.6292,
+            1472.783502,
+            19.727574
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            70.693537,
+            70.693537,
+            70.693537
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            162.339208,
+            153.352553,
+            -0.956686
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 21.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 11,
+          "mapped_global_track_id": null,
+          "position_m": [
+            3890.336284,
+            1496.331127,
+            55.107885
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            95.079286,
+            95.079286,
+            95.079286
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            207.570272,
+            132.092283,
+            5.049785
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 9,
+          "mapped_global_track_id": null,
+          "position_m": [
+            3722.968407,
+            1626.136054,
+            18.770888
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            102.821219,
+            102.821219,
+            102.821219
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            162.339208,
+            153.352553,
+            -0.956686
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 22.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 11,
+          "mapped_global_track_id": null,
+          "position_m": [
+            4097.906557,
+            1628.423409,
+            60.15767
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            128.0696,
+            128.0696,
+            128.0696
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            207.570272,
+            132.092283,
+            5.049785
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 9,
+          "mapped_global_track_id": null,
+          "position_m": [
+            3885.307615,
+            1779.488607,
+            17.814202
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            145.680576,
+            145.680576,
+            145.680576
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            162.339208,
+            153.352553,
+            -0.956686
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 23.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 12,
+          "mapped_global_track_id": null,
+          "position_m": [
+            4243.124911,
+            1861.055972,
+            -27.837758
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            98.811583,
+            98.811583,
+            98.811583
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            191.371188,
+            158.212738,
+            -19.123445
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 10,
+          "mapped_global_track_id": null,
+          "position_m": [
+            4114.689295,
+            1746.8947,
+            96.606442
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            75.911867,
+            75.911867,
+            75.911867
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            178.914228,
+            107.380706,
+            18.759771
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 24.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 12,
+          "mapped_global_track_id": null,
+          "position_m": [
+            4434.496098,
+            2019.26871,
+            -46.961203
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            131.838842,
+            131.838842,
+            131.838842
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            191.371188,
+            158.212738,
+            -19.123445
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 10,
+          "mapped_global_track_id": null,
+          "position_m": [
+            4293.603523,
+            1854.275406,
+            115.366212
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            105.614919,
+            105.614919,
+            105.614919
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            178.914228,
+            107.380706,
+            18.759771
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 25.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 13,
+          "mapped_global_track_id": null,
+          "position_m": [
+            4624.11325,
+            1997.709133,
+            81.019097
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            101.688964,
+            101.688964,
+            101.688964
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            190.92651,
+            112.637479,
+            18.169791
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 10,
+          "mapped_global_track_id": null,
+          "position_m": [
+            4472.51775,
+            1961.656112,
+            134.125983
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            147.086406,
+            147.086406,
+            147.086406
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            178.914228,
+            107.380706,
+            18.759771
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 26.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 13,
+          "mapped_global_track_id": null,
+          "position_m": [
+            4815.03976,
+            2110.346612,
+            99.188888
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            134.65584,
+            134.65584,
+            134.65584
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            190.92651,
+            112.637479,
+            18.169791
+          ]
+        },
+        {
+          "information_age_s": 4.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 10,
+          "mapped_global_track_id": null,
+          "position_m": [
+            4651.431978,
+            2069.036818,
+            152.885754
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            192.889374,
+            192.889374,
+            192.889374
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            178.914228,
+            107.380706,
+            18.759771
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 27.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 14,
+          "mapped_global_track_id": null,
+          "position_m": [
+            4947.911423,
+            2178.974737,
+            55.664491
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            104.871654,
+            104.871654,
+            104.871654
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            176.477192,
+            101.683955,
+            2.814675
+          ]
+        },
+        {
+          "information_age_s": 5.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 10,
+          "mapped_global_track_id": null,
+          "position_m": [
+            4830.346206,
+            2176.417524,
+            171.645525
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            240.570593,
+            240.570593,
+            240.570593
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            178.914228,
+            107.380706,
+            18.759771
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 28.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 14,
+          "mapped_global_track_id": null,
+          "position_m": [
+            5124.388615,
+            2280.658692,
+            58.479165
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            137.931859,
+            137.931859,
+            137.931859
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            176.477192,
+            101.683955,
+            2.814675
+          ]
+        },
+        {
+          "information_age_s": 6.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 10,
+          "mapped_global_track_id": null,
+          "position_m": [
+            5009.260433,
+            2283.79823,
+            190.405296
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            289.209457,
+            289.209457,
+            289.209457
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            178.914228,
+            107.380706,
+            18.759771
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 29.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 15,
+          "mapped_global_track_id": null,
+          "position_m": [
+            5231.155933,
+            2343.243578,
+            -14.726273
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            107.925924,
+            107.925924,
+            107.925924
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            159.471893,
+            92.145976,
+            -15.729969
+          ]
+        },
+        {
+          "information_age_s": 7.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 10,
+          "mapped_global_track_id": null,
+          "position_m": [
+            5188.174661,
+            2391.178936,
+            209.165067
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            338.399187,
+            338.399187,
+            338.399187
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            178.914228,
+            107.380706,
+            18.759771
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 30.0
+    }
+  ],
+  "message_evidence": [],
+  "read_only_contract": {
+    "association_parameters_changed": false,
+    "runtime_mutation": false,
+    "source": "frozen Global Track v1.x snapshots and audit logs"
+  },
+  "scenario": {
+    "kind": "basic",
+    "scenario_id": "asynchronous_radar_refresh",
+    "seed": 20260920,
+    "steps": 30,
+    "title": "K：异步多雷达刷新"
+  },
+  "schema_version": "tower-view-v2",
+  "sharing_mode": "no_share",
+  "summary": {
+    "duration_s": 30.0,
+    "event_count": 2,
+    "frame_count": 30,
+    "global_track_ids_observed": [],
+    "resource_conserved": true,
+    "runtime_read_only_provenance": "Sensor/local FusionCenter/RuntimeExecutor/CommBus/GlobalTrackManager snapshots"
+  },
+  "track_lifecycle": [],
+  "frames_sha256": "b9c78bd32a66f6502fc8d9a4ce7600637f4eee5d1b5e4afee1f98eba5ea8a6fa",
+  "replay_sha256": "e8c750ac57b9f429814c9ad50954d358558cd9193e2d75465ca0cae53e68dd51"
+}

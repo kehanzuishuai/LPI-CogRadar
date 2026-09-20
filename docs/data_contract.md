@@ -416,3 +416,15 @@ v1.0.1 对所有输出浮点字段递归 canonicalize 到 6 位小数（`-0.0` �
 `frames_sha256`；因此 association/lifecycle 的距离、投影和 CI 权重不会因进程/平台最低位差异
 改变 formal replay 哈希。debug replay 默认不进入 manifest 且 HTTP 访问被拒，只有服务显式传入
 `--allow-debug-replays` 才可加载，UI 必须显示 `DEBUG / GROUND TRUTH` 警示。
+
+### 4.9 Tower View v2 只读诊断契约
+
+`tower-view-v2` 不替换 v1，也不属于调度观测。它增加 `sharing_mode / events /
+message_evidence / track_lifecycle / comparison_metrics / communication / fusion`，来源仍只限已有
+local/global 快照、RuntimeExecutor 结果、CommBus log 和 GlobalTrackManager audit。顶层
+`read_only_contract.runtime_mutation=false`，服务仅提供静态 GET。
+
+正式 v2 回放不保存目标身份、真实位置或真实轨迹。coverage/RMSE/ID switch/fragmentation/duplicate
+在最外层计算为聚合显示值，计算后立即丢弃目标身份与位置，不得进入 message evidence、关联或 CI。
+debug truth overlay 沿用 v1.0.1 的双重显式 opt-in 和醒目警告。v2 使用相同 6 位递归
+canonicalization，并同时冻结 `frames_sha256` 与完整 `replay_sha256`。

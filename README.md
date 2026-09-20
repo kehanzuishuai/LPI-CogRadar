@@ -13,8 +13,10 @@
 > 多雷达时间戳外推证据；A/B/D/E/F/G/H/I/J/K 基础闸门全部通过，Global Track v1.x
 > 基础机制已最终冻结，不再新增基础测试，下一主线正式进入 Tower View。交叉、近距离编队、
 > 系统偏差和复杂关联仍作为后续增强分支，不把基础通过写成 JPDA/MHT 能力。
-> 现已新增只读 **Tower View v1**：四个 A/B/C/D 示例回放、二维 ENU local/global 航迹、
-> local→global 归属、航迹详情与时间轴；正式 `tower-view-v1` JSON 默认不含真值。
+> 现已新增只读 **Tower View v1 / v2**：v1 保留四个 A/B/C/D 基础回放；v2 扩展为 8 场景 ×
+> 4 共享模式的 Global Track 实验诊断台，展示 local→global 归属、生命周期、事件/消息证据链、
+> 通信与融合状态、对照指标及 PNG/JSON/HTML 导出。正式 `tower-view-v1`/`tower-view-v2`
+> JSON 默认不含真值，debug 回放需双重显式授权。
 > 新增只读 `rm-obs-2.0` 塔台视图和固定阈值 event-triggered track sharing；默认
 > `global_track_mode="off"` 保持旧路径和历史资源调度实验语义。详见
 > [`docs/global_track_fusion_v1.md`](docs/global_track_fusion_v1.md)。
@@ -258,7 +260,7 @@ D:\anaconda\envs\pytorch_env\python.exe train_dqn.py --observation-mode realisti
 
 # ---------- 单元测试与端到端验收（仿真层与 AI 层零依赖，base 环境即可跑）----------
 python verify_v4.py                       # 端到端验收：19 章（模块/不变式/旧实验逐位复现/AI发现码/证据链/压力测试/资源管理/优化参考/契约冻结/真闭环/版本号/产物）
-python -m unittest discover -s tests -v   # 最新 pytest 回归：599 passed、1 skipped、86 subtests
+python -m unittest discover -s tests -v   # 最新 pytest 回归：608 passed、1 skipped、86 subtests
 python tests/test_ai_evidence.py -v       # v4.5：AI 证据链（无真值泄漏/原因区分/证据校验/路由接线）
 python tests/test_multi_target_stress.py -v  # v4.5：多目标压力测试（关联审计/指标口径/跟踪器生命周期）
 python tests/test_system_stress.py -v     # v4.5：系统级压力场景 S5–S8
@@ -4320,3 +4322,22 @@ v1.0.1 进一步固定所有回放浮点的 canonical JSON/`frames_sha256`，并
 即便目录中存在 `.debug.json`，也必须显式 `--allow-debug-replays` 才会被服务列出或加载，页面会给出
 醒目的 `DEBUG / GROUND TRUTH` 警示。
 完整 schema、只读/确定性边界和文件说明见 [Tower View v1](docs/tower_view.md)。
+
+### 16.9 Tower View v2（Global Track 实验诊断台）
+
+v2 保留 v1 的二维 ENU、local/global 航迹、点击详情和回放控制，新增生命周期状态、事件跳转、
+TrackMessage 证据链、逐帧通信/融合状态、四共享模式切换以及 PNG/JSON/HTML 导出。它仍然只读取
+冻结 Global Track v1.x 的快照和审计日志，不修改底层对象、门限、CI、调度、PPO 或历史结果。
+
+```powershell
+# 启动已生成的正式示例
+D:\anaconda\envs\pytorch_env\python.exe tools\run_tower_view_v2.py
+
+# 重生成全部场景 × no/measurement/track/event-triggered 四种模式
+D:\anaconda\envs\pytorch_env\python.exe tools\run_tower_view_v2.py --generate-only
+```
+
+正式 replay 默认无真值；debug 文件仍需 `--debug-truth-overlay` 生成，并在服务端显式
+`--allow-debug-replays` 才能加载，页面会显示 `DEBUG / GROUND TRUTH` 警告。交叉目标的 ID switch、
+fragmentation 和 duplicate 保持可见，不在 UI 层修饰。详见
+[Tower View v2](docs/tower_view_v2.md)。

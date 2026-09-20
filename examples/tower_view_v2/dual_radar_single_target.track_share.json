@@ -1,0 +1,5905 @@
+{
+  "comparison_metrics": {
+    "communication_bytes": 1536.0,
+    "coverage": 0.833333,
+    "duplicate": 0.0,
+    "evaluation_note": "aggregate nearest-track evaluation only; never a runtime input",
+    "fragmentation": 0,
+    "id_switch": 0,
+    "information_age_s": 4.0,
+    "message_utilization": 0.833333,
+    "rmse_m": 457.967061
+  },
+  "coordinate_frame": {
+    "display_axes": [
+      "east_x",
+      "north_y"
+    ],
+    "name": "ENU",
+    "position_unit": "m",
+    "velocity_unit": "m/s"
+  },
+  "events": [
+    {
+      "event_type": "LOCAL_TRACK_CREATED",
+      "last_measurement_time_s": 1.0,
+      "local_track_id": "NODE_A-T1",
+      "source_node_id": "NODE_A",
+      "time_s": 2.0,
+      "track_status": "tentative"
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_ARRIVED",
+      "latency_s": 2.0,
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000001",
+      "source_node_id": "NODE_A",
+      "time_s": 3.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_ARRIVED",
+      "latency_s": 2.0,
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000001",
+      "source_node_id": "NODE_B",
+      "time_s": 3.0
+    },
+    {
+      "event_type": "TRACK_MESSAGE_GENERATED",
+      "generated": true,
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000001",
+      "reason": "comm_link_available",
+      "send_attempt_success": true,
+      "source_node_id": "NODE_A",
+      "time_s": 3.0
+    },
+    {
+      "event_type": "TRACK_MESSAGE_GENERATED",
+      "generated": true,
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000001",
+      "reason": "comm_link_available",
+      "send_attempt_success": true,
+      "source_node_id": "NODE_B",
+      "time_s": 3.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_SENT",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000001",
+      "send_log_present": true,
+      "source_node_id": "NODE_A",
+      "time_s": 3.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_SENT",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000001",
+      "send_log_present": true,
+      "source_node_id": "NODE_B",
+      "time_s": 3.0
+    },
+    {
+      "candidate_global_ids": [],
+      "decision": "accepted",
+      "distance_m": null,
+      "event_type": "ASSOCIATED",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000001",
+      "reason": "new_track",
+      "rejected_candidates": [],
+      "source_node_id": "NODE_A",
+      "time_s": 4.0
+    },
+    {
+      "candidate_global_ids": [
+        "GLOBAL_TRACK_1"
+      ],
+      "decision": "accepted",
+      "distance_m": 64.323831,
+      "event_type": "ASSOCIATED",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000001",
+      "reason": "spatial_gate_associated",
+      "rejected_candidates": [],
+      "source_node_id": "NODE_B",
+      "time_s": 4.0
+    },
+    {
+      "active_source_nodes": [
+        "NODE_A"
+      ],
+      "active_source_state_timestamps_s": {
+        "NODE_A": 1.0
+      },
+      "effective_projection_velocity_mps": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "event_type": "CI_FUSED",
+      "fused_at_s": 4.0,
+      "fusion_method": "single_source",
+      "fusion_weights": {
+        "NODE_A": 1.0
+      },
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_arrived_at_s": 3.0,
+      "message_id": "GT-NODE_A-NODE_A-T1-000001",
+      "message_position_m": [
+        -72.810596,
+        153.969968,
+        -25.95852
+      ],
+      "message_state_timestamp_s": 1.0,
+      "message_velocity_mps": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "numerical_guards": [],
+      "participating_source_nodes": [
+        "NODE_A"
+      ],
+      "projected_message_position_m": [
+        -72.810596,
+        153.969968,
+        -25.95852
+      ],
+      "projection_delta_s": 3.0,
+      "reason": "ci_fusion_complete",
+      "source_node_id": "NODE_A",
+      "time_s": 4.0
+    },
+    {
+      "active_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "active_source_state_timestamps_s": {
+        "NODE_A": 1.0,
+        "NODE_B": 1.0
+      },
+      "effective_projection_velocity_mps": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "event_type": "CI_FUSED",
+      "fused_at_s": 4.0,
+      "fusion_method": "covariance_intersection_conservative",
+      "fusion_weights": {
+        "NODE_A": 0.0,
+        "NODE_B": 1.0
+      },
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_arrived_at_s": 3.0,
+      "message_id": "GT-NODE_B-NODE_B-T1-000001",
+      "message_position_m": [
+        -55.915215,
+        215.962665,
+        -28.95966
+      ],
+      "message_state_timestamp_s": 1.0,
+      "message_velocity_mps": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "numerical_guards": [],
+      "participating_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "projected_message_position_m": [
+        -55.915215,
+        215.962665,
+        -28.95966
+      ],
+      "projection_delta_s": 3.0,
+      "reason": "ci_fusion_complete",
+      "source_node_id": "NODE_B",
+      "time_s": 4.0
+    },
+    {
+      "candidate_global_count": 0,
+      "decision": "accepted",
+      "event_type": "GLOBAL_GATE",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000001",
+      "reason": "new_track",
+      "rejected_candidate_count": 0,
+      "source_node_id": "NODE_A",
+      "time_s": 4.0
+    },
+    {
+      "candidate_global_count": 1,
+      "decision": "accepted",
+      "event_type": "GLOBAL_GATE",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000001",
+      "reason": "spatial_gate_associated",
+      "rejected_candidate_count": 0,
+      "source_node_id": "NODE_B",
+      "time_s": 4.0
+    },
+    {
+      "candidate_global_ids": [],
+      "decision": "accepted",
+      "distance_m": null,
+      "event_type": "GLOBAL_TRACK_CREATED",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000001",
+      "reason": "new_track",
+      "rejected_candidates": [],
+      "source_node_id": "NODE_A",
+      "time_s": 4.0
+    },
+    {
+      "event_type": "HANDOVER",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "handover_count": 1,
+      "reason": "reporting_source_changed",
+      "source_node_id": "NODE_B",
+      "time_s": 4.0
+    },
+    {
+      "event_type": "COASTING",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "reason": "coasting",
+      "time_s": 5.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_ARRIVED",
+      "latency_s": 2.0,
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000002",
+      "source_node_id": "NODE_A",
+      "time_s": 6.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_ARRIVED",
+      "latency_s": 2.0,
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000002",
+      "source_node_id": "NODE_B",
+      "time_s": 6.0
+    },
+    {
+      "event_type": "TRACK_MESSAGE_GENERATED",
+      "generated": true,
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000002",
+      "reason": "comm_link_available",
+      "send_attempt_success": true,
+      "source_node_id": "NODE_A",
+      "time_s": 6.0
+    },
+    {
+      "event_type": "TRACK_MESSAGE_GENERATED",
+      "generated": true,
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000002",
+      "reason": "comm_link_available",
+      "send_attempt_success": true,
+      "source_node_id": "NODE_B",
+      "time_s": 6.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_SENT",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000002",
+      "send_log_present": true,
+      "source_node_id": "NODE_A",
+      "time_s": 6.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_SENT",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000002",
+      "send_log_present": true,
+      "source_node_id": "NODE_B",
+      "time_s": 6.0
+    },
+    {
+      "candidate_global_ids": [],
+      "decision": "accepted",
+      "distance_m": 480.879937,
+      "event_type": "ASSOCIATED",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000002",
+      "reason": "mapping_reused",
+      "rejected_candidates": [],
+      "source_node_id": "NODE_A",
+      "time_s": 7.0
+    },
+    {
+      "candidate_global_ids": [],
+      "decision": "accepted",
+      "distance_m": 518.334241,
+      "event_type": "ASSOCIATED",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000002",
+      "reason": "mapping_reused",
+      "rejected_candidates": [],
+      "source_node_id": "NODE_B",
+      "time_s": 7.0
+    },
+    {
+      "active_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "active_source_state_timestamps_s": {
+        "NODE_A": 4.0,
+        "NODE_B": 1.0
+      },
+      "effective_projection_velocity_mps": [
+        1.536891,
+        107.209892,
+        17.786245
+      ],
+      "event_type": "CI_FUSED",
+      "fused_at_s": 7.0,
+      "fusion_method": "covariance_intersection_conservative",
+      "fusion_weights": {
+        "NODE_A": 0.0,
+        "NODE_B": 1.0
+      },
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_arrived_at_s": 6.0,
+      "message_id": "GT-NODE_A-NODE_A-T1-000002",
+      "message_position_m": [
+        -65.155816,
+        687.949516,
+        62.629302
+      ],
+      "message_state_timestamp_s": 4.0,
+      "message_velocity_mps": [
+        1.536891,
+        107.209892,
+        17.786245
+      ],
+      "numerical_guards": [],
+      "participating_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "projected_message_position_m": [
+        -60.545143,
+        1009.579192,
+        115.988035
+      ],
+      "projection_delta_s": 3.0,
+      "reason": "ci_fusion_complete",
+      "source_node_id": "NODE_A",
+      "time_s": 7.0
+    },
+    {
+      "active_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "active_source_state_timestamps_s": {
+        "NODE_A": 4.0,
+        "NODE_B": 4.0
+      },
+      "effective_projection_velocity_mps": [
+        -3.678823,
+        106.443534,
+        -0.377676
+      ],
+      "event_type": "CI_FUSED",
+      "fused_at_s": 7.0,
+      "fusion_method": "covariance_intersection_conservative",
+      "fusion_weights": {
+        "NODE_A": 0.0,
+        "NODE_B": 1.0
+      },
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_arrived_at_s": 6.0,
+      "message_id": "GT-NODE_B-NODE_B-T1-000002",
+      "message_position_m": [
+        -73.818698,
+        733.984357,
+        -30.797673
+      ],
+      "message_state_timestamp_s": 4.0,
+      "message_velocity_mps": [
+        -3.678823,
+        106.443534,
+        -0.377676
+      ],
+      "numerical_guards": [],
+      "participating_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "projected_message_position_m": [
+        -84.855167,
+        1053.314958,
+        -31.930702
+      ],
+      "projection_delta_s": 3.0,
+      "reason": "ci_fusion_complete",
+      "source_node_id": "NODE_B",
+      "time_s": 7.0
+    },
+    {
+      "candidate_global_count": 0,
+      "decision": "accepted",
+      "event_type": "GLOBAL_GATE",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000002",
+      "reason": "mapping_reused",
+      "rejected_candidate_count": 0,
+      "source_node_id": "NODE_A",
+      "time_s": 7.0
+    },
+    {
+      "candidate_global_count": 0,
+      "decision": "accepted",
+      "event_type": "GLOBAL_GATE",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000002",
+      "reason": "mapping_reused",
+      "rejected_candidate_count": 0,
+      "source_node_id": "NODE_B",
+      "time_s": 7.0
+    },
+    {
+      "event_type": "HANDOVER",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "handover_count": 3,
+      "reason": "reporting_source_changed",
+      "source_node_id": "NODE_B",
+      "time_s": 7.0
+    },
+    {
+      "event_type": "COASTING",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "reason": "coasting",
+      "time_s": 8.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_ARRIVED",
+      "latency_s": 2.0,
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000003",
+      "source_node_id": "NODE_A",
+      "time_s": 9.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_ARRIVED",
+      "latency_s": 2.0,
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000003",
+      "source_node_id": "NODE_B",
+      "time_s": 9.0
+    },
+    {
+      "event_type": "TRACK_MESSAGE_GENERATED",
+      "generated": true,
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000003",
+      "reason": "comm_link_available",
+      "send_attempt_success": true,
+      "source_node_id": "NODE_A",
+      "time_s": 9.0
+    },
+    {
+      "event_type": "TRACK_MESSAGE_GENERATED",
+      "generated": true,
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000003",
+      "reason": "comm_link_available",
+      "send_attempt_success": true,
+      "source_node_id": "NODE_B",
+      "time_s": 9.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_SENT",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000003",
+      "send_log_present": true,
+      "source_node_id": "NODE_A",
+      "time_s": 9.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_SENT",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000003",
+      "send_log_present": true,
+      "source_node_id": "NODE_B",
+      "time_s": 9.0
+    },
+    {
+      "candidate_global_ids": [],
+      "decision": "accepted",
+      "distance_m": 147.593887,
+      "event_type": "ASSOCIATED",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000003",
+      "reason": "mapping_reused",
+      "rejected_candidates": [],
+      "source_node_id": "NODE_A",
+      "time_s": 10.0
+    },
+    {
+      "candidate_global_ids": [],
+      "decision": "accepted",
+      "distance_m": 203.139849,
+      "event_type": "ASSOCIATED",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000003",
+      "reason": "mapping_reused",
+      "rejected_candidates": [],
+      "source_node_id": "NODE_B",
+      "time_s": 10.0
+    },
+    {
+      "active_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "active_source_state_timestamps_s": {
+        "NODE_A": 7.0,
+        "NODE_B": 4.0
+      },
+      "effective_projection_velocity_mps": [
+        -10.914071,
+        192.434752,
+        11.336412
+      ],
+      "event_type": "CI_FUSED",
+      "fused_at_s": 10.0,
+      "fusion_method": "covariance_intersection_conservative",
+      "fusion_weights": {
+        "NODE_A": 0.0,
+        "NODE_B": 1.0
+      },
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_arrived_at_s": 9.0,
+      "message_id": "GT-NODE_A-NODE_A-T1-000003",
+      "message_position_m": [
+        -126.35728,
+        1460.052854,
+        81.896109
+      ],
+      "message_state_timestamp_s": 7.0,
+      "message_velocity_mps": [
+        -10.914071,
+        192.434752,
+        11.336412
+      ],
+      "numerical_guards": [],
+      "participating_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "projected_message_position_m": [
+        -159.099491,
+        2037.357111,
+        115.905346
+      ],
+      "projection_delta_s": 3.0,
+      "reason": "ci_fusion_complete",
+      "source_node_id": "NODE_A",
+      "time_s": 10.0
+    },
+    {
+      "active_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "active_source_state_timestamps_s": {
+        "NODE_A": 7.0,
+        "NODE_B": 7.0
+      },
+      "effective_projection_velocity_mps": [
+        7.010099,
+        208.408448,
+        -13.020436
+      ],
+      "event_type": "CI_FUSED",
+      "fused_at_s": 10.0,
+      "fusion_method": "covariance_intersection_conservative",
+      "fusion_weights": {
+        "NODE_A": 0.0,
+        "NODE_B": 1.0
+      },
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_arrived_at_s": 9.0,
+      "message_id": "GT-NODE_B-NODE_B-T1-000003",
+      "message_position_m": [
+        -32.201414,
+        1555.595281,
+        -94.209079
+      ],
+      "message_state_timestamp_s": 7.0,
+      "message_velocity_mps": [
+        7.010099,
+        208.408448,
+        -13.020436
+      ],
+      "numerical_guards": [],
+      "participating_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "projected_message_position_m": [
+        -11.171116,
+        2180.820624,
+        -133.270387
+      ],
+      "projection_delta_s": 3.0,
+      "reason": "ci_fusion_complete",
+      "source_node_id": "NODE_B",
+      "time_s": 10.0
+    },
+    {
+      "candidate_global_count": 0,
+      "decision": "accepted",
+      "event_type": "GLOBAL_GATE",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000003",
+      "reason": "mapping_reused",
+      "rejected_candidate_count": 0,
+      "source_node_id": "NODE_A",
+      "time_s": 10.0
+    },
+    {
+      "candidate_global_count": 0,
+      "decision": "accepted",
+      "event_type": "GLOBAL_GATE",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000003",
+      "reason": "mapping_reused",
+      "rejected_candidate_count": 0,
+      "source_node_id": "NODE_B",
+      "time_s": 10.0
+    },
+    {
+      "event_type": "HANDOVER",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "handover_count": 5,
+      "reason": "reporting_source_changed",
+      "source_node_id": "NODE_B",
+      "time_s": 10.0
+    },
+    {
+      "event_type": "COASTING",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "reason": "coasting",
+      "time_s": 11.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_ARRIVED",
+      "latency_s": 2.0,
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000004",
+      "source_node_id": "NODE_A",
+      "time_s": 12.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_ARRIVED",
+      "latency_s": 2.0,
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000004",
+      "source_node_id": "NODE_B",
+      "time_s": 12.0
+    },
+    {
+      "event_type": "TRACK_MESSAGE_GENERATED",
+      "generated": true,
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000004",
+      "reason": "comm_link_available",
+      "send_attempt_success": true,
+      "source_node_id": "NODE_A",
+      "time_s": 12.0
+    },
+    {
+      "event_type": "TRACK_MESSAGE_GENERATED",
+      "generated": true,
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000004",
+      "reason": "comm_link_available",
+      "send_attempt_success": true,
+      "source_node_id": "NODE_B",
+      "time_s": 12.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_SENT",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000004",
+      "send_log_present": true,
+      "source_node_id": "NODE_A",
+      "time_s": 12.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_SENT",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000004",
+      "send_log_present": true,
+      "source_node_id": "NODE_B",
+      "time_s": 12.0
+    },
+    {
+      "candidate_global_ids": [],
+      "decision": "accepted",
+      "distance_m": 684.833617,
+      "event_type": "ASSOCIATED",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000004",
+      "reason": "mapping_reused",
+      "rejected_candidates": [],
+      "source_node_id": "NODE_A",
+      "time_s": 13.0
+    },
+    {
+      "candidate_global_ids": [],
+      "decision": "accepted",
+      "distance_m": 589.184469,
+      "event_type": "ASSOCIATED",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000004",
+      "reason": "mapping_reused",
+      "rejected_candidates": [],
+      "source_node_id": "NODE_B",
+      "time_s": 13.0
+    },
+    {
+      "active_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "active_source_state_timestamps_s": {
+        "NODE_A": 10.0,
+        "NODE_B": 7.0
+      },
+      "effective_projection_velocity_mps": [
+        17.736985,
+        215.168349,
+        1.069701
+      ],
+      "event_type": "CI_FUSED",
+      "fused_at_s": 13.0,
+      "fusion_method": "covariance_intersection_conservative",
+      "fusion_weights": {
+        "NODE_A": 0.0,
+        "NODE_B": 1.0
+      },
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_arrived_at_s": 12.0,
+      "message_id": "GT-NODE_A-NODE_A-T1-000004",
+      "message_position_m": [
+        -2.228252,
+        2161.828878,
+        59.692695
+      ],
+      "message_state_timestamp_s": 10.0,
+      "message_velocity_mps": [
+        17.736985,
+        215.168349,
+        1.069701
+      ],
+      "numerical_guards": [],
+      "participating_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "projected_message_position_m": [
+        50.982703,
+        2807.333926,
+        62.901797
+      ],
+      "projection_delta_s": 3.0,
+      "reason": "ci_fusion_complete",
+      "source_node_id": "NODE_A",
+      "time_s": 13.0
+    },
+    {
+      "active_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "active_source_state_timestamps_s": {
+        "NODE_A": 10.0,
+        "NODE_B": 10.0
+      },
+      "effective_projection_velocity_mps": [
+        16.023102,
+        219.471606,
+        7.689724
+      ],
+      "event_type": "CI_FUSED",
+      "fused_at_s": 13.0,
+      "fusion_method": "covariance_intersection_conservative",
+      "fusion_weights": {
+        "NODE_A": 0.0,
+        "NODE_B": 1.0
+      },
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_arrived_at_s": 12.0,
+      "message_id": "GT-NODE_B-NODE_B-T1-000004",
+      "message_position_m": [
+        31.889557,
+        2233.676154,
+        -34.325184
+      ],
+      "message_state_timestamp_s": 10.0,
+      "message_velocity_mps": [
+        16.023102,
+        219.471606,
+        7.689724
+      ],
+      "numerical_guards": [],
+      "participating_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "projected_message_position_m": [
+        79.958864,
+        2892.090973,
+        -11.256013
+      ],
+      "projection_delta_s": 3.0,
+      "reason": "ci_fusion_complete",
+      "source_node_id": "NODE_B",
+      "time_s": 13.0
+    },
+    {
+      "candidate_global_count": 0,
+      "decision": "accepted",
+      "event_type": "GLOBAL_GATE",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000004",
+      "reason": "mapping_reused",
+      "rejected_candidate_count": 0,
+      "source_node_id": "NODE_A",
+      "time_s": 13.0
+    },
+    {
+      "candidate_global_count": 0,
+      "decision": "accepted",
+      "event_type": "GLOBAL_GATE",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000004",
+      "reason": "mapping_reused",
+      "rejected_candidate_count": 0,
+      "source_node_id": "NODE_B",
+      "time_s": 13.0
+    },
+    {
+      "event_type": "HANDOVER",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "handover_count": 7,
+      "reason": "reporting_source_changed",
+      "source_node_id": "NODE_B",
+      "time_s": 13.0
+    },
+    {
+      "event_type": "COASTING",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "reason": "coasting",
+      "time_s": 14.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_ARRIVED",
+      "latency_s": 2.0,
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000005",
+      "source_node_id": "NODE_A",
+      "time_s": 15.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_ARRIVED",
+      "latency_s": 2.0,
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000005",
+      "source_node_id": "NODE_B",
+      "time_s": 15.0
+    },
+    {
+      "event_type": "TRACK_MESSAGE_GENERATED",
+      "generated": true,
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000005",
+      "reason": "comm_link_available",
+      "send_attempt_success": true,
+      "source_node_id": "NODE_A",
+      "time_s": 15.0
+    },
+    {
+      "event_type": "TRACK_MESSAGE_GENERATED",
+      "generated": true,
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000005",
+      "reason": "comm_link_available",
+      "send_attempt_success": true,
+      "source_node_id": "NODE_B",
+      "time_s": 15.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_SENT",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000005",
+      "send_log_present": true,
+      "source_node_id": "NODE_A",
+      "time_s": 15.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_SENT",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000005",
+      "send_log_present": true,
+      "source_node_id": "NODE_B",
+      "time_s": 15.0
+    },
+    {
+      "candidate_global_ids": [],
+      "decision": "accepted",
+      "distance_m": 692.865248,
+      "event_type": "ASSOCIATED",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000005",
+      "reason": "mapping_reused",
+      "rejected_candidates": [],
+      "source_node_id": "NODE_A",
+      "time_s": 16.0
+    },
+    {
+      "candidate_global_ids": [],
+      "decision": "accepted",
+      "distance_m": 773.284762,
+      "event_type": "ASSOCIATED",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000005",
+      "reason": "mapping_reused",
+      "rejected_candidates": [],
+      "source_node_id": "NODE_B",
+      "time_s": 16.0
+    },
+    {
+      "active_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "active_source_state_timestamps_s": {
+        "NODE_A": 13.0,
+        "NODE_B": 10.0
+      },
+      "effective_projection_velocity_mps": [
+        -4.092143,
+        229.407169,
+        -11.717559
+      ],
+      "event_type": "CI_FUSED",
+      "fused_at_s": 16.0,
+      "fusion_method": "covariance_intersection_conservative",
+      "fusion_weights": {
+        "NODE_A": 0.0,
+        "NODE_B": 1.0
+      },
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_arrived_at_s": 15.0,
+      "message_id": "GT-NODE_A-NODE_A-T1-000005",
+      "message_position_m": [
+        -71.758284,
+        2887.396073,
+        -8.998504
+      ],
+      "message_state_timestamp_s": 13.0,
+      "message_velocity_mps": [
+        -4.092143,
+        229.407169,
+        -11.717559
+      ],
+      "numerical_guards": [],
+      "participating_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "projected_message_position_m": [
+        -84.034712,
+        3575.617581,
+        -44.151182
+      ],
+      "projection_delta_s": 3.0,
+      "reason": "ci_fusion_complete",
+      "source_node_id": "NODE_A",
+      "time_s": 16.0
+    },
+    {
+      "active_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "active_source_state_timestamps_s": {
+        "NODE_A": 13.0,
+        "NODE_B": 13.0
+      },
+      "effective_projection_velocity_mps": [
+        2.522235,
+        196.587328,
+        4.423845
+      ],
+      "event_type": "CI_FUSED",
+      "fused_at_s": 16.0,
+      "fusion_method": "covariance_intersection_conservative",
+      "fusion_weights": {
+        "NODE_A": 0.0,
+        "NODE_B": 1.0
+      },
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_arrived_at_s": 15.0,
+      "message_id": "GT-NODE_B-NODE_B-T1-000005",
+      "message_position_m": [
+        17.441631,
+        2786.12284,
+        -26.37902
+      ],
+      "message_state_timestamp_s": 13.0,
+      "message_velocity_mps": [
+        2.522235,
+        196.587328,
+        4.423845
+      ],
+      "numerical_guards": [],
+      "participating_source_nodes": [
+        "NODE_A",
+        "NODE_B"
+      ],
+      "projected_message_position_m": [
+        25.008335,
+        3375.884824,
+        -13.107486
+      ],
+      "projection_delta_s": 3.0,
+      "reason": "ci_fusion_complete",
+      "source_node_id": "NODE_B",
+      "time_s": 16.0
+    },
+    {
+      "candidate_global_count": 0,
+      "decision": "accepted",
+      "event_type": "GLOBAL_GATE",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000005",
+      "reason": "mapping_reused",
+      "rejected_candidate_count": 0,
+      "source_node_id": "NODE_A",
+      "time_s": 16.0
+    },
+    {
+      "candidate_global_count": 0,
+      "decision": "accepted",
+      "event_type": "GLOBAL_GATE",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000005",
+      "reason": "mapping_reused",
+      "rejected_candidate_count": 0,
+      "source_node_id": "NODE_B",
+      "time_s": 16.0
+    },
+    {
+      "event_type": "HANDOVER",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "handover_count": 9,
+      "reason": "reporting_source_changed",
+      "source_node_id": "NODE_B",
+      "time_s": 16.0
+    },
+    {
+      "event_type": "COASTING",
+      "global_track_id": "GLOBAL_TRACK_1",
+      "reason": "coasting",
+      "time_s": 17.0
+    },
+    {
+      "event_type": "ARRIVED_UNCONSUMED",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000006",
+      "reason": "simulation_ended_before_next_begin_tick_ingest",
+      "source_node_id": "NODE_A",
+      "time_s": 18.0
+    },
+    {
+      "event_type": "ARRIVED_UNCONSUMED",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000006",
+      "reason": "simulation_ended_before_next_begin_tick_ingest",
+      "source_node_id": "NODE_B",
+      "time_s": 18.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_ARRIVED",
+      "latency_s": 2.0,
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000006",
+      "source_node_id": "NODE_A",
+      "time_s": 18.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_ARRIVED",
+      "latency_s": 2.0,
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000006",
+      "source_node_id": "NODE_B",
+      "time_s": 18.0
+    },
+    {
+      "event_type": "TRACK_MESSAGE_GENERATED",
+      "generated": true,
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000006",
+      "reason": "comm_link_available",
+      "send_attempt_success": true,
+      "source_node_id": "NODE_A",
+      "time_s": 18.0
+    },
+    {
+      "event_type": "TRACK_MESSAGE_GENERATED",
+      "generated": true,
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000006",
+      "reason": "comm_link_available",
+      "send_attempt_success": true,
+      "source_node_id": "NODE_B",
+      "time_s": 18.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_SENT",
+      "local_track_id": "NODE_A-T1",
+      "message_id": "GT-NODE_A-NODE_A-T1-000006",
+      "send_log_present": true,
+      "source_node_id": "NODE_A",
+      "time_s": 18.0
+    },
+    {
+      "bytes": 128.0,
+      "event_type": "TRACK_MESSAGE_SENT",
+      "local_track_id": "NODE_B-T1",
+      "message_id": "GT-NODE_B-NODE_B-T1-000006",
+      "send_log_present": true,
+      "source_node_id": "NODE_B",
+      "time_s": 18.0
+    }
+  ],
+  "frames": [
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 0,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 1.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [
+        {
+          "event_type": "LOCAL_TRACK_CREATED",
+          "last_measurement_time_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 2.0,
+          "track_status": "tentative"
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -72.810596,
+            153.969968,
+            -25.95852
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            85.86922,
+            85.86922,
+            85.86922
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -55.915215,
+            215.962665,
+            -28.95966
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            80.728264,
+            80.728264,
+            80.728264
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 2.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 2,
+        "arrived_messages": 2,
+        "communication_bytes": 256.0,
+        "message_utilization": 0.0,
+        "rejected_messages": 0,
+        "sent_messages": 2,
+        "used_messages": 0
+      },
+      "events": [
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "latency_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000001",
+          "source_node_id": "NODE_A",
+          "time_s": 3.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "latency_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000001",
+          "source_node_id": "NODE_B",
+          "time_s": 3.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "generated": true,
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000001",
+          "reason": "comm_link_available",
+          "send_attempt_success": true,
+          "source_node_id": "NODE_A",
+          "time_s": 3.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "generated": true,
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000001",
+          "reason": "comm_link_available",
+          "send_attempt_success": true,
+          "source_node_id": "NODE_B",
+          "time_s": 3.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000001",
+          "send_log_present": true,
+          "source_node_id": "NODE_A",
+          "time_s": 3.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000001",
+          "send_log_present": true,
+          "source_node_id": "NODE_B",
+          "time_s": 3.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 2,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -72.810596,
+            153.969968,
+            -25.95852
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            99.368119,
+            99.368119,
+            99.368119
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -55.915215,
+            215.962665,
+            -28.95966
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            94.960795,
+            94.960795,
+            94.960795
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 3.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 2,
+        "arrived_messages": 2,
+        "communication_bytes": 256.0,
+        "message_utilization": 1.0,
+        "rejected_messages": 0,
+        "sent_messages": 2,
+        "used_messages": 2
+      },
+      "events": [
+        {
+          "candidate_global_ids": [],
+          "decision": "accepted",
+          "distance_m": null,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000001",
+          "reason": "new_track",
+          "rejected_candidates": [],
+          "source_node_id": "NODE_A",
+          "time_s": 4.0
+        },
+        {
+          "candidate_global_ids": [
+            "GLOBAL_TRACK_1"
+          ],
+          "decision": "accepted",
+          "distance_m": 64.323831,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000001",
+          "reason": "spatial_gate_associated",
+          "rejected_candidates": [],
+          "source_node_id": "NODE_B",
+          "time_s": 4.0
+        },
+        {
+          "active_source_nodes": [
+            "NODE_A"
+          ],
+          "active_source_state_timestamps_s": {
+            "NODE_A": 1.0
+          },
+          "effective_projection_velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "event_type": "CI_FUSED",
+          "fused_at_s": 4.0,
+          "fusion_method": "single_source",
+          "fusion_weights": {
+            "NODE_A": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_arrived_at_s": 3.0,
+          "message_id": "GT-NODE_A-NODE_A-T1-000001",
+          "message_position_m": [
+            -72.810596,
+            153.969968,
+            -25.95852
+          ],
+          "message_state_timestamp_s": 1.0,
+          "message_velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "numerical_guards": [],
+          "participating_source_nodes": [
+            "NODE_A"
+          ],
+          "projected_message_position_m": [
+            -72.810596,
+            153.969968,
+            -25.95852
+          ],
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_A",
+          "time_s": 4.0
+        },
+        {
+          "active_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "active_source_state_timestamps_s": {
+            "NODE_A": 1.0,
+            "NODE_B": 1.0
+          },
+          "effective_projection_velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "event_type": "CI_FUSED",
+          "fused_at_s": 4.0,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_arrived_at_s": 3.0,
+          "message_id": "GT-NODE_B-NODE_B-T1-000001",
+          "message_position_m": [
+            -55.915215,
+            215.962665,
+            -28.95966
+          ],
+          "message_state_timestamp_s": 1.0,
+          "message_velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "numerical_guards": [],
+          "participating_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "projected_message_position_m": [
+            -55.915215,
+            215.962665,
+            -28.95966
+          ],
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_B",
+          "time_s": 4.0
+        },
+        {
+          "candidate_global_count": 0,
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000001",
+          "reason": "new_track",
+          "rejected_candidate_count": 0,
+          "source_node_id": "NODE_A",
+          "time_s": 4.0
+        },
+        {
+          "candidate_global_count": 1,
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000001",
+          "reason": "spatial_gate_associated",
+          "rejected_candidate_count": 0,
+          "source_node_id": "NODE_B",
+          "time_s": 4.0
+        },
+        {
+          "candidate_global_ids": [],
+          "decision": "accepted",
+          "distance_m": null,
+          "event_type": "GLOBAL_TRACK_CREATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000001",
+          "reason": "new_track",
+          "rejected_candidates": [],
+          "source_node_id": "NODE_A",
+          "time_s": 4.0
+        },
+        {
+          "event_type": "HANDOVER",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover_count": 1,
+          "reason": "reporting_source_changed",
+          "source_node_id": "NODE_B",
+          "time_s": 4.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 2,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 0,
+          "covariance_position_m2": [
+            9317.552603,
+            9317.552603,
+            9317.552603
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 1,
+            "last_handover_at_s": 4.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 3.0,
+          "last_measurement_time_s": 1.0,
+          "last_state_time_s": 4.0,
+          "last_update_time_s": 4.0,
+          "position_m": [
+            -55.915215,
+            215.962665,
+            -28.95966
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "confirmed",
+          "updates": 2,
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -72.810596,
+            153.969968,
+            -25.95852
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            131.827626,
+            131.827626,
+            131.827626
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -55.915215,
+            215.962665,
+            -28.95966
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            128.538137,
+            128.538137,
+            128.538137
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 4.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 2,
+        "arrived_messages": 2,
+        "communication_bytes": 256.0,
+        "message_utilization": 1.0,
+        "rejected_messages": 0,
+        "sent_messages": 2,
+        "used_messages": 2
+      },
+      "events": [
+        {
+          "event_type": "COASTING",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "reason": "coasting",
+          "time_s": 5.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 2,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 1,
+          "covariance_position_m2": [
+            9417.552603,
+            9417.552603,
+            9417.552603
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 1,
+            "last_handover_at_s": 4.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 4.0,
+          "last_measurement_time_s": 1.0,
+          "last_state_time_s": 5.0,
+          "last_update_time_s": 5.0,
+          "position_m": [
+            -55.915215,
+            215.962665,
+            -28.95966
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "updates": 2,
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 2,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -66.692706,
+            580.739624,
+            44.843057
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            82.286404,
+            82.286404,
+            82.286404
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            1.536891,
+            107.209892,
+            17.786245
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 2,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -70.139875,
+            627.540823,
+            -30.419996
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            67.400857,
+            67.400857,
+            67.400857
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            -3.678823,
+            106.443534,
+            -0.377676
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 5.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 4,
+        "arrived_messages": 4,
+        "communication_bytes": 512.0,
+        "message_utilization": 0.5,
+        "rejected_messages": 0,
+        "sent_messages": 4,
+        "used_messages": 2
+      },
+      "events": [
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "latency_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000002",
+          "source_node_id": "NODE_A",
+          "time_s": 6.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "latency_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000002",
+          "source_node_id": "NODE_B",
+          "time_s": 6.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "generated": true,
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000002",
+          "reason": "comm_link_available",
+          "send_attempt_success": true,
+          "source_node_id": "NODE_A",
+          "time_s": 6.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "generated": true,
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000002",
+          "reason": "comm_link_available",
+          "send_attempt_success": true,
+          "source_node_id": "NODE_B",
+          "time_s": 6.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000002",
+          "send_log_present": true,
+          "source_node_id": "NODE_A",
+          "time_s": 6.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000002",
+          "send_log_present": true,
+          "source_node_id": "NODE_B",
+          "time_s": 6.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 2,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 2,
+          "covariance_position_m2": [
+            9517.552603,
+            9517.552603,
+            9517.552603
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 1,
+            "last_handover_at_s": 4.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 5.0,
+          "last_measurement_time_s": 1.0,
+          "last_state_time_s": 6.0,
+          "last_update_time_s": 6.0,
+          "position_m": [
+            -55.915215,
+            215.962665,
+            -28.95966
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "updates": 2,
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 2,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -65.155816,
+            687.949516,
+            62.629302
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            112.603281,
+            112.603281,
+            112.603281
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            1.536891,
+            107.209892,
+            17.786245
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 2,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -73.818698,
+            733.984357,
+            -30.797673
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            96.949258,
+            96.949258,
+            96.949258
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            -3.678823,
+            106.443534,
+            -0.377676
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 6.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 4,
+        "arrived_messages": 4,
+        "communication_bytes": 512.0,
+        "message_utilization": 1.0,
+        "rejected_messages": 0,
+        "sent_messages": 4,
+        "used_messages": 4
+      },
+      "events": [
+        {
+          "candidate_global_ids": [],
+          "decision": "accepted",
+          "distance_m": 480.879937,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000002",
+          "reason": "mapping_reused",
+          "rejected_candidates": [],
+          "source_node_id": "NODE_A",
+          "time_s": 7.0
+        },
+        {
+          "candidate_global_ids": [],
+          "decision": "accepted",
+          "distance_m": 518.334241,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000002",
+          "reason": "mapping_reused",
+          "rejected_candidates": [],
+          "source_node_id": "NODE_B",
+          "time_s": 7.0
+        },
+        {
+          "active_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "active_source_state_timestamps_s": {
+            "NODE_A": 4.0,
+            "NODE_B": 1.0
+          },
+          "effective_projection_velocity_mps": [
+            1.536891,
+            107.209892,
+            17.786245
+          ],
+          "event_type": "CI_FUSED",
+          "fused_at_s": 7.0,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_arrived_at_s": 6.0,
+          "message_id": "GT-NODE_A-NODE_A-T1-000002",
+          "message_position_m": [
+            -65.155816,
+            687.949516,
+            62.629302
+          ],
+          "message_state_timestamp_s": 4.0,
+          "message_velocity_mps": [
+            1.536891,
+            107.209892,
+            17.786245
+          ],
+          "numerical_guards": [],
+          "participating_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "projected_message_position_m": [
+            -60.545143,
+            1009.579192,
+            115.988035
+          ],
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_A",
+          "time_s": 7.0
+        },
+        {
+          "active_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "active_source_state_timestamps_s": {
+            "NODE_A": 4.0,
+            "NODE_B": 4.0
+          },
+          "effective_projection_velocity_mps": [
+            -3.678823,
+            106.443534,
+            -0.377676
+          ],
+          "event_type": "CI_FUSED",
+          "fused_at_s": 7.0,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_arrived_at_s": 6.0,
+          "message_id": "GT-NODE_B-NODE_B-T1-000002",
+          "message_position_m": [
+            -73.818698,
+            733.984357,
+            -30.797673
+          ],
+          "message_state_timestamp_s": 4.0,
+          "message_velocity_mps": [
+            -3.678823,
+            106.443534,
+            -0.377676
+          ],
+          "numerical_guards": [],
+          "participating_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "projected_message_position_m": [
+            -84.855167,
+            1053.314958,
+            -31.930702
+          ],
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_B",
+          "time_s": 7.0
+        },
+        {
+          "candidate_global_count": 0,
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000002",
+          "reason": "mapping_reused",
+          "rejected_candidate_count": 0,
+          "source_node_id": "NODE_A",
+          "time_s": 7.0
+        },
+        {
+          "candidate_global_count": 0,
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000002",
+          "reason": "mapping_reused",
+          "rejected_candidate_count": 0,
+          "source_node_id": "NODE_B",
+          "time_s": 7.0
+        },
+        {
+          "event_type": "HANDOVER",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover_count": 3,
+          "reason": "reporting_source_changed",
+          "source_node_id": "NODE_B",
+          "time_s": 7.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 4,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 3,
+          "covariance_position_m2": [
+            9699.158694,
+            9699.158694,
+            9699.158694
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 3,
+            "last_handover_at_s": 7.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 3.0,
+          "last_measurement_time_s": 4.0,
+          "last_state_time_s": 7.0,
+          "last_update_time_s": 7.0,
+          "position_m": [
+            -84.855167,
+            1053.314958,
+            -31.930702
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "confirmed",
+          "updates": 4,
+          "velocity_mps": [
+            -3.678823,
+            106.443534,
+            -0.377676
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 2,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -63.618925,
+            795.159408,
+            80.415546
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            153.635755,
+            153.635755,
+            153.635755
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            1.536891,
+            107.209892,
+            17.786245
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 2,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -77.497521,
+            840.427891,
+            -31.175349
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            138.821619,
+            138.821619,
+            138.821619
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            -3.678823,
+            106.443534,
+            -0.377676
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 7.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 4,
+        "arrived_messages": 4,
+        "communication_bytes": 512.0,
+        "message_utilization": 1.0,
+        "rejected_messages": 0,
+        "sent_messages": 4,
+        "used_messages": 4
+      },
+      "events": [
+        {
+          "event_type": "COASTING",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "reason": "coasting",
+          "time_s": 8.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 4,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 4,
+          "covariance_position_m2": [
+            9799.158694,
+            9799.158694,
+            9799.158694
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 3,
+            "last_handover_at_s": 7.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 4.0,
+          "last_measurement_time_s": 4.0,
+          "last_state_time_s": 8.0,
+          "last_update_time_s": 8.0,
+          "position_m": [
+            -88.53399,
+            1159.758492,
+            -32.308378
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "updates": 4,
+          "velocity_mps": [
+            -3.678823,
+            106.443534,
+            -0.377676
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 3,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -115.443209,
+            1267.618101,
+            70.559697
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            90.646466,
+            90.646466,
+            90.646466
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            -10.914071,
+            192.434752,
+            11.336412
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 3,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -39.211514,
+            1347.186833,
+            -81.188643
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            61.257408,
+            61.257408,
+            61.257408
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            7.010099,
+            208.408448,
+            -13.020436
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 8.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 6,
+        "arrived_messages": 6,
+        "communication_bytes": 768.0,
+        "message_utilization": 0.666667,
+        "rejected_messages": 0,
+        "sent_messages": 6,
+        "used_messages": 4
+      },
+      "events": [
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "latency_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000003",
+          "source_node_id": "NODE_A",
+          "time_s": 9.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "latency_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000003",
+          "source_node_id": "NODE_B",
+          "time_s": 9.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "generated": true,
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000003",
+          "reason": "comm_link_available",
+          "send_attempt_success": true,
+          "source_node_id": "NODE_A",
+          "time_s": 9.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "generated": true,
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000003",
+          "reason": "comm_link_available",
+          "send_attempt_success": true,
+          "source_node_id": "NODE_B",
+          "time_s": 9.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000003",
+          "send_log_present": true,
+          "source_node_id": "NODE_A",
+          "time_s": 9.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000003",
+          "send_log_present": true,
+          "source_node_id": "NODE_B",
+          "time_s": 9.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 4,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 5,
+          "covariance_position_m2": [
+            9899.158694,
+            9899.158694,
+            9899.158694
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 3,
+            "last_handover_at_s": 7.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 5.0,
+          "last_measurement_time_s": 4.0,
+          "last_state_time_s": 9.0,
+          "last_update_time_s": 9.0,
+          "position_m": [
+            -92.212813,
+            1266.202026,
+            -32.686055
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "updates": 4,
+          "velocity_mps": [
+            -3.678823,
+            106.443534,
+            -0.377676
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 3,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -126.35728,
+            1460.052854,
+            81.896109
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            120.680513,
+            120.680513,
+            120.680513
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            -10.914071,
+            192.434752,
+            11.336412
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 3,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -32.201414,
+            1555.595281,
+            -94.209079
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            90.424356,
+            90.424356,
+            90.424356
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            7.010099,
+            208.408448,
+            -13.020436
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 9.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 6,
+        "arrived_messages": 6,
+        "communication_bytes": 768.0,
+        "message_utilization": 1.0,
+        "rejected_messages": 0,
+        "sent_messages": 6,
+        "used_messages": 6
+      },
+      "events": [
+        {
+          "candidate_global_ids": [],
+          "decision": "accepted",
+          "distance_m": 147.593887,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000003",
+          "reason": "mapping_reused",
+          "rejected_candidates": [],
+          "source_node_id": "NODE_A",
+          "time_s": 10.0
+        },
+        {
+          "candidate_global_ids": [],
+          "decision": "accepted",
+          "distance_m": 203.139849,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000003",
+          "reason": "mapping_reused",
+          "rejected_candidates": [],
+          "source_node_id": "NODE_B",
+          "time_s": 10.0
+        },
+        {
+          "active_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "active_source_state_timestamps_s": {
+            "NODE_A": 7.0,
+            "NODE_B": 4.0
+          },
+          "effective_projection_velocity_mps": [
+            -10.914071,
+            192.434752,
+            11.336412
+          ],
+          "event_type": "CI_FUSED",
+          "fused_at_s": 10.0,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_arrived_at_s": 9.0,
+          "message_id": "GT-NODE_A-NODE_A-T1-000003",
+          "message_position_m": [
+            -126.35728,
+            1460.052854,
+            81.896109
+          ],
+          "message_state_timestamp_s": 7.0,
+          "message_velocity_mps": [
+            -10.914071,
+            192.434752,
+            11.336412
+          ],
+          "numerical_guards": [],
+          "participating_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "projected_message_position_m": [
+            -159.099491,
+            2037.357111,
+            115.905346
+          ],
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_A",
+          "time_s": 10.0
+        },
+        {
+          "active_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "active_source_state_timestamps_s": {
+            "NODE_A": 7.0,
+            "NODE_B": 7.0
+          },
+          "effective_projection_velocity_mps": [
+            7.010099,
+            208.408448,
+            -13.020436
+          ],
+          "event_type": "CI_FUSED",
+          "fused_at_s": 10.0,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_arrived_at_s": 9.0,
+          "message_id": "GT-NODE_B-NODE_B-T1-000003",
+          "message_position_m": [
+            -32.201414,
+            1555.595281,
+            -94.209079
+          ],
+          "message_state_timestamp_s": 7.0,
+          "message_velocity_mps": [
+            7.010099,
+            208.408448,
+            -13.020436
+          ],
+          "numerical_guards": [],
+          "participating_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "projected_message_position_m": [
+            -11.171116,
+            2180.820624,
+            -133.270387
+          ],
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_B",
+          "time_s": 10.0
+        },
+        {
+          "candidate_global_count": 0,
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000003",
+          "reason": "mapping_reused",
+          "rejected_candidate_count": 0,
+          "source_node_id": "NODE_A",
+          "time_s": 10.0
+        },
+        {
+          "candidate_global_count": 0,
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000003",
+          "reason": "mapping_reused",
+          "rejected_candidate_count": 0,
+          "source_node_id": "NODE_B",
+          "time_s": 10.0
+        },
+        {
+          "event_type": "HANDOVER",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover_count": 5,
+          "reason": "reporting_source_changed",
+          "source_node_id": "NODE_B",
+          "time_s": 10.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 6,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 6,
+          "covariance_position_m2": [
+            8476.564181,
+            8476.564181,
+            8476.564181
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 5,
+            "last_handover_at_s": 10.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 3.0,
+          "last_measurement_time_s": 7.0,
+          "last_state_time_s": 10.0,
+          "last_update_time_s": 10.0,
+          "position_m": [
+            -11.171116,
+            2180.820624,
+            -133.270387
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "confirmed",
+          "updates": 6,
+          "velocity_mps": [
+            7.010099,
+            208.408448,
+            -13.020436
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 3,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -137.27135,
+            1652.487606,
+            93.232522
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            161.055241,
+            161.055241,
+            161.055241
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            -10.914071,
+            192.434752,
+            11.336412
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 3,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -25.191315,
+            1764.003728,
+            -107.229515
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            132.772958,
+            132.772958,
+            132.772958
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            7.010099,
+            208.408448,
+            -13.020436
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 10.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 6,
+        "arrived_messages": 6,
+        "communication_bytes": 768.0,
+        "message_utilization": 1.0,
+        "rejected_messages": 0,
+        "sent_messages": 6,
+        "used_messages": 6
+      },
+      "events": [
+        {
+          "event_type": "COASTING",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "reason": "coasting",
+          "time_s": 11.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 6,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 7,
+          "covariance_position_m2": [
+            8576.564181,
+            8576.564181,
+            8576.564181
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 5,
+            "last_handover_at_s": 10.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 4.0,
+          "last_measurement_time_s": 7.0,
+          "last_state_time_s": 11.0,
+          "last_update_time_s": 11.0,
+          "position_m": [
+            -4.161016,
+            2389.229072,
+            -146.290823
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "updates": 6,
+          "velocity_mps": [
+            7.010099,
+            208.408448,
+            -13.020436
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 4,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -19.965237,
+            1946.660529,
+            58.622995
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            96.91444,
+            96.91444,
+            96.91444
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            17.736985,
+            215.168349,
+            1.069701
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 4,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            15.866455,
+            2014.204548,
+            -42.014908
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            54.192119,
+            54.192119,
+            54.192119
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            16.023102,
+            219.471606,
+            7.689724
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 11.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 8,
+        "arrived_messages": 8,
+        "communication_bytes": 1024.0,
+        "message_utilization": 0.75,
+        "rejected_messages": 0,
+        "sent_messages": 8,
+        "used_messages": 6
+      },
+      "events": [
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "latency_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000004",
+          "source_node_id": "NODE_A",
+          "time_s": 12.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "latency_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000004",
+          "source_node_id": "NODE_B",
+          "time_s": 12.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "generated": true,
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000004",
+          "reason": "comm_link_available",
+          "send_attempt_success": true,
+          "source_node_id": "NODE_A",
+          "time_s": 12.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "generated": true,
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000004",
+          "reason": "comm_link_available",
+          "send_attempt_success": true,
+          "source_node_id": "NODE_B",
+          "time_s": 12.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000004",
+          "send_log_present": true,
+          "source_node_id": "NODE_A",
+          "time_s": 12.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000004",
+          "send_log_present": true,
+          "source_node_id": "NODE_B",
+          "time_s": 12.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 6,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 8,
+          "covariance_position_m2": [
+            8676.564181,
+            8676.564181,
+            8676.564181
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 5,
+            "last_handover_at_s": 10.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 5.0,
+          "last_measurement_time_s": 7.0,
+          "last_state_time_s": 12.0,
+          "last_update_time_s": 12.0,
+          "position_m": [
+            2.849083,
+            2597.63752,
+            -159.311259
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "updates": 6,
+          "velocity_mps": [
+            7.010099,
+            208.408448,
+            -13.020436
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 4,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -2.228252,
+            2161.828878,
+            59.692695
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            126.918925,
+            126.918925,
+            126.918925
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            17.736985,
+            215.168349,
+            1.069701
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 4,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            31.889557,
+            2233.676154,
+            -34.325184
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            83.726465,
+            83.726465,
+            83.726465
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            16.023102,
+            219.471606,
+            7.689724
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 12.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 8,
+        "arrived_messages": 8,
+        "communication_bytes": 1024.0,
+        "message_utilization": 1.0,
+        "rejected_messages": 0,
+        "sent_messages": 8,
+        "used_messages": 8
+      },
+      "events": [
+        {
+          "candidate_global_ids": [],
+          "decision": "accepted",
+          "distance_m": 684.833617,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000004",
+          "reason": "mapping_reused",
+          "rejected_candidates": [],
+          "source_node_id": "NODE_A",
+          "time_s": 13.0
+        },
+        {
+          "candidate_global_ids": [],
+          "decision": "accepted",
+          "distance_m": 589.184469,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000004",
+          "reason": "mapping_reused",
+          "rejected_candidates": [],
+          "source_node_id": "NODE_B",
+          "time_s": 13.0
+        },
+        {
+          "active_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "active_source_state_timestamps_s": {
+            "NODE_A": 10.0,
+            "NODE_B": 7.0
+          },
+          "effective_projection_velocity_mps": [
+            17.736985,
+            215.168349,
+            1.069701
+          ],
+          "event_type": "CI_FUSED",
+          "fused_at_s": 13.0,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_arrived_at_s": 12.0,
+          "message_id": "GT-NODE_A-NODE_A-T1-000004",
+          "message_position_m": [
+            -2.228252,
+            2161.828878,
+            59.692695
+          ],
+          "message_state_timestamp_s": 10.0,
+          "message_velocity_mps": [
+            17.736985,
+            215.168349,
+            1.069701
+          ],
+          "numerical_guards": [],
+          "participating_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "projected_message_position_m": [
+            50.982703,
+            2807.333926,
+            62.901797
+          ],
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_A",
+          "time_s": 13.0
+        },
+        {
+          "active_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "active_source_state_timestamps_s": {
+            "NODE_A": 10.0,
+            "NODE_B": 10.0
+          },
+          "effective_projection_velocity_mps": [
+            16.023102,
+            219.471606,
+            7.689724
+          ],
+          "event_type": "CI_FUSED",
+          "fused_at_s": 13.0,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_arrived_at_s": 12.0,
+          "message_id": "GT-NODE_B-NODE_B-T1-000004",
+          "message_position_m": [
+            31.889557,
+            2233.676154,
+            -34.325184
+          ],
+          "message_state_timestamp_s": 10.0,
+          "message_velocity_mps": [
+            16.023102,
+            219.471606,
+            7.689724
+          ],
+          "numerical_guards": [],
+          "participating_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "projected_message_position_m": [
+            79.958864,
+            2892.090973,
+            -11.256013
+          ],
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_B",
+          "time_s": 13.0
+        },
+        {
+          "candidate_global_count": 0,
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000004",
+          "reason": "mapping_reused",
+          "rejected_candidate_count": 0,
+          "source_node_id": "NODE_A",
+          "time_s": 13.0
+        },
+        {
+          "candidate_global_count": 0,
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000004",
+          "reason": "mapping_reused",
+          "rejected_candidate_count": 0,
+          "source_node_id": "NODE_B",
+          "time_s": 13.0
+        },
+        {
+          "event_type": "HANDOVER",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover_count": 7,
+          "reason": "reporting_source_changed",
+          "source_node_id": "NODE_B",
+          "time_s": 13.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 8,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 9,
+          "covariance_position_m2": [
+            7310.120946,
+            7310.120946,
+            7310.120946
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 7,
+            "last_handover_at_s": 13.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 3.0,
+          "last_measurement_time_s": 10.0,
+          "last_state_time_s": 13.0,
+          "last_update_time_s": 13.0,
+          "position_m": [
+            79.958864,
+            2892.090973,
+            -11.256013
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "confirmed",
+          "updates": 8,
+          "velocity_mps": [
+            16.023102,
+            219.471606,
+            7.689724
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 4,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            15.508733,
+            2376.997227,
+            60.762396
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            166.926386,
+            166.926386,
+            166.926386
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            17.736985,
+            215.168349,
+            1.069701
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 4,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            47.91266,
+            2453.14776,
+            -26.63546
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            126.978172,
+            126.978172,
+            126.978172
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            16.023102,
+            219.471606,
+            7.689724
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 13.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 8,
+        "arrived_messages": 8,
+        "communication_bytes": 1024.0,
+        "message_utilization": 1.0,
+        "rejected_messages": 0,
+        "sent_messages": 8,
+        "used_messages": 8
+      },
+      "events": [
+        {
+          "event_type": "COASTING",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "reason": "coasting",
+          "time_s": 14.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 8,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 10,
+          "covariance_position_m2": [
+            7410.120946,
+            7410.120946,
+            7410.120946
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 7,
+            "last_handover_at_s": 13.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 4.0,
+          "last_measurement_time_s": 10.0,
+          "last_state_time_s": 14.0,
+          "last_update_time_s": 14.0,
+          "position_m": [
+            95.981967,
+            3111.562579,
+            -3.566289
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "updates": 8,
+          "velocity_mps": [
+            16.023102,
+            219.471606,
+            7.689724
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 5,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -67.666141,
+            2657.988904,
+            2.719055
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            103.291732,
+            103.291732,
+            103.291732
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            -4.092143,
+            229.407169,
+            -11.717559
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 5,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            14.919396,
+            2589.535511,
+            -30.802864
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            47.250253,
+            47.250253,
+            47.250253
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            2.522235,
+            196.587328,
+            4.423845
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 14.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 10,
+        "arrived_messages": 10,
+        "communication_bytes": 1280.0,
+        "message_utilization": 0.8,
+        "rejected_messages": 0,
+        "sent_messages": 10,
+        "used_messages": 8
+      },
+      "events": [
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "latency_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000005",
+          "source_node_id": "NODE_A",
+          "time_s": 15.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "latency_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000005",
+          "source_node_id": "NODE_B",
+          "time_s": 15.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "generated": true,
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000005",
+          "reason": "comm_link_available",
+          "send_attempt_success": true,
+          "source_node_id": "NODE_A",
+          "time_s": 15.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "generated": true,
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000005",
+          "reason": "comm_link_available",
+          "send_attempt_success": true,
+          "source_node_id": "NODE_B",
+          "time_s": 15.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000005",
+          "send_log_present": true,
+          "source_node_id": "NODE_A",
+          "time_s": 15.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000005",
+          "send_log_present": true,
+          "source_node_id": "NODE_B",
+          "time_s": 15.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 8,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 11,
+          "covariance_position_m2": [
+            7510.120946,
+            7510.120946,
+            7510.120946
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 7,
+            "last_handover_at_s": 13.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 5.0,
+          "last_measurement_time_s": 10.0,
+          "last_state_time_s": 15.0,
+          "last_update_time_s": 15.0,
+          "position_m": [
+            112.005069,
+            3331.034185,
+            4.123434
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "updates": 8,
+          "velocity_mps": [
+            16.023102,
+            219.471606,
+            7.689724
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 5,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -71.758284,
+            2887.396073,
+            -8.998504
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            133.452501,
+            133.452501,
+            133.452501
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            -4.092143,
+            229.407169,
+            -11.717559
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 5,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            17.441631,
+            2786.12284,
+            -26.37902
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            77.375419,
+            77.375419,
+            77.375419
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            2.522235,
+            196.587328,
+            4.423845
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 15.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 10,
+        "arrived_messages": 10,
+        "communication_bytes": 1280.0,
+        "message_utilization": 1.0,
+        "rejected_messages": 0,
+        "sent_messages": 10,
+        "used_messages": 10
+      },
+      "events": [
+        {
+          "candidate_global_ids": [],
+          "decision": "accepted",
+          "distance_m": 692.865248,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000005",
+          "reason": "mapping_reused",
+          "rejected_candidates": [],
+          "source_node_id": "NODE_A",
+          "time_s": 16.0
+        },
+        {
+          "candidate_global_ids": [],
+          "decision": "accepted",
+          "distance_m": 773.284762,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000005",
+          "reason": "mapping_reused",
+          "rejected_candidates": [],
+          "source_node_id": "NODE_B",
+          "time_s": 16.0
+        },
+        {
+          "active_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "active_source_state_timestamps_s": {
+            "NODE_A": 13.0,
+            "NODE_B": 10.0
+          },
+          "effective_projection_velocity_mps": [
+            -4.092143,
+            229.407169,
+            -11.717559
+          ],
+          "event_type": "CI_FUSED",
+          "fused_at_s": 16.0,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_arrived_at_s": 15.0,
+          "message_id": "GT-NODE_A-NODE_A-T1-000005",
+          "message_position_m": [
+            -71.758284,
+            2887.396073,
+            -8.998504
+          ],
+          "message_state_timestamp_s": 13.0,
+          "message_velocity_mps": [
+            -4.092143,
+            229.407169,
+            -11.717559
+          ],
+          "numerical_guards": [],
+          "participating_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "projected_message_position_m": [
+            -84.034712,
+            3575.617581,
+            -44.151182
+          ],
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_A",
+          "time_s": 16.0
+        },
+        {
+          "active_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "active_source_state_timestamps_s": {
+            "NODE_A": 13.0,
+            "NODE_B": 13.0
+          },
+          "effective_projection_velocity_mps": [
+            2.522235,
+            196.587328,
+            4.423845
+          ],
+          "event_type": "CI_FUSED",
+          "fused_at_s": 16.0,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_arrived_at_s": 15.0,
+          "message_id": "GT-NODE_B-NODE_B-T1-000005",
+          "message_position_m": [
+            17.441631,
+            2786.12284,
+            -26.37902
+          ],
+          "message_state_timestamp_s": 13.0,
+          "message_velocity_mps": [
+            2.522235,
+            196.587328,
+            4.423845
+          ],
+          "numerical_guards": [],
+          "participating_source_nodes": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "projected_message_position_m": [
+            25.008335,
+            3375.884824,
+            -13.107486
+          ],
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_B",
+          "time_s": 16.0
+        },
+        {
+          "candidate_global_count": 0,
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000005",
+          "reason": "mapping_reused",
+          "rejected_candidate_count": 0,
+          "source_node_id": "NODE_A",
+          "time_s": 16.0
+        },
+        {
+          "candidate_global_count": 0,
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000005",
+          "reason": "mapping_reused",
+          "rejected_candidate_count": 0,
+          "source_node_id": "NODE_B",
+          "time_s": 16.0
+        },
+        {
+          "event_type": "HANDOVER",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover_count": 9,
+          "reason": "reporting_source_changed",
+          "source_node_id": "NODE_B",
+          "time_s": 16.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 10,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 12,
+          "covariance_position_m2": [
+            6286.95544,
+            6286.95544,
+            6286.95544
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 9,
+            "last_handover_at_s": 16.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 3.0,
+          "last_measurement_time_s": 13.0,
+          "last_state_time_s": 16.0,
+          "last_update_time_s": 16.0,
+          "position_m": [
+            25.008335,
+            3375.884824,
+            -13.107486
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "confirmed",
+          "updates": 10,
+          "velocity_mps": [
+            2.522235,
+            196.587328,
+            4.423845
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 5,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            -75.850427,
+            3116.803242,
+            -20.716064
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            173.210734,
+            173.210734,
+            173.210734
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            -4.092143,
+            229.407169,
+            -11.717559
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 5,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            19.963866,
+            2982.710168,
+            -21.955175
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            121.627811,
+            121.627811,
+            121.627811
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            2.522235,
+            196.587328,
+            4.423845
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 16.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 10,
+        "arrived_messages": 10,
+        "communication_bytes": 1280.0,
+        "message_utilization": 1.0,
+        "rejected_messages": 0,
+        "sent_messages": 10,
+        "used_messages": 10
+      },
+      "events": [
+        {
+          "event_type": "COASTING",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "reason": "coasting",
+          "time_s": 17.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 10,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 13,
+          "covariance_position_m2": [
+            6386.95544,
+            6386.95544,
+            6386.95544
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 9,
+            "last_handover_at_s": 16.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 4.0,
+          "last_measurement_time_s": 13.0,
+          "last_state_time_s": 17.0,
+          "last_update_time_s": 17.0,
+          "position_m": [
+            27.53057,
+            3572.472153,
+            -8.683641
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "updates": 10,
+          "velocity_mps": [
+            2.522235,
+            196.587328,
+            4.423845
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 6,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            1.716929,
+            3207.269163,
+            46.768866
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            108.815605,
+            108.815605,
+            108.815605
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            12.998234,
+            200.328393,
+            4.858594
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 6,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            14.368713,
+            3157.168276,
+            -23.276096
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            40.11639,
+            40.11639,
+            40.11639
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            0.200547,
+            190.258058,
+            2.78076
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 17.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 12,
+        "arrived_messages": 12,
+        "communication_bytes": 1536.0,
+        "message_utilization": 0.833333,
+        "rejected_messages": 0,
+        "sent_messages": 12,
+        "used_messages": 10
+      },
+      "events": [
+        {
+          "event_type": "ARRIVED_UNCONSUMED",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000006",
+          "reason": "simulation_ended_before_next_begin_tick_ingest",
+          "source_node_id": "NODE_A",
+          "time_s": 18.0
+        },
+        {
+          "event_type": "ARRIVED_UNCONSUMED",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000006",
+          "reason": "simulation_ended_before_next_begin_tick_ingest",
+          "source_node_id": "NODE_B",
+          "time_s": 18.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "latency_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000006",
+          "source_node_id": "NODE_A",
+          "time_s": 18.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "latency_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000006",
+          "source_node_id": "NODE_B",
+          "time_s": 18.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "generated": true,
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000006",
+          "reason": "comm_link_available",
+          "send_attempt_success": true,
+          "source_node_id": "NODE_A",
+          "time_s": 18.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "generated": true,
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000006",
+          "reason": "comm_link_available",
+          "send_attempt_success": true,
+          "source_node_id": "NODE_B",
+          "time_s": 18.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_A-T1",
+          "message_id": "GT-NODE_A-NODE_A-T1-000006",
+          "send_log_present": true,
+          "source_node_id": "NODE_A",
+          "time_s": 18.0
+        },
+        {
+          "bytes": 128.0,
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_B-T1",
+          "message_id": "GT-NODE_B-NODE_B-T1-000006",
+          "send_log_present": true,
+          "source_node_id": "NODE_B",
+          "time_s": 18.0
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 2,
+        "ci_count": 10,
+        "global_track_count": 1,
+        "local_track_count": 2,
+        "multi_source_global_count": 1,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [
+        {
+          "active_source_count": 2,
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "coasts": 14,
+          "covariance_position_m2": [
+            6486.95544,
+            6486.95544,
+            6486.95544
+          ],
+          "created_at_s": 4.0,
+          "ever_confirmed": true,
+          "fusion_method": "covariance_intersection_conservative",
+          "fusion_weights": {
+            "NODE_A": 0.0,
+            "NODE_B": 1.0
+          },
+          "global_track_id": "GLOBAL_TRACK_1",
+          "handover": {
+            "handover_count": 9,
+            "last_handover_at_s": 16.0,
+            "last_reporting_source_node_id": "NODE_B"
+          },
+          "information_age_s": 5.0,
+          "last_measurement_time_s": 13.0,
+          "last_state_time_s": 18.0,
+          "last_update_time_s": 18.0,
+          "position_m": [
+            30.052805,
+            3769.059481,
+            -4.259796
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "updates": 10,
+          "velocity_mps": [
+            2.522235,
+            196.587328,
+            4.423845
+          ]
+        }
+      ],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 6,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            14.715163,
+            3407.597556,
+            51.62746
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            139.023856,
+            139.023856,
+            139.023856
+          ],
+          "source_node_id": "NODE_A",
+          "status": "confirmed",
+          "velocity_mps": [
+            12.998234,
+            200.328393,
+            4.858594
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 6,
+          "mapped_global_track_id": "GLOBAL_TRACK_1",
+          "position_m": [
+            14.569259,
+            3347.426334,
+            -20.495336
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            71.136518,
+            71.136518,
+            71.136518
+          ],
+          "source_node_id": "NODE_B",
+          "status": "confirmed",
+          "velocity_mps": [
+            0.200547,
+            190.258058,
+            2.78076
+          ]
+        }
+      ],
+      "mappings": [
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A"
+        },
+        {
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B"
+        }
+      ],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 18.0
+    }
+  ],
+  "message_evidence": [
+    {
+      "message_id": "GT-NODE_A-NODE_A-T1-000001",
+      "steps": [
+        {
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 3.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "local_track_id": "NODE_A-T1",
+          "reason": "comm_link_available",
+          "source_node_id": "NODE_A",
+          "time_s": 3.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 3.0
+        },
+        {
+          "decision": "accepted",
+          "distance_m": null,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "reason": "new_track",
+          "source_node_id": "NODE_A",
+          "time_s": 4.0
+        },
+        {
+          "event_type": "CI_FUSED",
+          "fusion_method": "single_source",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_A",
+          "time_s": 4.0
+        },
+        {
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "reason": "new_track",
+          "source_node_id": "NODE_A",
+          "time_s": 4.0
+        },
+        {
+          "decision": "accepted",
+          "distance_m": null,
+          "event_type": "GLOBAL_TRACK_CREATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "reason": "new_track",
+          "source_node_id": "NODE_A",
+          "time_s": 4.0
+        }
+      ]
+    },
+    {
+      "message_id": "GT-NODE_A-NODE_A-T1-000002",
+      "steps": [
+        {
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 6.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "local_track_id": "NODE_A-T1",
+          "reason": "comm_link_available",
+          "source_node_id": "NODE_A",
+          "time_s": 6.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 6.0
+        },
+        {
+          "decision": "accepted",
+          "distance_m": 480.879937,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_A",
+          "time_s": 7.0
+        },
+        {
+          "event_type": "CI_FUSED",
+          "fusion_method": "covariance_intersection_conservative",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_A",
+          "time_s": 7.0
+        },
+        {
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_A",
+          "time_s": 7.0
+        }
+      ]
+    },
+    {
+      "message_id": "GT-NODE_A-NODE_A-T1-000003",
+      "steps": [
+        {
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 9.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "local_track_id": "NODE_A-T1",
+          "reason": "comm_link_available",
+          "source_node_id": "NODE_A",
+          "time_s": 9.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 9.0
+        },
+        {
+          "decision": "accepted",
+          "distance_m": 147.593887,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_A",
+          "time_s": 10.0
+        },
+        {
+          "event_type": "CI_FUSED",
+          "fusion_method": "covariance_intersection_conservative",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_A",
+          "time_s": 10.0
+        },
+        {
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_A",
+          "time_s": 10.0
+        }
+      ]
+    },
+    {
+      "message_id": "GT-NODE_A-NODE_A-T1-000004",
+      "steps": [
+        {
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 12.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "local_track_id": "NODE_A-T1",
+          "reason": "comm_link_available",
+          "source_node_id": "NODE_A",
+          "time_s": 12.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 12.0
+        },
+        {
+          "decision": "accepted",
+          "distance_m": 684.833617,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_A",
+          "time_s": 13.0
+        },
+        {
+          "event_type": "CI_FUSED",
+          "fusion_method": "covariance_intersection_conservative",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_A",
+          "time_s": 13.0
+        },
+        {
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_A",
+          "time_s": 13.0
+        }
+      ]
+    },
+    {
+      "message_id": "GT-NODE_A-NODE_A-T1-000005",
+      "steps": [
+        {
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 15.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "local_track_id": "NODE_A-T1",
+          "reason": "comm_link_available",
+          "source_node_id": "NODE_A",
+          "time_s": 15.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 15.0
+        },
+        {
+          "decision": "accepted",
+          "distance_m": 692.865248,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_A",
+          "time_s": 16.0
+        },
+        {
+          "event_type": "CI_FUSED",
+          "fusion_method": "covariance_intersection_conservative",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_A",
+          "time_s": 16.0
+        },
+        {
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_A-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_A",
+          "time_s": 16.0
+        }
+      ]
+    },
+    {
+      "message_id": "GT-NODE_A-NODE_A-T1-000006",
+      "steps": [
+        {
+          "event_type": "ARRIVED_UNCONSUMED",
+          "local_track_id": "NODE_A-T1",
+          "reason": "simulation_ended_before_next_begin_tick_ingest",
+          "source_node_id": "NODE_A",
+          "time_s": 18.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 18.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "local_track_id": "NODE_A-T1",
+          "reason": "comm_link_available",
+          "source_node_id": "NODE_A",
+          "time_s": 18.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 18.0
+        }
+      ]
+    },
+    {
+      "message_id": "GT-NODE_B-NODE_B-T1-000001",
+      "steps": [
+        {
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B",
+          "time_s": 3.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "local_track_id": "NODE_B-T1",
+          "reason": "comm_link_available",
+          "source_node_id": "NODE_B",
+          "time_s": 3.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B",
+          "time_s": 3.0
+        },
+        {
+          "decision": "accepted",
+          "distance_m": 64.323831,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "reason": "spatial_gate_associated",
+          "source_node_id": "NODE_B",
+          "time_s": 4.0
+        },
+        {
+          "event_type": "CI_FUSED",
+          "fusion_method": "covariance_intersection_conservative",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_B",
+          "time_s": 4.0
+        },
+        {
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "reason": "spatial_gate_associated",
+          "source_node_id": "NODE_B",
+          "time_s": 4.0
+        }
+      ]
+    },
+    {
+      "message_id": "GT-NODE_B-NODE_B-T1-000002",
+      "steps": [
+        {
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B",
+          "time_s": 6.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "local_track_id": "NODE_B-T1",
+          "reason": "comm_link_available",
+          "source_node_id": "NODE_B",
+          "time_s": 6.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B",
+          "time_s": 6.0
+        },
+        {
+          "decision": "accepted",
+          "distance_m": 518.334241,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_B",
+          "time_s": 7.0
+        },
+        {
+          "event_type": "CI_FUSED",
+          "fusion_method": "covariance_intersection_conservative",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_B",
+          "time_s": 7.0
+        },
+        {
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_B",
+          "time_s": 7.0
+        }
+      ]
+    },
+    {
+      "message_id": "GT-NODE_B-NODE_B-T1-000003",
+      "steps": [
+        {
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B",
+          "time_s": 9.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "local_track_id": "NODE_B-T1",
+          "reason": "comm_link_available",
+          "source_node_id": "NODE_B",
+          "time_s": 9.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B",
+          "time_s": 9.0
+        },
+        {
+          "decision": "accepted",
+          "distance_m": 203.139849,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_B",
+          "time_s": 10.0
+        },
+        {
+          "event_type": "CI_FUSED",
+          "fusion_method": "covariance_intersection_conservative",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_B",
+          "time_s": 10.0
+        },
+        {
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_B",
+          "time_s": 10.0
+        }
+      ]
+    },
+    {
+      "message_id": "GT-NODE_B-NODE_B-T1-000004",
+      "steps": [
+        {
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B",
+          "time_s": 12.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "local_track_id": "NODE_B-T1",
+          "reason": "comm_link_available",
+          "source_node_id": "NODE_B",
+          "time_s": 12.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B",
+          "time_s": 12.0
+        },
+        {
+          "decision": "accepted",
+          "distance_m": 589.184469,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_B",
+          "time_s": 13.0
+        },
+        {
+          "event_type": "CI_FUSED",
+          "fusion_method": "covariance_intersection_conservative",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_B",
+          "time_s": 13.0
+        },
+        {
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_B",
+          "time_s": 13.0
+        }
+      ]
+    },
+    {
+      "message_id": "GT-NODE_B-NODE_B-T1-000005",
+      "steps": [
+        {
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B",
+          "time_s": 15.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "local_track_id": "NODE_B-T1",
+          "reason": "comm_link_available",
+          "source_node_id": "NODE_B",
+          "time_s": 15.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B",
+          "time_s": 15.0
+        },
+        {
+          "decision": "accepted",
+          "distance_m": 773.284762,
+          "event_type": "ASSOCIATED",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_B",
+          "time_s": 16.0
+        },
+        {
+          "event_type": "CI_FUSED",
+          "fusion_method": "covariance_intersection_conservative",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "projection_delta_s": 3.0,
+          "reason": "ci_fusion_complete",
+          "source_node_id": "NODE_B",
+          "time_s": 16.0
+        },
+        {
+          "decision": "accepted",
+          "event_type": "GLOBAL_GATE",
+          "global_track_id": "GLOBAL_TRACK_1",
+          "local_track_id": "NODE_B-T1",
+          "reason": "mapping_reused",
+          "source_node_id": "NODE_B",
+          "time_s": 16.0
+        }
+      ]
+    },
+    {
+      "message_id": "GT-NODE_B-NODE_B-T1-000006",
+      "steps": [
+        {
+          "event_type": "ARRIVED_UNCONSUMED",
+          "local_track_id": "NODE_B-T1",
+          "reason": "simulation_ended_before_next_begin_tick_ingest",
+          "source_node_id": "NODE_B",
+          "time_s": 18.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_ARRIVED",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B",
+          "time_s": 18.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_GENERATED",
+          "local_track_id": "NODE_B-T1",
+          "reason": "comm_link_available",
+          "source_node_id": "NODE_B",
+          "time_s": 18.0
+        },
+        {
+          "event_type": "TRACK_MESSAGE_SENT",
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B",
+          "time_s": 18.0
+        }
+      ]
+    }
+  ],
+  "read_only_contract": {
+    "association_parameters_changed": false,
+    "runtime_mutation": false,
+    "source": "frozen Global Track v1.x snapshots and audit logs"
+  },
+  "scenario": {
+    "kind": "basic",
+    "scenario_id": "dual_radar_single_target",
+    "seed": 20260920,
+    "steps": 18,
+    "title": "双雷达单目标"
+  },
+  "schema_version": "tower-view-v2",
+  "sharing_mode": "track_share",
+  "summary": {
+    "duration_s": 18.0,
+    "event_count": 80,
+    "frame_count": 18,
+    "global_track_ids_observed": [
+      "GLOBAL_TRACK_1"
+    ],
+    "resource_conserved": true,
+    "runtime_read_only_provenance": "Sensor/local FusionCenter/RuntimeExecutor/CommBus/GlobalTrackManager snapshots"
+  },
+  "track_lifecycle": [
+    {
+      "global_track_id": "GLOBAL_TRACK_1",
+      "source_history": [
+        {
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "time_s": 4.0
+        }
+      ],
+      "states": [
+        {
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "fusion_method": "covariance_intersection_conservative",
+          "information_age_s": 3.0,
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "confirmed",
+          "time_s": 4.0
+        },
+        {
+          "reason": "reporting_source_changed",
+          "status": "handover",
+          "time_s": 4.0
+        },
+        {
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "fusion_method": "covariance_intersection_conservative",
+          "information_age_s": 4.0,
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "time_s": 5.0
+        },
+        {
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "fusion_method": "covariance_intersection_conservative",
+          "information_age_s": 3.0,
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "confirmed",
+          "time_s": 7.0
+        },
+        {
+          "reason": "reporting_source_changed",
+          "status": "handover",
+          "time_s": 7.0
+        },
+        {
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "fusion_method": "covariance_intersection_conservative",
+          "information_age_s": 4.0,
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "time_s": 8.0
+        },
+        {
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "fusion_method": "covariance_intersection_conservative",
+          "information_age_s": 3.0,
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "confirmed",
+          "time_s": 10.0
+        },
+        {
+          "reason": "reporting_source_changed",
+          "status": "handover",
+          "time_s": 10.0
+        },
+        {
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "fusion_method": "covariance_intersection_conservative",
+          "information_age_s": 4.0,
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "time_s": 11.0
+        },
+        {
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "fusion_method": "covariance_intersection_conservative",
+          "information_age_s": 3.0,
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "confirmed",
+          "time_s": 13.0
+        },
+        {
+          "reason": "reporting_source_changed",
+          "status": "handover",
+          "time_s": 13.0
+        },
+        {
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "fusion_method": "covariance_intersection_conservative",
+          "information_age_s": 4.0,
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "time_s": 14.0
+        },
+        {
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "fusion_method": "covariance_intersection_conservative",
+          "information_age_s": 3.0,
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "confirmed",
+          "time_s": 16.0
+        },
+        {
+          "reason": "reporting_source_changed",
+          "status": "handover",
+          "time_s": 16.0
+        },
+        {
+          "active_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "fusion_method": "covariance_intersection_conservative",
+          "information_age_s": 4.0,
+          "retained_source_node_ids": [
+            "NODE_A",
+            "NODE_B"
+          ],
+          "status": "coasting",
+          "time_s": 17.0
+        }
+      ]
+    }
+  ],
+  "frames_sha256": "b73711150bddac9d747ffb95b1ff55df25fcd4261226626e3aba844d2efaab4c",
+  "replay_sha256": "bdb6ffd597d720a46426c5ea2708d444dff4cc36362f45b2a003cbd341602ae6"
+}

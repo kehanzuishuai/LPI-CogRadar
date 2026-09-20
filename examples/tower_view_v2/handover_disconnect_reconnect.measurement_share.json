@@ -1,0 +1,4661 @@
+{
+  "comparison_metrics": {
+    "communication_bytes": 1024.0,
+    "coverage": 0.0,
+    "duplicate": 0.0,
+    "evaluation_note": "aggregate nearest-track evaluation only; never a runtime input",
+    "fragmentation": 0,
+    "id_switch": 0,
+    "information_age_s": null,
+    "message_utilization": null,
+    "rmse_m": null
+  },
+  "coordinate_frame": {
+    "display_axes": [
+      "east_x",
+      "north_y"
+    ],
+    "name": "ENU",
+    "position_unit": "m",
+    "velocity_unit": "m/s"
+  },
+  "events": [
+    {
+      "event_type": "LOCAL_TRACK_CREATED",
+      "last_measurement_time_s": 5.0,
+      "local_track_id": "NODE_A-T1",
+      "source_node_id": "NODE_A",
+      "time_s": 6.0,
+      "track_status": "tentative"
+    },
+    {
+      "event_type": "LOCAL_TRACK_CREATED",
+      "last_measurement_time_s": 7.0,
+      "local_track_id": "NODE_B-T1",
+      "source_node_id": "NODE_B",
+      "time_s": 8.0,
+      "track_status": "tentative"
+    },
+    {
+      "event_type": "LOCAL_TRACK_CREATED",
+      "last_measurement_time_s": 8.0,
+      "local_track_id": "NODE_A-T2",
+      "source_node_id": "NODE_A",
+      "time_s": 9.0,
+      "track_status": "tentative"
+    },
+    {
+      "event_type": "LOCAL_TRACK_CREATED",
+      "last_measurement_time_s": 7.0,
+      "local_track_id": "NODE_A-T3",
+      "source_node_id": "NODE_A",
+      "time_s": 10.0,
+      "track_status": "tentative"
+    },
+    {
+      "event_type": "LOCAL_TRACK_CREATED",
+      "last_measurement_time_s": 12.0,
+      "local_track_id": "NODE_A-T4",
+      "source_node_id": "NODE_A",
+      "time_s": 13.0,
+      "track_status": "tentative"
+    },
+    {
+      "event_type": "LOCAL_TRACK_CREATED",
+      "last_measurement_time_s": 15.0,
+      "local_track_id": "NODE_A-T5",
+      "source_node_id": "NODE_A",
+      "time_s": 16.0,
+      "track_status": "tentative"
+    },
+    {
+      "event_type": "LOCAL_TRACK_CREATED",
+      "last_measurement_time_s": 17.0,
+      "local_track_id": "NODE_B-T3",
+      "source_node_id": "NODE_B",
+      "time_s": 18.0,
+      "track_status": "tentative"
+    },
+    {
+      "event_type": "LOCAL_TRACK_CREATED",
+      "last_measurement_time_s": 18.0,
+      "local_track_id": "NODE_A-T6",
+      "source_node_id": "NODE_A",
+      "time_s": 19.0,
+      "track_status": "tentative"
+    },
+    {
+      "event_type": "LOCAL_TRACK_CREATED",
+      "last_measurement_time_s": 17.0,
+      "local_track_id": "NODE_A-T7",
+      "source_node_id": "NODE_A",
+      "time_s": 20.0,
+      "track_status": "tentative"
+    },
+    {
+      "event_type": "LOCAL_TRACK_CREATED",
+      "last_measurement_time_s": 20.0,
+      "local_track_id": "NODE_B-T5",
+      "source_node_id": "NODE_B",
+      "time_s": 21.0,
+      "track_status": "tentative"
+    }
+  ],
+  "frames": [
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 0,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 1.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 0,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 2.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 0,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 3.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 0,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 4.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 0,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 5.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 0,
+        "arrived_messages": 0,
+        "communication_bytes": 0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [
+        {
+          "event_type": "LOCAL_TRACK_CREATED",
+          "last_measurement_time_s": 5.0,
+          "local_track_id": "NODE_A-T1",
+          "source_node_id": "NODE_A",
+          "time_s": 6.0,
+          "track_status": "tentative"
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 1,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            14.07557,
+            14.07557,
+            14.07557
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 6.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 1,
+        "arrived_messages": 0,
+        "communication_bytes": 128.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 1,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            51.94826,
+            51.94826,
+            51.94826
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 7.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 1,
+        "arrived_messages": 0,
+        "communication_bytes": 128.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [
+        {
+          "event_type": "LOCAL_TRACK_CREATED",
+          "last_measurement_time_s": 7.0,
+          "local_track_id": "NODE_B-T1",
+          "source_node_id": "NODE_B",
+          "time_s": 8.0,
+          "track_status": "tentative"
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 3,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            101.010503,
+            101.010503,
+            101.010503
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            135.722172,
+            135.722172,
+            135.722172
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            14.07557,
+            14.07557,
+            14.07557
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 8.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 2,
+        "arrived_messages": 0,
+        "communication_bytes": 256.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [
+        {
+          "event_type": "LOCAL_TRACK_CREATED",
+          "last_measurement_time_s": 8.0,
+          "local_track_id": "NODE_A-T2",
+          "source_node_id": "NODE_A",
+          "time_s": 9.0,
+          "track_status": "tentative"
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 4,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 4.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            150.717025,
+            150.717025,
+            150.717025
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T2",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -25.732085,
+            -3341.299044,
+            26.000679
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            39.527377,
+            39.527377,
+            39.527377
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            144.640962,
+            144.640962,
+            144.640962
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 4.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            51.94826,
+            51.94826,
+            51.94826
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 9.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 2,
+        "arrived_messages": 0,
+        "communication_bytes": 256.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [
+        {
+          "event_type": "LOCAL_TRACK_CREATED",
+          "last_measurement_time_s": 7.0,
+          "local_track_id": "NODE_A-T3",
+          "source_node_id": "NODE_A",
+          "time_s": 10.0,
+          "track_status": "tentative"
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 1,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 5,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 5.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            200.599406,
+            200.599406,
+            200.599406
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T2",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -25.732085,
+            -3341.299044,
+            26.000679
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            63.740988,
+            63.740988,
+            63.740988
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_A-T3",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            135.722172,
+            135.722172,
+            135.722172
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            168.598659,
+            168.598659,
+            168.598659
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 5.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            101.010503,
+            101.010503,
+            101.010503
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": false,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 10.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 3,
+        "arrived_messages": 0,
+        "communication_bytes": 384.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 1,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 5,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 6.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            250.560615,
+            250.560615,
+            250.560615
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_A-T2",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -25.732085,
+            -3341.299044,
+            26.000679
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            107.551911,
+            107.551911,
+            107.551911
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 4.0,
+          "local_track_id": "NODE_A-T3",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            144.640962,
+            144.640962,
+            144.640962
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 4.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            202.331431,
+            202.331431,
+            202.331431
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 6.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            150.717025,
+            150.717025,
+            150.717025
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": false,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 11.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 3,
+        "arrived_messages": 0,
+        "communication_bytes": 384.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 1,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 5,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 7.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            300.567998,
+            300.567998,
+            300.567998
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 4.0,
+          "local_track_id": "NODE_A-T2",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -25.732085,
+            -3341.299044,
+            26.000679
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            155.177039,
+            155.177039,
+            155.177039
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 5.0,
+          "local_track_id": "NODE_A-T3",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            168.598659,
+            168.598659,
+            168.598659
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 5.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            241.790215,
+            241.790215,
+            241.790215
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 7.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            200.599406,
+            200.599406,
+            200.599406
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": false,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 12.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 3,
+        "arrived_messages": 0,
+        "communication_bytes": 384.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [
+        {
+          "event_type": "LOCAL_TRACK_CREATED",
+          "last_measurement_time_s": 12.0,
+          "local_track_id": "NODE_A-T4",
+          "source_node_id": "NODE_A",
+          "time_s": 13.0,
+          "track_status": "tentative"
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 1,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 6,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 8.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            350.607504,
+            350.607504,
+            350.607504
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 5.0,
+          "local_track_id": "NODE_A-T2",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -25.732085,
+            -3341.299044,
+            26.000679
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            203.9716,
+            203.9716,
+            203.9716
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 6.0,
+          "local_track_id": "NODE_A-T3",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            202.331431,
+            202.331431,
+            202.331431
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T4",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -92.69398,
+            -726.841495,
+            45.338574
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            74.043056,
+            74.043056,
+            74.043056
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 6.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            284.610274,
+            284.610274,
+            284.610274
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 8.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            250.560615,
+            250.560615,
+            250.560615
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": false,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 13.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 4,
+        "arrived_messages": 0,
+        "communication_bytes": 512.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 1,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 6,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 9.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            400.672087,
+            400.672087,
+            400.672087
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 6.0,
+          "local_track_id": "NODE_A-T2",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -25.732085,
+            -3341.299044,
+            26.000679
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            253.268461,
+            253.268461,
+            253.268461
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 7.0,
+          "local_track_id": "NODE_A-T3",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            241.790215,
+            241.790215,
+            241.790215
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T4",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -92.69398,
+            -726.841495,
+            45.338574
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            89.346931,
+            89.346931,
+            89.346931
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 7.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            329.489769,
+            329.489769,
+            329.489769
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 9.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            300.567998,
+            300.567998,
+            300.567998
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": false,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 14.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 4,
+        "arrived_messages": 0,
+        "communication_bytes": 512.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 1,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 6,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 10.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            450.75783,
+            450.75783,
+            450.75783
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 7.0,
+          "local_track_id": "NODE_A-T2",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -25.732085,
+            -3341.299044,
+            26.000679
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            302.829017,
+            302.829017,
+            302.829017
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 8.0,
+          "local_track_id": "NODE_A-T3",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            284.610274,
+            284.610274,
+            284.610274
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_A-T4",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -92.69398,
+            -726.841495,
+            45.338574
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            124.448279,
+            124.448279,
+            124.448279
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 8.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            375.696697,
+            375.696697,
+            375.696697
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 10.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            350.607504,
+            350.607504,
+            350.607504
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": false,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 15.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 4,
+        "arrived_messages": 0,
+        "communication_bytes": 512.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [
+        {
+          "event_type": "LOCAL_TRACK_CREATED",
+          "last_measurement_time_s": 15.0,
+          "local_track_id": "NODE_A-T5",
+          "source_node_id": "NODE_A",
+          "time_s": 16.0,
+          "track_status": "tentative"
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 7,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 11.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            500.862378,
+            500.862378,
+            500.862378
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 8.0,
+          "local_track_id": "NODE_A-T2",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -25.732085,
+            -3341.299044,
+            26.000679
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            352.547746,
+            352.547746,
+            352.547746
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 9.0,
+          "local_track_id": "NODE_A-T3",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            329.489769,
+            329.489769,
+            329.489769
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 4.0,
+          "local_track_id": "NODE_A-T4",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -92.69398,
+            -726.841495,
+            45.338574
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            167.331629,
+            167.331629,
+            167.331629
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            99.923926,
+            99.923926,
+            99.923926
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 9.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            422.80079,
+            422.80079,
+            422.80079
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 11.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            400.672087,
+            400.672087,
+            400.672087
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 16.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 5,
+        "arrived_messages": 0,
+        "communication_bytes": 640.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 7,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 12.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            550.98423,
+            550.98423,
+            550.98423
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 9.0,
+          "local_track_id": "NODE_A-T2",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -25.732085,
+            -3341.299044,
+            26.000679
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            402.37099,
+            402.37099,
+            402.37099
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 10.0,
+          "local_track_id": "NODE_A-T3",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            375.696697,
+            375.696697,
+            375.696697
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 5.0,
+          "local_track_id": "NODE_A-T4",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -92.69398,
+            -726.841495,
+            45.338574
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            213.364416,
+            213.364416,
+            213.364416
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            111.737598,
+            111.737598,
+            111.737598
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 10.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            470.536936,
+            470.536936,
+            470.536936
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 12.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            450.75783,
+            450.75783,
+            450.75783
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 17.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 5,
+        "arrived_messages": 0,
+        "communication_bytes": 640.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [
+        {
+          "event_type": "LOCAL_TRACK_CREATED",
+          "last_measurement_time_s": 17.0,
+          "local_track_id": "NODE_B-T3",
+          "source_node_id": "NODE_B",
+          "time_s": 18.0,
+          "track_status": "tentative"
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 9,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 13.0,
+          "local_track_id": "NODE_A-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            601.122385,
+            601.122385,
+            601.122385
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 10.0,
+          "local_track_id": "NODE_A-T2",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -25.732085,
+            -3341.299044,
+            26.000679
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            452.26863,
+            452.26863,
+            452.26863
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 11.0,
+          "local_track_id": "NODE_A-T3",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            422.80079,
+            422.80079,
+            422.80079
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 6.0,
+          "local_track_id": "NODE_A-T4",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -92.69398,
+            -726.841495,
+            45.338574
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            260.892457,
+            260.892457,
+            260.892457
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_A-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            141.385257,
+            141.385257,
+            141.385257
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 11.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            518.734526,
+            518.734526,
+            518.734526
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 13.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            500.862378,
+            500.862378,
+            500.862378
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T3",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            50.02233,
+            50.02233,
+            50.02233
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_B-T4",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            99.923926,
+            99.923926,
+            99.923926
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 18.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 6,
+        "arrived_messages": 0,
+        "communication_bytes": 768.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [
+        {
+          "event_type": "LOCAL_TRACK_CREATED",
+          "last_measurement_time_s": 18.0,
+          "local_track_id": "NODE_A-T6",
+          "source_node_id": "NODE_A",
+          "time_s": 19.0,
+          "track_status": "tentative"
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 9,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 11.0,
+          "local_track_id": "NODE_A-T2",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -25.732085,
+            -3341.299044,
+            26.000679
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            502.222474,
+            502.222474,
+            502.222474
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 12.0,
+          "local_track_id": "NODE_A-T3",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            470.536936,
+            470.536936,
+            470.536936
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 7.0,
+          "local_track_id": "NODE_A-T4",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -92.69398,
+            -726.841495,
+            45.338574
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            309.233527,
+            309.233527,
+            309.233527
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 4.0,
+          "local_track_id": "NODE_A-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            180.283918,
+            180.283918,
+            180.283918
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_A-T6",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -106.26365,
+            3283.83043,
+            -16.93727
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            126.386661,
+            126.386661,
+            126.386661
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 12.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            567.27948,
+            567.27948,
+            567.27948
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 14.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            550.98423,
+            550.98423,
+            550.98423
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T3",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            70.730004,
+            70.730004,
+            70.730004
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 4.0,
+          "local_track_id": "NODE_B-T4",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            111.737598,
+            111.737598,
+            111.737598
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 19.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 6,
+        "arrived_messages": 0,
+        "communication_bytes": 768.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [
+        {
+          "event_type": "LOCAL_TRACK_CREATED",
+          "last_measurement_time_s": 17.0,
+          "local_track_id": "NODE_A-T7",
+          "source_node_id": "NODE_A",
+          "time_s": 20.0,
+          "track_status": "tentative"
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 9,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 13.0,
+          "local_track_id": "NODE_A-T3",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            518.734526,
+            518.734526,
+            518.734526
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 8.0,
+          "local_track_id": "NODE_A-T4",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -92.69398,
+            -726.841495,
+            45.338574
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            358.064064,
+            358.064064,
+            358.064064
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 5.0,
+          "local_track_id": "NODE_A-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            223.666696,
+            223.666696,
+            223.666696
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_A-T6",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -106.26365,
+            3283.83043,
+            -16.93727
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            135.919418,
+            135.919418,
+            135.919418
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_A-T7",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            50.02233,
+            50.02233,
+            50.02233
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 13.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            616.092938,
+            616.092938,
+            616.092938
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 15.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            601.122385,
+            601.122385,
+            601.122385
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_B-T3",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            111.835744,
+            111.835744,
+            111.835744
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 5.0,
+          "local_track_id": "NODE_B-T4",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            141.385257,
+            141.385257,
+            141.385257
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 20.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 7,
+        "arrived_messages": 0,
+        "communication_bytes": 896.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [
+        {
+          "event_type": "LOCAL_TRACK_CREATED",
+          "last_measurement_time_s": 20.0,
+          "local_track_id": "NODE_B-T5",
+          "source_node_id": "NODE_B",
+          "time_s": 21.0,
+          "track_status": "tentative"
+        }
+      ],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 10,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 14.0,
+          "local_track_id": "NODE_A-T3",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            567.27948,
+            567.27948,
+            567.27948
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 9.0,
+          "local_track_id": "NODE_A-T4",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -92.69398,
+            -726.841495,
+            45.338574
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            407.212935,
+            407.212935,
+            407.212935
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 6.0,
+          "local_track_id": "NODE_A-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            269.383167,
+            269.383167,
+            269.383167
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_A-T6",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -106.26365,
+            3283.83043,
+            -16.93727
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            161.178746,
+            161.178746,
+            161.178746
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 4.0,
+          "local_track_id": "NODE_A-T7",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            70.730004,
+            70.730004,
+            70.730004
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 14.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            665.118792,
+            665.118792,
+            665.118792
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 16.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            651.276149,
+            651.276149,
+            651.276149
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 4.0,
+          "local_track_id": "NODE_B-T3",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            158.176274,
+            158.176274,
+            158.176274
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 6.0,
+          "local_track_id": "NODE_B-T4",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            180.283918,
+            180.283918,
+            180.283918
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 1.0,
+          "local_track_id": "NODE_B-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -11.099995,
+            4498.596687,
+            -28.47718
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            23.911068,
+            23.911068,
+            23.911068
+          ],
+          "source_node_id": "NODE_B",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 21.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 7,
+        "arrived_messages": 0,
+        "communication_bytes": 896.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 10,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 15.0,
+          "local_track_id": "NODE_A-T3",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            616.092938,
+            616.092938,
+            616.092938
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 10.0,
+          "local_track_id": "NODE_A-T4",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -92.69398,
+            -726.841495,
+            45.338574
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            456.581728,
+            456.581728,
+            456.581728
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 7.0,
+          "local_track_id": "NODE_A-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            316.429757,
+            316.429757,
+            316.429757
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 4.0,
+          "local_track_id": "NODE_A-T6",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -106.26365,
+            3283.83043,
+            -16.93727
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            196.191458,
+            196.191458,
+            196.191458
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 5.0,
+          "local_track_id": "NODE_A-T7",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            111.835744,
+            111.835744,
+            111.835744
+          ],
+          "source_node_id": "NODE_A",
+          "status": "tentative",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 15.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            714.316112,
+            714.316112,
+            714.316112
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 17.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            701.445024,
+            701.445024,
+            701.445024
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 5.0,
+          "local_track_id": "NODE_B-T3",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            206.262535,
+            206.262535,
+            206.262535
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 7.0,
+          "local_track_id": "NODE_B-T4",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            223.666696,
+            223.666696,
+            223.666696
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 2.0,
+          "local_track_id": "NODE_B-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -11.099995,
+            4498.596687,
+            -28.47718
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            55.427784,
+            55.427784,
+            55.427784
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 22.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 8,
+        "arrived_messages": 0,
+        "communication_bytes": 1024.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 9,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 11.0,
+          "local_track_id": "NODE_A-T4",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -92.69398,
+            -726.841495,
+            45.338574
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            506.110042,
+            506.110042,
+            506.110042
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 8.0,
+          "local_track_id": "NODE_A-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            364.296982,
+            364.296982,
+            364.296982
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 5.0,
+          "local_track_id": "NODE_A-T6",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -106.26365,
+            3283.83043,
+            -16.93727
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            236.676125,
+            236.676125,
+            236.676125
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 6.0,
+          "local_track_id": "NODE_A-T7",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            158.176274,
+            158.176274,
+            158.176274
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 16.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            763.654377,
+            763.654377,
+            763.654377
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 18.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            751.628646,
+            751.628646,
+            751.628646
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 6.0,
+          "local_track_id": "NODE_B-T3",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            255.117098,
+            255.117098,
+            255.117098
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 8.0,
+          "local_track_id": "NODE_B-T4",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            269.383167,
+            269.383167,
+            269.383167
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 3.0,
+          "local_track_id": "NODE_B-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -11.099995,
+            4498.596687,
+            -28.47718
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            102.843275,
+            102.843275,
+            102.843275
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 23.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 8,
+        "arrived_messages": 0,
+        "communication_bytes": 1024.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 8,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 9.0,
+          "local_track_id": "NODE_A-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            412.704241,
+            412.704241,
+            412.704241
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 6.0,
+          "local_track_id": "NODE_A-T6",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -106.26365,
+            3283.83043,
+            -16.93727
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            280.27859,
+            280.27859,
+            280.27859
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 7.0,
+          "local_track_id": "NODE_A-T7",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            206.262535,
+            206.262535,
+            206.262535
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 17.0,
+          "local_track_id": "NODE_B-T1",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -95.932089,
+            -3923.502729,
+            -49.685237
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            813.110391,
+            813.110391,
+            813.110391
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 19.0,
+          "local_track_id": "NODE_B-T2",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -8.772387,
+            -5258.555611,
+            -3.127542
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            801.82674,
+            801.82674,
+            801.82674
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 7.0,
+          "local_track_id": "NODE_B-T3",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            304.376795,
+            304.376795,
+            304.376795
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 9.0,
+          "local_track_id": "NODE_B-T4",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            316.429757,
+            316.429757,
+            316.429757
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 4.0,
+          "local_track_id": "NODE_B-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -11.099995,
+            4498.596687,
+            -28.47718
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            151.951437,
+            151.951437,
+            151.951437
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 24.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 8,
+        "arrived_messages": 0,
+        "communication_bytes": 1024.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 6,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 10.0,
+          "local_track_id": "NODE_A-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            461.48596,
+            461.48596,
+            461.48596
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 7.0,
+          "local_track_id": "NODE_A-T6",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -106.26365,
+            3283.83043,
+            -16.93727
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            325.755412,
+            325.755412,
+            325.755412
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 8.0,
+          "local_track_id": "NODE_A-T7",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            255.117098,
+            255.117098,
+            255.117098
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 8.0,
+          "local_track_id": "NODE_B-T3",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            353.878134,
+            353.878134,
+            353.878134
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 10.0,
+          "local_track_id": "NODE_B-T4",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            364.296982,
+            364.296982,
+            364.296982
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 5.0,
+          "local_track_id": "NODE_B-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -11.099995,
+            4498.596687,
+            -28.47718
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            201.528507,
+            201.528507,
+            201.528507
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 25.0
+    },
+    {
+      "communication": {
+        "all_sent_messages": 8,
+        "arrived_messages": 0,
+        "communication_bytes": 1024.0,
+        "message_utilization": null,
+        "rejected_messages": 0,
+        "sent_messages": 0,
+        "used_messages": 0
+      },
+      "events": [],
+      "fusion": {
+        "active_radar_count": 2,
+        "active_source_count": 0,
+        "ci_count": 0,
+        "global_track_count": 0,
+        "local_track_count": 5,
+        "multi_source_global_count": 0,
+        "single_source_global_count": 0
+      },
+      "global_tracks": [],
+      "local_tracks": [
+        {
+          "information_age_s": 8.0,
+          "local_track_id": "NODE_A-T6",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -106.26365,
+            3283.83043,
+            -16.93727
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            372.42595,
+            372.42595,
+            372.42595
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 9.0,
+          "local_track_id": "NODE_A-T7",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            304.376795,
+            304.376795,
+            304.376795
+          ],
+          "source_node_id": "NODE_A",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 9.0,
+          "local_track_id": "NODE_B-T3",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -48.324868,
+            2483.375547,
+            -20.378753
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            403.537153,
+            403.537153,
+            403.537153
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 11.0,
+          "local_track_id": "NODE_B-T4",
+          "local_updates": 0,
+          "mapped_global_track_id": null,
+          "position_m": [
+            15.025542,
+            1227.806682,
+            41.258477
+          ],
+          "remote_updates": 1,
+          "sigma_position_m": [
+            412.704241,
+            412.704241,
+            412.704241
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "information_age_s": 6.0,
+          "local_track_id": "NODE_B-T5",
+          "local_updates": 1,
+          "mapped_global_track_id": null,
+          "position_m": [
+            -11.099995,
+            4498.596687,
+            -28.47718
+          ],
+          "remote_updates": 0,
+          "sigma_position_m": [
+            251.305072,
+            251.305072,
+            251.305072
+          ],
+          "source_node_id": "NODE_B",
+          "status": "coasting",
+          "velocity_mps": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "mappings": [],
+      "radar_nodes": [
+        {
+          "available": true,
+          "heading_deg": 0.0,
+          "node_id": "NODE_A",
+          "position_m": [
+            0.0,
+            -6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_A"
+        },
+        {
+          "available": true,
+          "heading_deg": 180.0,
+          "node_id": "NODE_B",
+          "position_m": [
+            0.0,
+            6000.0,
+            0.0
+          ],
+          "sensor_id": "SENSOR_NODE_B"
+        }
+      ],
+      "time_s": 26.0
+    }
+  ],
+  "message_evidence": [],
+  "read_only_contract": {
+    "association_parameters_changed": false,
+    "runtime_mutation": false,
+    "source": "frozen Global Track v1.x snapshots and audit logs"
+  },
+  "scenario": {
+    "kind": "basic",
+    "scenario_id": "handover_disconnect_reconnect",
+    "seed": 20260920,
+    "steps": 26,
+    "title": "handover / 失联 / 重接入"
+  },
+  "schema_version": "tower-view-v2",
+  "sharing_mode": "measurement_share",
+  "summary": {
+    "duration_s": 26.0,
+    "event_count": 10,
+    "frame_count": 26,
+    "global_track_ids_observed": [],
+    "resource_conserved": true,
+    "runtime_read_only_provenance": "Sensor/local FusionCenter/RuntimeExecutor/CommBus/GlobalTrackManager snapshots"
+  },
+  "track_lifecycle": [],
+  "frames_sha256": "19c47e0866b9ab967fc798c38798c7312cb17833cde8af667407e236501ace2a",
+  "replay_sha256": "4049f5a2abee5756a0bd2a8049e634523d8a43e05d679a6aea0b9bcea141d0c8"
+}

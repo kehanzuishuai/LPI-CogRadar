@@ -15,6 +15,7 @@
 
 - [Global Track / Track-to-Track Fusion v1](global_track_fusion_v1.md)
 - [Tower View v1：只读全局航迹回放](tower_view.md)
+- [Tower View v2：Global Track 实验诊断台](tower_view_v2.md)
 
 `global-track-v1` 是独立、默认关闭的 global track 层；它不修改本索引中的
 Preference-Conditioned PPO 归档或旧 measurement-sharing 实验。该页同时定义保守 CI、
@@ -26,3 +27,7 @@ PPO 重训、JPDA/MHT、MARL 或联合功率控制结论。
 Tower View v1 在冻结 Global Track v1.x 上提供独立 `tower-view-v1` JSON、二维 ENU 单页界面和
 时间轴回放；默认正式数据无真值，只有显式 debug overlay 才允许显示真实轨迹。它是只读展示层，
 不向仿真、调度或融合对象写入。
+
+Tower View v2 保留 v1 播放能力，并新增 lifecycle、事件跳转、消息证据链、通信/融合状态、四种共享
+模式切换及 PNG/JSON/HTML 导出。v2 仍是只读层；交叉场景的 ID switch/fragmentation 原样展示，
+不构成 JPDA/MHT、PPO 控制或新关联结论。

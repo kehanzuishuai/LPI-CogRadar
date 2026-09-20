@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LPI-CogRadar · Tower View v2</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">TV2</span><div><strong>Tower View</strong><small>GLOBAL TRACK DIAGNOSTIC CONSOLE</small></div></div>
+    <label>场景<select id="scenarioSelect"></select></label>
+    <label>共享模式<select id="modeSelect"></select></label>
+    <div class="export-group">
+      <button id="exportPng">当前帧 PNG</button>
+      <button id="exportJson">Replay JSON</button>
+      <button id="exportHtml">诊断 HTML</button>
+    </div>
+    <div id="statusPill" class="status-pill">正在载入</div>
+    <div id="debugBanner" class="debug-banner hidden">⚠ DEBUG / GROUND TRUTH OVERLAY</div>
+  </header>
+
+  <section id="comparisonBar" class="comparison-bar"></section>
+
+  <main class="workspace">
+    <section class="map-panel">
+      <div class="map-heading">
+        <div><span class="eyebrow">CENTRAL SITUATION · ENU</span><h1 id="scenarioTitle">全局态势</h1></div>
+        <div class="legend">
+          <span><i class="dot radar"></i>雷达</span><span><i class="dot local"></i>Local</span>
+          <span><i class="dot global"></i>Global</span><span><i class="line mapping"></i>归属</span>
+        </div>
+      </div>
+      <div id="canvasWrap" class="canvas-wrap">
+        <canvas id="towerCanvas"></canvas>
+        <div class="axis-label east">E / East</div><div class="axis-label north">N / North</div>
+        <div id="emptyState" class="empty-state">本帧尚无全局航迹</div>
+      </div>
+    </section>
+
+    <aside class="side-panel">
+      <section class="telemetry-card">
+        <div class="panel-title"><span>COMMUNICATION / FUSION</span></div>
+        <div id="telemetryGrid" class="metric-grid"></div>
+      </section>
+      <section>
+        <div class="panel-title"><span>GLOBAL TRACKS</span><b id="trackCount">0</b></div>
+        <div id="trackList" class="track-list"></div>
+      </section>
+      <section class="detail-card">
+        <div class="panel-title"><span>SELECTED TRACK / LIFECYCLE</span></div>
+        <div id="trackDetail" class="track-detail muted">点击一条 global track 查看详情</div>
+      </section>
+      <section class="evidence-card">
+        <div class="panel-title"><span>EVENT EVIDENCE CHAIN</span></div>
+        <div id="evidenceChain" class="evidence-list muted">点击底部事件查看证据链</div>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="timeline-panel">
+    <div class="playback-row">
+      <button id="prevButton" title="上一帧">◀│</button>
+      <button id="playButton" class="primary" title="播放 / 暂停">▶</button>
+      <button id="nextButton" title="下一帧">│▶</button>
+      <div class="time-readout"><strong id="timeValue">T+0.0s</strong><small id="frameValue">FRAME 0 / 0</small></div>
+      <div class="slider-wrap"><div id="eventMarkers" class="event-markers"></div><input id="timeline" type="range" min="0" max="0" value="0" step="1" aria-label="时间轴"></div>
+    </div>
+    <div id="eventStrip" class="event-strip"><span class="muted">本帧无事件</span></div>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
