@@ -32,7 +32,12 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
-from communication.message import CommLink, LinkConfig, MeasurementMessage
+from communication.message import (
+    CommLink,
+    LinkConfig,
+    MeasurementMessage,
+    TrackMessage,
+)
 
 #: 共享策略名
 SHARE_NONE = "no_share"
@@ -105,8 +110,17 @@ class CommBus:
         self,
         platform_ids: Sequence[str],
         config: Optional[CommConfig] = None,
+        extra_endpoint_ids: Optional[Sequence[str]] = None,
     ) -> None:
         self.platform_ids: List[str] = list(platform_ids)
+        #: 仅供新协议使用的非传感器端点（例如全局航迹管理器）。保留
+        #: ``platform_ids`` 的旧语义，故 MeasurementMessage 的默认广播目标
+        #: 不会因启用全局航迹而改变。
+        self.extra_endpoint_ids: List[str] = [
+            endpoint for endpoint in (extra_endpoint_ids or ())
+            if endpoint not in self.platform_ids
+        ]
+        self.endpoint_ids: List[str] = self.platform_ids + self.extra_endpoint_ids
         self.config = config or CommConfig()
         self.config.validate()
 
@@ -114,11 +128,11 @@ class CommBus:
         self._build_links()
 
         #: 全部已发送消息（含被丢的），逐消息日志用
-        self.log: List[MeasurementMessage] = []
+        self.log: List[Any] = []
         self._seq = 0
         #: 每个消费方（目的平台）已投递过的消息 ID 集合。
         #: **没有它就会重复投递历史消息**（见 `consume` 的说明）。
-        self._delivered_to: Dict[str, set] = {p: set() for p in self.platform_ids}
+        self._delivered_to: Dict[str, set] = {p: set() for p in self.endpoint_ids}
 
     # ------------------------------------------------------------------
 
@@ -126,8 +140,8 @@ class CommBus:
         cfg = self.config
         if cfg.policy == SHARE_NONE:
             return  # 没有任何链路
-        for src in self.platform_ids:
-            for dst in self.platform_ids:
+        for src in self.endpoint_ids:
+            for dst in self.endpoint_ids:
                 if src == dst:
                     continue
                 if cfg.policy == SHARE_IDEAL:
@@ -179,7 +193,7 @@ class CommBus:
             link.reset()
         self.log.clear()
         self._seq = 0
-        self._delivered_to = {p: set() for p in self.platform_ids}
+        self._delivered_to = {p: set() for p in self.endpoint_ids}
 
     # ------------------------------------------------------------------
 
@@ -229,6 +243,24 @@ class CommBus:
                 sent.append(message)
         return sent
 
+    def publish_track(self, message: TrackMessage, now: float) -> List[TrackMessage]:
+        """发送一条已构造的 `global-track-v1` 消息。
+
+        与旧 `publish()` 一样，消息必须经过相同的 CommLink；因此延迟、丢包、
+        过期、乱序和带宽不是统计旁路。调用方必须在执行计划的共享任务中
+        预先把 ``message.size_bytes`` 计入 COMM_BYTE 成本。
+        """
+        if not isinstance(message, TrackMessage):
+            raise TypeError("publish_track 只接受 TrackMessage")
+        if not self._links:
+            return []
+        link = self._links.get((message.source_node_id, message.dst_platform_id))
+        if link is None:
+            return []
+        link.transmit(message, now)
+        self.log.append(message)
+        return [message]
+
     # ------------------------------------------------------------------
 
     def arrived(self, now: float) -> List[MeasurementMessage]:
@@ -271,6 +303,26 @@ class CommBus:
             if message.arrived_at > now + 1e-12:
                 continue
             if message.msg_id in already:
+                continue
+            already.add(message.msg_id)
+            out.append(message)
+        return out
+
+    def consume_kind(self, dst_platform_id: str, now: float,
+                     kind: str) -> List[Any]:
+        """按目的端点和协议类型一次性投递已到达消息。
+
+        旧 ``consume`` 的行为保持不动，避免影响历史实验；新全局航迹层用
+        这个严格路由入口，保证 TrackMessage 不会被 local FusionCenter 消费。
+        """
+        already = self._delivered_to.setdefault(dst_platform_id, set())
+        out: List[Any] = []
+        for message in self.log:
+            if (getattr(message, "kind", "") != kind
+                    or getattr(message, "dst_platform_id", "") != dst_platform_id
+                    or message.dropped or message.arrived_at is None
+                    or message.arrived_at > now + 1e-12
+                    or message.msg_id in already):
                 continue
             already.add(message.msg_id)
             out.append(message)

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import importlib.util
 import os
+import tempfile
 import unittest
 
 
@@ -30,3 +31,19 @@ class TestPreferencePpoArchive(unittest.TestCase):
         report = ARCHIVE.verify_archive()
         self.assertEqual(report["baseline_ppo"]["status"], "preserved")
         self.assertIn("five-seed", report["baseline_ppo"]["conclusion"])
+
+    def test_missing_historical_absolute_checkpoint_path_falls_back_to_seed_directory(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            metadata_path = os.path.join(temporary, "metadata.json")
+            fallback = os.path.join(temporary, "policy.pt")
+            with open(fallback, "wb") as handle:
+                handle.write(b"frozen checkpoint fixture")
+            resolved = ARCHIVE.resolve_checkpoint(metadata_path, {
+                "checkpoint": r"C:\retired-machine\output\seed_907\policy.pt",
+            })
+            self.assertEqual(os.path.normcase(resolved["path"]),
+                             os.path.normcase(fallback))
+            self.assertEqual(
+                resolved["resolution"],
+                "metadata_seed_directory_policy_pt_fallback",
+            )

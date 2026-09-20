@@ -50,6 +50,28 @@ def _text(path: str) -> str:
         return handle.read().strip()
 
 
+def resolve_checkpoint(metadata_path: str, metadata: Dict[str, Any]) -> Dict[str, str]:
+    """解析历史 checkpoint 路径，兼容已搬迁的 Windows 绝对路径。
+
+    metadata 中已记录的路径仍优先；只有该路径不存在时，才从同一 seed 的
+    metadata 目录寻找固定文件名 ``policy.pt``。回退路径随后仍必须通过 metadata
+    内的既有 SHA-256 校验，故不会重新选择 checkpoint 或改变归档结论。
+    """
+    recorded = str(metadata.get("checkpoint", ""))
+    if recorded and os.path.isfile(recorded):
+        return {"path": recorded, "resolution": "metadata_recorded_path"}
+    fallback = os.path.join(os.path.dirname(os.path.abspath(metadata_path)), "policy.pt")
+    if os.path.isfile(fallback):
+        return {
+            "path": fallback,
+            "resolution": "metadata_seed_directory_policy_pt_fallback",
+        }
+    raise RuntimeError(
+        "checkpoint 不存在：metadata 路径 "
+        f"{recorded!r}，seed 目录回退 {fallback!r} 也不存在"
+    )
+
+
 def verify_archive() -> Dict[str, Any]:
     """验证冻结配置、每个 checkpoint、负结果与基础 PPO 正结论都未被改写。"""
     result: Dict[str, Any] = {"versions": {}, "test_v5": "sealed"}
@@ -68,14 +90,19 @@ def verify_archive() -> Dict[str, Any]:
         if "sealed" not in sealed:
             raise RuntimeError(f"{version} 的测试封存状态不正确：{sealed!r}")
         checkpoints = {}
+        checkpoint_resolution = {}
         for seed in spec["seeds"]:
-            metadata = _load(os.path.join(output, f"seed_{seed}", "metadata.json"))
-            checkpoint = metadata["checkpoint"]
+            metadata_path = os.path.join(output, f"seed_{seed}", "metadata.json")
+            metadata = _load(metadata_path)
+            resolved = resolve_checkpoint(metadata_path, metadata)
+            checkpoint = resolved["path"]
             if not os.path.isfile(checkpoint) or _digest(checkpoint) != metadata["sha256"]:
                 raise RuntimeError(f"{version} seed {seed} checkpoint SHA 不匹配")
             checkpoints[str(seed)] = metadata["sha256"]
+            checkpoint_resolution[str(seed)] = resolved["resolution"]
         result["versions"][version] = {
             "protocol_sha256": _digest(config_path), "checkpoint_hashes": checkpoints,
+            "checkpoint_resolution": checkpoint_resolution,
             "mechanism_gate": "failed", "test_status": sealed,
         }
 

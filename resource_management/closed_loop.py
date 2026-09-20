@@ -46,6 +46,21 @@ from communication.message import MESSAGE_KIND_NODE_OBSERVATION
 from engine.geometry import Vec3
 from engine.simulator import Simulator
 from fusion import FusionCenter, FusionConfig
+from global_fusion import (
+    EventTriggeredTrackShareConfig,
+    EventTriggeredTrackSharePolicy,
+    GLOBAL_TRACK_MODE_OFF,
+    GLOBAL_TRACK_MODE_TRACK_FUSION,
+    GLOBAL_TRACK_MODES,
+    GLOBAL_SHARE_MODE_EVENT_TRACK,
+    GLOBAL_SHARE_MODE_MEASUREMENT,
+    GLOBAL_SHARE_MODE_MEASUREMENT_AND_TRACK,
+    GLOBAL_SHARE_MODE_NO_SHARE,
+    GLOBAL_SHARE_MODE_TRACK,
+    GLOBAL_SHARE_MODES,
+    GlobalTrackConfig,
+    GlobalTrackManager,
+)
 from sensor.config import build_suite_from_config
 
 from resource_management.clock import GlobalClock
@@ -227,9 +242,14 @@ class LoopResult:
     metrics: Dict[str, Any] = field(default_factory=dict)
     queue_summary: Dict[str, Any] = field(default_factory=dict)
     conservation: Dict[str, Any] = field(default_factory=dict)
+    #: 全局航迹层仅在 ``global_track_mode=track_fusion`` 下记录；默认空，
+    #: 不能影响 rm-obs-1.0 或旧实验序列化结果。
+    global_track_report: Optional[Dict[str, Any]] = None
+    #: `rm-obs-2.0` 塔台快照，只读诊断/规则适配；不替代 rm-obs-1.0。
+    global_observation_report: Optional[Dict[str, Any]] = None
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        payload = {
             "policy": self.policy,
             "seed": self.seed,
             "steps": self.steps,
@@ -250,6 +270,12 @@ class LoopResult:
             "optimizer_summary": self.optimizer_summary,
             "decisions": self.decisions,
         }
+        # 默认关闭时不改变历史导出键集合；开启才显式附加新层报告。
+        if self.global_track_report is not None:
+            payload["global_track_report"] = self.global_track_report
+        if self.global_observation_report is not None:
+            payload["global_observation_report"] = self.global_observation_report
+        return payload
 
 
 class RuntimeExecutionError(RuntimeError):
@@ -294,6 +320,9 @@ class RuntimeExecutor:
         bus: CommBus,
         sensor_positions: Dict[str, Vec3],
         own_sensor: Dict[str, str],
+        global_track_manager: Optional[GlobalTrackManager] = None,
+        global_share_mode: Optional[str] = None,
+        event_track_share_config: Optional[EventTriggeredTrackShareConfig] = None,
     ) -> None:
         self.accounting = accounting
         self.scene = scene
@@ -302,11 +331,38 @@ class RuntimeExecutor:
         self.bus = bus
         self.sensor_positions = sensor_positions
         self.own_sensor = own_sensor
+        self.global_track_manager = global_track_manager
+        self.global_share_mode = global_share_mode or (
+            GLOBAL_SHARE_MODE_MEASUREMENT_AND_TRACK
+            if global_track_manager is not None else GLOBAL_SHARE_MODE_MEASUREMENT
+        )
+        if self.global_share_mode not in GLOBAL_SHARE_MODES:
+            raise ValueError(f"global_share_mode 必须是 {list(GLOBAL_SHARE_MODES)}")
+        if (self.global_share_mode in (GLOBAL_SHARE_MODE_TRACK,
+                                       GLOBAL_SHARE_MODE_EVENT_TRACK,
+                                       GLOBAL_SHARE_MODE_MEASUREMENT_AND_TRACK)
+                and self.global_track_manager is None):
+            raise ValueError("track sharing 需要启用 GlobalTrackManager")
+        self.event_track_share_policy = (
+            EventTriggeredTrackSharePolicy(event_track_share_config)
+            if self.global_share_mode == GLOBAL_SHARE_MODE_EVENT_TRACK else None
+        )
         self.local_pending: Dict[str, List[Any]] = {
             node_id: [] for node_id in centers
         }
+        #: 已执行但尚未 process 的本地扫描批次。即使批次为零测量，也必须
+        #: 让 FusionCenter 收到一次空更新，才能推进 miss/coast/drop 生命周期。
+        self.local_scan_pending: Dict[str, int] = {
+            node_id: 0 for node_id in centers
+        }
         self.share_outbox: Dict[str, List[Any]] = {
             node_id: [] for node_id in centers
+        }
+        # v1.1：每条 local track 拥有独立发送状态。pending revision 只在
+        # local FusionCenter 真正吸收新测量后变化，避免 track_share 一旦出现
+        # 航迹便永久抢占 sample/process，最终只重复发送陈旧状态。
+        self.track_outbox: Dict[str, Dict[str, Dict[str, Any]]] = {
+            node_id: {} for node_id in centers
         }
         self.event_log: List[Dict[str, Any]] = []
         self._submitted_plan_ids: set = set()
@@ -314,6 +370,66 @@ class RuntimeExecutor:
         self._received_total: Dict[str, int] = {
             node_id: 0 for node_id in centers
         }
+
+    @staticmethod
+    def _track_revision(track: Any) -> Tuple[Any, int, int, int]:
+        """只用 local track 可见更新状态标识一版可上报内容。"""
+        return (
+            getattr(track, "last_measurement_time", None),
+            int(getattr(track, "local_updates", 0)),
+            int(getattr(track, "remote_updates", 0)),
+            int(getattr(track, "hits", 0)),
+        )
+
+    def _refresh_track_outbox(self, node_id: str) -> List[Tuple[Any, Dict[str, Any]]]:
+        """同步 active local tracks，并返回尚未成功发送的逐航迹 outbox。"""
+        entries = self.track_outbox[node_id]
+        tracks = sorted(
+            (track for track in self.centers[node_id].tracks
+             if str(getattr(track, "status", "")) != "dropped"),
+            key=lambda item: str(item.track_id),
+        )
+        active_ids = {str(track.track_id) for track in tracks}
+        for local_track_id in list(entries):
+            if local_track_id not in active_ids:
+                # 航迹真正退出 active local set 后才移除 outbox；已发记录仍在
+                # manager/audit 中，不影响 global ID 生命周期证据。
+                del entries[local_track_id]
+        pending: List[Tuple[Any, Dict[str, Any]]] = []
+        for track in tracks:
+            local_track_id = str(track.track_id)
+            entry = entries.setdefault(local_track_id, {
+                "local_track_id": local_track_id,
+                "sequence_no": 0,
+                "last_sent_revision": None,
+                "pending_revision": None,
+                "last_sent_at_s": None,
+            })
+            revision = self._track_revision(track)
+            entry["pending_revision"] = revision
+            if entry["last_sent_revision"] != revision:
+                pending.append((track, entry))
+        return pending
+
+    def _track_candidates(
+        self, node_id: str, now_s: float,
+    ) -> List[Tuple[Any, Dict[str, Any], Any]]:
+        """返回本次 share 应覆盖的全部 local track，不读取 truth。"""
+        pending = self._refresh_track_outbox(node_id)
+        if self.global_share_mode in (
+                GLOBAL_SHARE_MODE_TRACK, GLOBAL_SHARE_MODE_MEASUREMENT_AND_TRACK):
+            return [(track, entry, None) for track, entry in pending]
+        if self.event_track_share_policy is None:
+            return []
+        candidates: List[Tuple[Any, Dict[str, Any], Any]] = []
+        entries = self.track_outbox[node_id]
+        for track in sorted(self.centers[node_id].tracks,
+                            key=lambda item: str(item.track_id)):
+            decision = self.event_track_share_policy.evaluate(
+                node_id, track, now_s, self.global_track_manager)
+            if decision.triggered:
+                candidates.append((track, entries[str(track.track_id)], decision))
+        return candidates
 
     def begin_tick(self, now_s: float) -> None:
         """无条件执行的只有航迹预测；不采样、不发送、不融合新测量。"""
@@ -332,9 +448,47 @@ class RuntimeExecutor:
                 "sigma_before_max_m": max(before) if before else None,
                 "sigma_after_max_m": max(after) if after else None,
             })
+        if self.global_track_manager is not None:
+            self.global_track_manager.predict_to(now_s)
+            ingested = self.global_track_manager.ingest_arrived(self.bus, now_s)
+            self.global_track_manager.record_snapshot(now_s)
+            self.event_log.append({
+                "time_s": round(now_s, 6), "node_id": "GLOBAL_TRACK_MANAGER",
+                "event": "global_track_ingest", "task_id": "",
+                "n_track_messages": ingested,
+                "n_global_tracks": len(self.global_track_manager.tracks),
+            })
 
     def has_shareable(self, node_id: str) -> bool:
-        return bool(self.share_outbox.get(node_id))
+        if self.global_share_mode == GLOBAL_SHARE_MODE_NO_SHARE:
+            return False
+        if self.global_share_mode == GLOBAL_SHARE_MODE_MEASUREMENT:
+            return bool(self.share_outbox.get(node_id))
+        track_candidates = self._track_candidates(
+            node_id, self.accounting.clock.now_s)
+        if self.global_share_mode == GLOBAL_SHARE_MODE_MEASUREMENT_AND_TRACK:
+            return bool(self.share_outbox.get(node_id)) or bool(track_candidates)
+        return bool(track_candidates)
+
+    def share_cost(self, node_id: Optional[str] = None) -> Dict[ResourceUnit, float]:
+        """当前通信模式下一次真实 share 的预声明账本成本。"""
+        track_bytes = (self.global_track_manager.config.message_size_bytes
+                       if self.global_track_manager is not None else 0.0)
+        if self.global_share_mode == GLOBAL_SHARE_MODE_NO_SHARE:
+            return {ResourceUnit.COMM_BYTE: 0.0}
+        if self.global_share_mode == GLOBAL_SHARE_MODE_MEASUREMENT:
+            return {ResourceUnit.COMM_BYTE: 128.0}
+        track_count = 1
+        measurement_count = 1
+        if node_id is not None:
+            track_count = len(self._track_candidates(
+                node_id, self.accounting.clock.now_s))
+            measurement_count = int(bool(self.share_outbox.get(node_id)))
+        if self.global_share_mode in (GLOBAL_SHARE_MODE_TRACK,
+                                      GLOBAL_SHARE_MODE_EVENT_TRACK):
+            return {ResourceUnit.COMM_BYTE: track_bytes * track_count}
+        return {ResourceUnit.COMM_BYTE: (128.0 * measurement_count
+                                         + track_bytes * track_count)}
 
     def sensor_scan_counts(self) -> Dict[str, int]:
         """逐节点传感器**真实扫描次数**（来自传感器自身的统计计数器）。
@@ -353,7 +507,8 @@ class RuntimeExecutor:
         return len(self._runtime_task_keys)
 
     def has_processable(self, node_id: str, now_s: float) -> bool:
-        return bool(self.local_pending.get(node_id)) or bool(
+        return bool(self.local_scan_pending.get(node_id, 0)) or bool(
+            self.local_pending.get(node_id)) or bool(
             self.bus.deliverable_count(node_id, now_s)
         )
 
@@ -429,6 +584,8 @@ class RuntimeExecutor:
         )
         fresh = list(report.detections) + list(report.false_alarms)
         self.local_pending[task.node_id].extend(fresh)
+        if report.updated:
+            self.local_scan_pending[task.node_id] += 1
         self.share_outbox[task.node_id].extend(fresh)
         self.event_log.append({
             "time_s": round(now, 6), "node_id": task.node_id,
@@ -441,7 +598,11 @@ class RuntimeExecutor:
     def _process(self, task: Any, plan_id: str, now: float) -> None:
         before_quality = self._observable_quality_proxy(
             self.centers[task.node_id], now)
-        messages = self.bus.consume(task.node_id, now)
+        # 默认严格保留旧 consume 行为以维持历史逐位复现；全局航迹模式下
+        # local FusionCenter 只消费真正路由给本节点的 measurement 消息。
+        messages = (self.bus.consume_kind(task.node_id, now, "measurement")
+                    if self.global_track_manager is not None
+                    else self.bus.consume(task.node_id, now))
         self.bus.assert_only_arrived(messages, now)
         remote = [
             _SharedMeasurement(message.payload, message.msg_id,
@@ -449,8 +610,9 @@ class RuntimeExecutor:
             for message in messages
         ]
         local = list(self.local_pending[task.node_id])
+        scan_batches = int(self.local_scan_pending[task.node_id])
         measurements = local + remote
-        if measurements:
+        if measurements or scan_batches:
             self.centers[task.node_id].update(
                 measurements,
                 now,
@@ -460,6 +622,7 @@ class RuntimeExecutor:
                 ),
             )
             self.local_pending[task.node_id].clear()
+            self.local_scan_pending[task.node_id] = 0
         self._received_total[task.node_id] += len(remote)
         after_quality = self._observable_quality_proxy(
             self.centers[task.node_id], now)
@@ -468,8 +631,10 @@ class RuntimeExecutor:
             "event": "process", "task_id": task.task_id,
             "plan_id": plan_id, "n_local_measurements": len(local),
             "n_remote_measurements": len(remote),
+            "n_local_scan_batches": scan_batches,
             "n_measurements": len(measurements),
             "fusion_updated": bool(measurements),
+            "fusion_lifecycle_advanced": bool(measurements or scan_batches),
             "quality_proxy_before": before_quality["quality_proxy"],
             "quality_proxy_after": after_quality["quality_proxy"],
             "mean_information_age_before_s": before_quality["mean_information_age_s"],
@@ -484,7 +649,10 @@ class RuntimeExecutor:
         peers = sorted(node_id for node_id in self.centers
                        if node_id != task.node_id)
         sent = []
-        if measurement is not None and peers:
+        send_measurement = self.global_share_mode in (
+            GLOBAL_SHARE_MODE_MEASUREMENT, GLOBAL_SHARE_MODE_MEASUREMENT_AND_TRACK,
+        )
+        if send_measurement and measurement is not None and peers:
             sent = self.bus.publish(
                 task.node_id,
                 self.own_sensor[task.node_id],
@@ -494,14 +662,44 @@ class RuntimeExecutor:
             )
             if sent:
                 outbox.pop(0)
+        track_sent = []
+        event_decisions = []
+        send_track = self.global_share_mode in (
+            GLOBAL_SHARE_MODE_TRACK, GLOBAL_SHARE_MODE_EVENT_TRACK,
+            GLOBAL_SHARE_MODE_MEASUREMENT_AND_TRACK,
+        )
+        if send_track and self.global_track_manager is not None:
+            for chosen_track, entry, event_decision in self._track_candidates(
+                    task.node_id, now):
+                entry["sequence_no"] = int(entry["sequence_no"]) + 1
+                sent_for_track = self.global_track_manager.publish_local_track(
+                    task.node_id, chosen_track, self.bus, now,
+                    int(entry["sequence_no"]), self.own_sensor[task.node_id],
+                )
+                track_sent.extend(sent_for_track)
+                if sent_for_track:
+                    entry["last_sent_revision"] = entry["pending_revision"]
+                    entry["last_sent_at_s"] = float(now)
+                    if event_decision is not None:
+                        self.event_track_share_policy.record_sent(
+                            event_decision, chosen_track, now)
+                        event_decisions.append(event_decision)
         accounted = float(task.effective_cost().get(
             ResourceUnit.COMM_BYTE, 0.0
         ))
-        sent_bytes = sum(float(message.size_bytes) for message in sent)
+        sent_bytes = sum(float(message.size_bytes)
+                         for message in list(sent) + list(track_sent))
         self.event_log.append({
             "time_s": round(now, 6), "node_id": task.node_id,
             "event": "share", "task_id": task.task_id,
-            "plan_id": plan_id, "n_messages": len(sent),
+            "plan_id": plan_id, "n_messages": len(sent) + len(track_sent),
+            "n_measurement_messages": len(sent),
+            "n_track_messages": len(track_sent),
+            "global_share_mode": self.global_share_mode,
+            "event_trigger_reasons": sorted({
+                reason for decision in event_decisions for reason in decision.reasons
+            }),
+            "track_local_ids": [message.local_track_id for message in track_sent],
             "accounted_comm_bytes": accounted,
             "sent_comm_bytes": sent_bytes,
             "payload_truth_fields": sorted(
@@ -533,6 +731,13 @@ class RuntimeExecutor:
             n_messages_ingested=sum(self._received_total.values()),
         )
 
+    def global_observation(self, now_s: float) -> Optional[Any]:
+        """只读的 rm-obs-2.0 塔台快照；不改既有 CentralObservation。"""
+        if self.global_track_manager is None:
+            return None
+        from global_fusion import GlobalObservation
+        return GlobalObservation.from_manager(self.global_track_manager, now_s)
+
 
 #: 目标几何库（**只改场景，不改物理**）。
 #:
@@ -550,6 +755,41 @@ TARGET_LIBRARY: Tuple[Dict[str, Any], ...] = (
 )
 
 
+def _resolve_target_specs(
+    target_count: int,
+    target_specs: Optional[Sequence[Dict[str, Any]]],
+) -> List[Dict[str, Any]]:
+    """解析显式场景目标；默认库与历史运行保持逐位不变。
+
+    该入口仅属于 closed-loop world 编排层，供固定诊断/验收场景声明几何；它不把
+    任何 target state 暴露给 CentralObservation、调度器或 GlobalTrackManager。
+    """
+    if target_specs is None:
+        return [dict(spec) for spec in TARGET_LIBRARY[:max(
+            1, min(len(TARGET_LIBRARY), int(target_count))
+        )]]
+    if not target_specs:
+        raise ValueError("target_specs 至少需要一个目标")
+    required = ("target_id", "x", "y", "vx", "vy")
+    resolved: List[Dict[str, Any]] = []
+    target_ids: set = set()
+    for index, item in enumerate(target_specs):
+        spec = dict(item)
+        missing = [field for field in required if field not in spec]
+        if missing:
+            raise ValueError(f"target_specs[{index}] 缺少字段 {missing}")
+        target_id = str(spec["target_id"])
+        if not target_id or target_id in target_ids:
+            raise ValueError("target_specs 的 target_id 必须非空且唯一")
+        target_ids.add(target_id)
+        resolved.append({
+            "target_id": target_id,
+            "x": float(spec["x"]), "y": float(spec["y"]),
+            "vx": float(spec["vx"]), "vy": float(spec["vy"]),
+        })
+    return resolved
+
+
 def _build_world(
     policy: SchedulerPolicy,
     seed: int,
@@ -560,6 +800,10 @@ def _build_world(
     optimizer_config: Any = None,
     runtime_mode: str = RUNTIME_MODE_LEGACY,
     target_count: int = 2,
+    global_track_mode: str = GLOBAL_TRACK_MODE_OFF,
+    global_share_mode: Optional[str] = None,
+    event_track_share_config: Optional[EventTriggeredTrackShareConfig] = None,
+    target_specs: Optional[Sequence[Dict[str, Any]]] = None,
 ) -> Dict[str, Any]:
     """构造闭环世界（**不含主循环**）。真值只在这里。
 
@@ -567,11 +811,26 @@ def _build_world(
     如果它另写一份构造代码，学到的策略与规则基线比的就不是同一件事了。
     两条路径共用本函数，因此世界、传感器、通信、融合、执行器**逐位相同**。
     """
+    if global_track_mode not in GLOBAL_TRACK_MODES:
+        raise ValueError(f"global_track_mode 必须是 {list(GLOBAL_TRACK_MODES)}")
+    resolved_share_mode = global_share_mode or (
+        GLOBAL_SHARE_MODE_MEASUREMENT_AND_TRACK
+        if global_track_mode == GLOBAL_TRACK_MODE_TRACK_FUSION
+        else GLOBAL_SHARE_MODE_MEASUREMENT
+    )
+    if resolved_share_mode not in GLOBAL_SHARE_MODES:
+        raise ValueError(f"global_share_mode 必须是 {list(GLOBAL_SHARE_MODES)}")
+    if (resolved_share_mode in (GLOBAL_SHARE_MODE_TRACK,
+                                GLOBAL_SHARE_MODE_EVENT_TRACK,
+                                GLOBAL_SHARE_MODE_MEASUREMENT_AND_TRACK)
+            and global_track_mode != GLOBAL_TRACK_MODE_TRACK_FUSION):
+        raise ValueError("track sharing 要求 global_track_mode='track_fusion'")
     mech = dict(DEFAULT_MECHANISMS)
     mech.update(mechanisms or {})
     unavailable = {node: list(windows) for node, windows
                    in (mech.get("unavailable_windows") or {}).items()}
     bias = dict(mech.get("bias") or {})
+    resolved_targets = _resolve_target_specs(target_count, target_specs)
 
     import json as _json_base
 
@@ -586,8 +845,7 @@ def _build_world(
         "targets": [
             _target(target_base, spec["target_id"], spec["x"], spec["y"],
                     spec["vx"], spec["vy"])
-            for spec in TARGET_LIBRARY[:max(1, min(len(TARGET_LIBRARY),
-                                                   int(target_count)))]
+            for spec in resolved_targets
         ],
         "sensors": [
             _sensor(f"SENSOR_{node_id}", node_id, layout["max_range_m"],
@@ -635,14 +893,23 @@ def _build_world(
     share_policy = mech.get("share_policy", SHARE_IDEAL)
     comm_kwargs = dict(mech.get("comm") or {}) \
         if share_policy == SHARE_CONSTRAINED else {}
-    bus = CommBus(list(NODE_LAYOUT), CommConfig(policy=share_policy, seed=seed,
-                                                **comm_kwargs))
+    global_track_manager = (GlobalTrackManager(GlobalTrackConfig())
+                            if global_track_mode == GLOBAL_TRACK_MODE_TRACK_FUSION
+                            else None)
+    bus = CommBus(
+        list(NODE_LAYOUT), CommConfig(policy=share_policy, seed=seed, **comm_kwargs),
+        extra_endpoint_ids=([global_track_manager.config.endpoint_id]
+                            if global_track_manager is not None else None),
+    )
     store = CentralObservationStore(list(NODE_LAYOUT))
 
     result = LoopResult(policy=policy.value, seed=seed, steps=steps,
                         config=_config_dict(scheduler.config),
                         mechanisms=mech)
     result.config["runtime_mode"] = runtime_mode
+    if global_track_manager is not None:
+        result.config["global_track_mode"] = global_track_mode
+        result.config["global_share_mode"] = resolved_share_mode
     # 逐节点三类单位的**容量**（实测资源占用率的分母；只读，不参与调度）
     result.config["node_budgets"] = {
         node_id: {unit.value: float(node.budget.capacity.get(unit, 0.0))
@@ -669,6 +936,9 @@ def _build_world(
         "result": result, "starved_ids": starved_ids,
         "unavailable": unavailable, "mech": mech, "own_sensor": own_sensor,
         "node_ids": tuple(sorted(centers)),
+        "global_track_manager": global_track_manager,
+        "global_share_mode": resolved_share_mode,
+        "event_track_share_config": event_track_share_config,
     }
 
 
@@ -704,6 +974,10 @@ def _build_feedback_world(
     share_requires_visible_track: bool = True,
     target_count: int = 2,
     keep_decisions: bool = True,
+    global_track_mode: str = GLOBAL_TRACK_MODE_OFF,
+    global_share_mode: Optional[str] = None,
+    event_track_share_config: Optional[EventTriggeredTrackShareConfig] = None,
+    target_specs: Optional[Sequence[Dict[str, Any]]] = None,
 ) -> Dict[str, Any]:
     """构造**真闭环**世界 + `RuntimeExecutor` + `FeedbackLoopDriver`。
 
@@ -715,10 +989,15 @@ def _build_feedback_world(
         policy=policy, seed=seed, steps=steps,
         scheduling_config=scheduler_config, mechanisms=mechanisms,
         node_budgets=node_budgets, optimizer_config=None,
-        runtime_mode=RUNTIME_MODE_FEEDBACK, target_count=target_count)
+        runtime_mode=RUNTIME_MODE_FEEDBACK, target_count=target_count,
+        global_track_mode=global_track_mode, global_share_mode=global_share_mode,
+        event_track_share_config=event_track_share_config,
+        target_specs=target_specs)
     runtime = RuntimeExecutor(
         world["executor"], world["sim"].scene, world["suite"], world["centers"],
-        world["bus"], world["sensor_positions"], world["own_sensor"])
+        world["bus"], world["sensor_positions"], world["own_sensor"],
+        world["global_track_manager"], world["global_share_mode"],
+        world["event_track_share_config"])
     world["runtime"] = runtime
     world["planner"] = _ConfigOnlyPlanner(scheduler_config)
     world["driver"] = FeedbackLoopDriver(
@@ -728,7 +1007,8 @@ def _build_feedback_world(
         scheduler=world["planner"], runtime=runtime, result=world["result"],
         keep_decisions=keep_decisions, starved_ids=world["starved_ids"],
         task_gating=task_gating, deadline_offsets=deadline_offsets,
-        share_requires_visible_track=share_requires_visible_track)
+        share_requires_visible_track=share_requires_visible_track,
+        global_track_manager=world["global_track_manager"])
     return world
 
 
@@ -745,6 +1025,10 @@ def run_closed_loop(
     target_count: int = 2,
     task_gating: str = TASK_GATING_LOOP,
     deadline_offsets: Optional[Dict[str, float]] = None,
+    global_track_mode: str = GLOBAL_TRACK_MODE_OFF,
+    global_share_mode: Optional[str] = None,
+    event_track_share_config: Optional[EventTriggeredTrackShareConfig] = None,
+    target_specs: Optional[Sequence[Dict[str, Any]]] = None,
 ) -> LoopResult:
     """跑一次闭环：世界 → 融合 → 通信 → 调度 → 执行 → 记账。
 
@@ -761,7 +1045,10 @@ def run_closed_loop(
         policy=policy, seed=seed, steps=steps,
         scheduling_config=scheduling_config, mechanisms=mechanisms,
         node_budgets=node_budgets, optimizer_config=optimizer_config,
-        runtime_mode=runtime_mode, target_count=target_count)
+        runtime_mode=runtime_mode, target_count=target_count,
+        global_track_mode=global_track_mode, global_share_mode=global_share_mode,
+        event_track_share_config=event_track_share_config,
+        target_specs=target_specs)
     sim = world["sim"]
     suite = world["suite"]
     sensor_positions = world["sensor_positions"]
@@ -781,7 +1068,8 @@ def run_closed_loop(
     if runtime_mode == RUNTIME_MODE_FEEDBACK:
         runtime = RuntimeExecutor(
             executor, sim.scene, suite, centers, bus,
-            sensor_positions, world["own_sensor"],
+            sensor_positions, world["own_sensor"], world["global_track_manager"],
+            world["global_share_mode"], world["event_track_share_config"],
         )
         return _run_feedback_loop(
             policy=policy,
@@ -799,6 +1087,7 @@ def run_closed_loop(
             starved_ids=starved_ids,
             task_gating=task_gating,
             deadline_offsets=deadline_offsets,
+            global_track_manager=world["global_track_manager"],
         )
 
     # ---------- 主循环 ----------
@@ -1018,6 +1307,7 @@ def _run_feedback_loop(
     starved_ids: set,
     task_gating: str = TASK_GATING_LOOP,
     deadline_offsets: Optional[Dict[str, float]] = None,
+    global_track_manager: Optional[GlobalTrackManager] = None,
 ) -> LoopResult:
     """计划控制的真闭环：先调度，再由 RuntimeExecutor 产生副作。
 
@@ -1033,6 +1323,7 @@ def _run_feedback_loop(
         scheduler=scheduler, runtime=runtime, result=result,
         keep_decisions=keep_decisions, starved_ids=starved_ids,
         task_gating=task_gating, deadline_offsets=deadline_offsets,
+        global_track_manager=global_track_manager,
     )
     for _ in range(steps):
         driver.tick()
@@ -1053,7 +1344,8 @@ class FeedbackLoopDriver:
                  keep_decisions: bool, starved_ids: set,
                  task_gating: str = TASK_GATING_LOOP,
                  deadline_offsets: Optional[Dict[str, float]] = None,
-                 share_requires_visible_track: bool = True) -> None:
+                 share_requires_visible_track: bool = True,
+                 global_track_manager: Optional[GlobalTrackManager] = None) -> None:
         if task_gating not in TASK_GATING_MODES:
             raise ValueError(f"task_gating 必须是 {list(TASK_GATING_MODES)}")
         self.task_gating = task_gating
@@ -1075,6 +1367,7 @@ class FeedbackLoopDriver:
         self.queue = queue
         self.scheduler = scheduler
         self.runtime = runtime
+        self.global_track_manager = global_track_manager
         self.result = result
         self.keep_decisions = keep_decisions
         self.starved_ids = starved_ids
@@ -1141,6 +1434,9 @@ class FeedbackLoopDriver:
                     deadline_offsets=self.deadline_offsets,
                     allow_share=allow_share,
                     share_requires_visible_track=self.share_requires_visible_track,
+                    share_cost=(self.runtime.share_cost(node.node_id)
+                                if self.global_track_manager is not None
+                                else None),
                     allow_process=allow_process,
                     allow_sample=allow_sample,
                     allow_estimate_update=False,
@@ -1279,6 +1575,12 @@ class FeedbackLoopDriver:
             observation_violations=self.observation_violations,
             unique_task_keys=self.runtime.unique_task_keys(),
         )
+        if self.global_track_manager is not None:
+            result.global_track_report = self.global_track_manager.report(final_now)
+            observation = self.runtime.global_observation(final_now)
+            result.global_observation_report = (
+                observation.to_dict() if observation is not None else None
+            )
         return result
 
 

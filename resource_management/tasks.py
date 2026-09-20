@@ -285,6 +285,7 @@ class TaskQueue:
         deadline_offsets: Optional[Dict[QueueTaskKind, float]] = None,
         allow_share: bool = True,
         share_requires_visible_track: bool = True,
+        share_cost: Optional[Dict[ResourceUnit, float]] = None,
         allow_process: bool = False,
         allow_sample: bool = True,
         allow_estimate_update: bool = True,
@@ -382,7 +383,10 @@ class TaskQueue:
                 node_id=observation.node_id,
                 release_time_s=now_s,
                 deadline_s=deadline_for(QueueTaskKind.SHARE),
-                estimated_cost=default_cost(QueueTaskKind.SHARE),
+                # 默认仍是 resource-contract-v1 的 128B measurement share；
+                # 全局航迹模式才会显式传入 measurement + TrackMessage 的实际字节。
+                estimated_cost=(dict(share_cost) if share_cost is not None
+                                else default_cost(QueueTaskKind.SHARE)),
                 targets=(),
                 created_from=f"observation(node={observation.node_id})",
                 idempotency_key=f"{observation.node_id}:share:{round_key}",

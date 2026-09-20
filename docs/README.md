@@ -11,8 +11,18 @@
 - [偏好可控性审计](preference_controllability_audit.md)
 - [v3 FiLM 表示机制验证](preference_ppo_v3.md)
 
-## 下一主线
+## 多雷达全局航迹（当前主线）
 
-下一主线为 **多雷达 Global Track / Track-to-Track Fusion**。开始前应另行冻结
-全局航迹标识、跨节点关联、信息边界、融合评测与回归协议；它不延续或修改本索引中的
-Preference-Conditioned PPO 实验。
+- [Global Track / Track-to-Track Fusion v1](global_track_fusion_v1.md)
+- [Tower View v1：只读全局航迹回放](tower_view.md)
+
+`global-track-v1` 是独立、默认关闭的 global track 层；它不修改本索引中的
+Preference-Conditioned PPO 归档或旧 measurement-sharing 实验。该页同时定义保守 CI、
+含 v1.1 多航迹上报/source 生命周期修复、v1.2 A–H 稳健性验收、v1.3 I/J/K 最终补测与
+A/B/D/E/F/G/H/I/J/K 基础机制冻结、只读 `rm-obs-2.0`、四种真实通信模式、确定性验收和
+固定 development 对照；v1.x 不再新增基础测试，下一主线正式进入 Tower View。当前仍没有
+PPO 重训、JPDA/MHT、MARL 或联合功率控制结论。
+
+Tower View v1 在冻结 Global Track v1.x 上提供独立 `tower-view-v1` JSON、二维 ENU 单页界面和
+时间轴回放；默认正式数据无真值，只有显式 debug overlay 才允许显示真实轨迹。它是只读展示层，
+不向仿真、调度或融合对象写入。

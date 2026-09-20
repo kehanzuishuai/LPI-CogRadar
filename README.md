@@ -3,6 +3,22 @@
 **LPI-CogRadar: An AI-Driven Cognitive Radar Power Control and Electromagnetic Adversarial Simulation Platform**
 
 > 版本 **4.5.0** ｜ 在 v4.4（多雷达协同感知跑通）基础上新增：
+> **Global Track / Track-to-Track Fusion v1（默认关闭）**——保留节点 local
+> `FusionCenter` 与 `MeasurementMessage` 共享，新增独立、版本化的
+> `global-track-v1` TrackMessage 和 `GlobalTrackManager`。只有
+> `global_track_mode="track_fusion"` 时，已执行的 `share` 才会按预注册模式发送实际
+> 计账的测量或 128B 航迹消息；中央只消费真实到达的航迹消息，做可审计的距离门控、
+> 稳定 `GLOBAL_TRACK_x` 映射、coast、重接入恢复与**保守 Covariance Intersection**。
+> v1.3 最终稳健性验收在 v1.2 基础上补齐链路中断/丢包恢复、3 个分离目标并发和异步
+> 多雷达时间戳外推证据；A/B/D/E/F/G/H/I/J/K 基础闸门全部通过，Global Track v1.x
+> 基础机制已最终冻结，不再新增基础测试，下一主线正式进入 Tower View。交叉、近距离编队、
+> 系统偏差和复杂关联仍作为后续增强分支，不把基础通过写成 JPDA/MHT 能力。
+> 现已新增只读 **Tower View v1**：四个 A/B/C/D 示例回放、二维 ENU local/global 航迹、
+> local→global 归属、航迹详情与时间轴；正式 `tower-view-v1` JSON 默认不含真值。
+> 新增只读 `rm-obs-2.0` 塔台视图和固定阈值 event-triggered track sharing；默认
+> `global_track_mode="off"` 保持旧路径和历史资源调度实验语义。详见
+> [`docs/global_track_fusion_v1.md`](docs/global_track_fusion_v1.md)。
+>
 > **① AI 对测量—通信—融合—航迹证据链的认知诊断**——`ai/` 层的结构化证据从
 > 「功率/能量/暴露」扩展到 `measurement_state` / `communication_state` /
 > `fusion_state` / `cooperation_state`，**17 个新的发现码**把「没有数据」的
@@ -242,7 +258,7 @@ D:\anaconda\envs\pytorch_env\python.exe train_dqn.py --observation-mode realisti
 
 # ---------- 单元测试与端到端验收（仿真层与 AI 层零依赖，base 环境即可跑）----------
 python verify_v4.py                       # 端到端验收：19 章（模块/不变式/旧实验逐位复现/AI发现码/证据链/压力测试/资源管理/优化参考/契约冻结/真闭环/版本号/产物）
-python -m unittest discover -s tests -v   # 最新回归：570 项通过、1 项条件跳过
+python -m unittest discover -s tests -v   # 最新 pytest 回归：599 passed、1 skipped、86 subtests
 python tests/test_ai_evidence.py -v       # v4.5：AI 证据链（无真值泄漏/原因区分/证据校验/路由接线）
 python tests/test_multi_target_stress.py -v  # v4.5：多目标压力测试（关联审计/指标口径/跟踪器生命周期）
 python tests/test_system_stress.py -v     # v4.5：系统级压力场景 S5–S8
@@ -4235,11 +4251,72 @@ v4.5 的三步顺序是 **(1) AI 认知诊断接口 → (2) 多目标压力场�
    （窗口不能贴到运行末尾，否则"恢复"会因步数不够而假失败）；
 5. 更新 `docs/data_contract.md` §4.5、`docs/resource_management.md` §13 与本 README。
 
-### 16.7 下一主线：多雷达 Global Track / Track-to-Track Fusion
+### 16.7 多雷达 Global Track / Track-to-Track Fusion v1（塔台层）
 
-Preference-Conditioned PPO 探索已正式暂停，后续主线切换为 **多雷达 Global Track /
-Track-to-Track Fusion**，不再创建 preference PPO v4/v5。该工作应从独立协议开始：先冻结
-全局航迹 ID、跨节点关联/去重、track-to-track 融合输入的信息边界、协方差与来源语义、
-回归场景及评测指标；再在不覆盖本分支负结果的前提下实现与验证。未来若资源允许重新研究
-多目标/Pareto RL、层次化策略、偏好课程学习、更长训练预算或更多训练 seed，也必须另立
-新协议和新的封存测试集。
+Preference-Conditioned PPO 探索已暂停；下一主线已切换并实现为**可选塔台层**。它不替换
+节点 local `FusionCenter` 或原 `measurement_share`，而是增加：
+
+- `global_fusion/manager.py`：`global-track-v1` 消息的稳定 ID、可审计门控、coast、重接入和
+  未知相关性下的保守 CI；CI 不是统计最优、不是 JPDA/MHT。
+- `global_fusion/observation.py`：独立只读 `GlobalObservation (rm-obs-2.0)`；未写入
+  `CentralObservation`、`resource-contract-v1` 或 PPO。
+- `global_fusion/sharing.py`：`no_share`、`measurement_share`、`track_share`、
+  `event_triggered_track_share` 四个真实 CommBus/账本通信模式；事件触发是固定阈值规则，
+  不是学习策略。
+- `evaluate_global_tracking.py`：固定 development seeds 的 CSV/JSON/HTML 对照，报告覆盖、
+  ID switch、碎裂/重复、RMSE、协方差/年龄、字节、耗时和消息利用率，**没有单一总分**。
+
+```text
+local track → TrackMessage → CommBus/CommLink → GlobalTrackManager (CI)
+                                                → GlobalObservation (rm-obs-2.0, read-only)
+```
+
+复现：`D:\anaconda\envs\pytorch_env\python.exe evaluate_global_tracking.py --out-dir output/global_tracking_development`。
+固定小开发集的负/有限结果也已保留：event-triggered track sharing 比周期 `track_share` 少
+256B（4096B → 3840B），但二者 coverage 均为 0.111、RMSE 约 1094.54m，不能声称连续性或
+融合收益改善。未训练 PPO、未改旧实验数字；尚未做 JPDA-lite、MARL、联合功率控制或基于
+global track 的 PPO 重训。完整协议、验收与已知限制见
+[Global Track / Track-to-Track Fusion v1](docs/global_track_fusion_v1.md)。
+
+另有只读漏斗诊断：`D:\anaconda\envs\pytorch_env\python.exe tools/diagnose_global_track_pipeline.py`。
+它将 local 创建、航迹消息生成/发送/抵达、gate、关联、CI 和生命周期分别落为
+CSV/JSON/Markdown；固定开发场景显示首个可观测损失在 local track → TrackMessage 上报，
+不是传输丢失或 gate 拒绝。真值只用于外层 coverage/RMSE 聚合。
+
+十一场景端到端与稳健性验收：
+`D:\anaconda\envs\pytorch_env\python.exe tools/run_global_track_acceptance.py`。它固定运行单目标、
+双目标、交叉、handover，以及 E 延迟乱序、F 重启新 local ID、G 离场删除重入、H 虚假 local
+track，以及 I 链路中断/丢包恢复、J 三目标并发、K 异步刷新，生成统一 MD/JSON。
+v1/v1.1/v1.2 报告均原样保留；
+Global Track v1.1 已修复每条 active local track 的独立
+outbox/sequence/revision、一次 share 多航迹真实记账及 retained/active source 生命周期。
+v1.2 新增：按真实到达时刻消费，旧 sequence/旧 state timestamp 不能覆盖新状态；超过既有
+`max_coast_s` 后从 active 容器删除并留下墓碑；同源同状态时刻的竞争 local ID 不能覆盖成熟
+来源。A/B/D/E/F/G/H 当前全部通过并冻结基础机制。G 的新 ID 导致离线 ID switch/fragmentation
+各 1 是“删除后合理重建”，H 的独立未确认假航迹会提高 duplicate，但没有污染真实双源 global
+track。v1.3 的 I 验证中断期 global coast、active source 降至 0，恢复后回到双源且 ID 不变；
+J 的 6 条 local track 独立上报并形成 3 条双源 global track；K 证明异步状态时间戳会先外推到
+融合时刻再 gate/CI。正式报告中 D coverage=0.615、RMSE=128.48m；交叉为 ID switch=4、
+fragmentation=3、duplicate=0.292，继续作为简单门控负结果；未引入 JPDA/MHT、未训练 PPO。
+K 配置传感器周期 A=1.0s/B=2.5s，但受 sample→process→share 链约束，实际 local 状态均约
+3s 一次、相位错开 1s；这足以验证异步时间戳投影，不宣称达到配置周期的端到端吞吐。
+
+### 16.8 Tower View v1（只读回放）
+
+冻结 Global Track v1.x 后新增简化塔台界面，不改任何感知、通信、融合、调度或 PPO 路径。
+运行：
+
+```powershell
+D:\anaconda\envs\pytorch_env\python.exe tools\run_tower_view.py
+```
+
+页面提供二维 ENU 雷达/local/global 航迹、local→global 归属、global 航迹列表与详情、CI/lifecycle
+事件，以及播放/暂停/逐帧/时间轴拖动。内置 A/B/C/D 四个确定性回放；C 交叉场景明确显示
+ID switch=4、fragmentation=3、duplicate=0.292，并原样展示 4 个 global ID，不隐藏负结果。
+
+正式 `tower-view-v1` JSON 默认无真值；只有显式 `--debug-truth-overlay` 才允许开发叠加。
+实现仅用原生 HTML/CSS/Canvas/JavaScript 与 Python 标准库 HTTP server，无新增第三方依赖。
+v1.0.1 进一步固定所有回放浮点的 canonical JSON/`frames_sha256`，并默认隔离 debug replay；
+即便目录中存在 `.debug.json`，也必须显式 `--allow-debug-replays` 才会被服务列出或加载，页面会给出
+醒目的 `DEBUG / GROUND TRUTH` 警示。
+完整 schema、只读/确定性边界和文件说明见 [Tower View v1](docs/tower_view.md)。

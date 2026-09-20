@@ -22,6 +22,9 @@ v1/v2/v3 的配置、SHA sidecar、冻结清单、checkpoint metadata、原始 v
 `tools/verify_preference_ppo_archive.py` 和
 `tests/test_preference_ppo_archive.py` 强制检查这些路径、协议 SHA、每个 checkpoint
 SHA、三次负结果、`test-v5` 封存，以及基础 PPO 多训练 seed 的独立正结论没有被改写。
+为支持归档迁移，若 metadata 内的历史 Windows 绝对 checkpoint 路径已不存在，校验器只会回退到
+该 metadata 所在 seed 目录的 `policy.pt`，并继续以 metadata 已记录的 SHA-256 验证；它不会重写
+metadata、替换 checkpoint 或改变任何负结果。
 
 本分支的暂停**不否定**基础 PPO 资源调度结论：
 `output/rl_resource/multiseed_v2/final_release.json` 仍记录在固定预算下，基础 PPO

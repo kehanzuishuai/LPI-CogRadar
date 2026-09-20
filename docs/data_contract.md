@@ -32,6 +32,7 @@
 | 传感器**系统偏差**注入 | ✅ | `sensor/sensor.py` | 距离/方位/俯仰偏差、时钟偏移、噪声低估；默认全零 |
 | 通信：延迟/抖动/丢包/带宽/队列/过期 | ✅ | `communication/message.py` | |
 | 通信：突发丢包/中断窗口/恢复拥塞/乱序 | ✅ | `communication/message.py` | 默认全零，旧行为位级不变 |
+| 航迹通信：`global-track-v1` TrackMessage | ✅（默认关闭） | `communication/message.py`、`global_fusion/` | 只含 local track 估计/协方差/来源；拒绝真值、离线关联与未来信息 |
 | 乱序测量（OOSM）处理策略 | ✅ | `multi_target_stress/timing.py` | `drop_stale` / `reorder_buffer` / `delayed_update` |
 
 ### 1.3 融合与跟踪层
@@ -42,6 +43,8 @@
 | 关联 + 常速度卡尔曼跟踪 | ✅ | `fusion/center.py`、`fusion/kalman.py` | 马氏门限 + 最近邻贪心；**基线未改** |
 | 航迹外推 / 删除 | ✅（v4.5 修复） | `fusion/center.py` | 曾因 `predict_to` 覆盖 `last_update_time` 而是死代码 |
 | 逐来源残差 / 新息落盘 | ✅ | `fusion/track.py::TrackSource` | 支撑机动失配与传感器健康诊断 |
+| Global Track / CI 融合 | ✅（默认关闭） | `global_fusion/manager.py` | 距离门控 + stable ID + coast + 保守 CI；非 JPDA/MHT，非统计最优声明 |
+| 塔台观测 `rm-obs-2.0` | ✅（只读） | `global_fusion/observation.py` | 不替换 `CentralObservation`/`rm-obs-1.0`，尚未接入 PPO/资源调度 |
 | **融合航迹 → RL 观测** | ❌ | — | 见 §4.2：53 维观测走 `fuse_measurements`，**不是** `FusionCenter` |
 
 ### 1.4 认知与学习层
@@ -348,3 +351,68 @@
 > 后续进展：上述四项已在 `docs/learning_protocol.md`（学习协议 v1）中冻结并校验；
 > §4.5 的多雷达资源—感知闭环也已接通（阶段验收第 6 项）。
 > 当前闸门是**集中式学习基线**：见 `docs/learning_evaluation_checklist.md`。
+
+---
+
+## 6. Global Track / 塔台式全局航迹管理（v1）
+
+```text
+local FusionCenter（节点 local track）
+  → TrackMessage (global-track-v1, 无真值)
+  → CommBus / CommLink（实际延迟、丢包、乱序、过期、带宽）
+  → GlobalTrackManager（门控、stable GLOBAL_TRACK_x、CI、coast、审计）
+  → GlobalObservation (rm-obs-2.0, 只读)
+  → Rule/诊断/离线评测；当前不进入 PPO 或 CentralObservation
+```
+
+`measurement_share` 仍存在且不变；Global Track 新增 `no_share`、
+`measurement_share`、`track_share`、`event_triggered_track_share` 四种可对照通信基线。
+事件触发是固定阈值规则，**不是学习策略**。任何实际 TrackMessage 都经
+`RuntimeExecutor` 触发并由 `UnifiedExecutor` 计入 `COMM_BYTE`，不得旁路记账。
+
+CI 仅融合位置及位置协方差（local track 尚无速度协方差），以未知相关性下的保守
+信息凸组合取代独立逆方差融合。迟到状态只凭报文速度和既有过程噪声推演至当前融合时刻；
+它不是 JPDA/MHT，不宣称统计最优。`rm-obs-2.0`
+目前仅只读，因此 `resource-contract-v1`、`rm-obs-1.0`、PPO、奖励和动作空间仍完整
+复现。未来若要用 global track 调度，必须另立 resource-contract-v2、显式开关、训练协议
+和新的封存评测集。
+
+开发评测命令：`python evaluate_global_tracking.py --out-dir output/global_tracking_development`。
+它固定 seeds 41/73/109，不做 RL 训练或显著性结论；本轮结果显示事件模式少发 256B，
+但覆盖与连续性没有改善，负结果保留在输出报告与 `docs/global_track_fusion_v1.md`。
+
+链路诊断命令：`python tools/diagnose_global_track_pipeline.py --out-dir output/global_track_pipeline_diagnosis`。
+`global-track-pipeline-diagnosis-v1` 将 local track 创建、TrackMessage 生成/发送/抵达、
+global gate、关联、CI 和最终 maintained/dropped 分开记录；运行时事件无真值，coverage/RMSE
+只在外层离线汇总。当前固定 development 诊断显示首个缺口是 local track 未覆盖到航迹上报，
+不是 CommBus 丢失、gate 拒绝或 CI 未执行；这不是对最终估计误差的充分因果归因。
+
+稳健性验收命令：`python tools/run_global_track_acceptance.py --out-dir output/global_track_acceptance`。
+`global-track-acceptance-v1.3` 使用显式、默认不启用的 closed-loop `target_specs` 和预声明事件
+仅构造 A–K 验收几何；
+默认 `TARGET_LIBRARY` 及历史实验不变。运行时 trace 只含 local track、TrackMessage、CI、
+global ID/source history 与资源账本；coverage/ID switch/fragmentation/duplicate/RMSE 均是闭环
+外层的 truth-only 离线评测。v1.1 只把发送状态细化为逐 local-track outbox/sequence/revision、
+按实际多消息字节预记账，并分离 retained/active source；同源 local ID 重建使用已有 reconnect
+gate 与前后已到达状态差恢复连续性。v1.2 再冻结：真实 arrival 顺序、sequence/state timestamp
+双重单调守卫、超龄 global track 删除墓碑、删除映射后重入新建，以及同源同状态并发 local ID
+隔离。v1.3 再增加 I 链路中断恢复、J 分离多目标并发、K 异步时间戳外推的只读证据字段；不改变
+TrackMessage schema、CI 公式或门限。A/B/D/E/F/G/H/I/J/K 基础闸门已通过并最终冻结；交叉
+出现 ID switch/fragmentation/duplicate，近距离编队与系统偏差也仍作为复杂关联增强问题保留。
+下一主线正式进入 Tower View；这不是 JPDA/MHT 或近距/交叉关联能力声明。
+
+### 4.8 Tower View v1 只读回放契约
+
+`tower-view-v1` 独立于 `rm-obs-1.0`、`rm-obs-2.0` 和 `resource-contract-v1`。顶层包含
+`scenario / coordinate_frame / frames / summary / frames_sha256`；每帧包含
+`time_s / radar_nodes / local_tracks / global_tracks / mappings / recent_events`。所有运行时字段
+只读采自 local FusionCenter 和 GlobalTrackManager 已有状态/审计，不形成动作或写回入口。
+
+正式回放不含目标真值 ID、真实位置或离线关联标签。只有显式
+`debug_truth_overlay=True` 才增加 `debug_truth_tracks`，并必须带开发用途警告。交叉场景可携带冻结
+外层评测的 ID switch/fragmentation 聚合注释，用于暴露既有负结果；该注释不是运行时输入。
+
+v1.0.1 对所有输出浮点字段递归 canonicalize 到 6 位小数（`-0.0` 归为 `0.0`），再计算
+`frames_sha256`；因此 association/lifecycle 的距离、投影和 CI 权重不会因进程/平台最低位差异
+改变 formal replay 哈希。debug replay 默认不进入 manifest 且 HTTP 访问被拒，只有服务显式传入
+`--allow-debug-replays` 才可加载，UI 必须显示 `DEBUG / GROUND TRUTH` 警示。

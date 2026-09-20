@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import random
 import re
+import math
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -48,6 +49,9 @@ ALLOWED_PAYLOAD_FIELDS: Tuple[str, ...] = (
 #: 消息类型
 MESSAGE_KIND_MEASUREMENT = "measurement"
 MESSAGE_KIND_NODE_OBSERVATION = "node_observation"
+#: 独立的航迹级通信协议。它不是测量 payload 的扩展，避免模糊两者边界。
+MESSAGE_KIND_TRACK = "track"
+GLOBAL_TRACK_SCHEMA_VERSION = "global-track-v1"
 
 #: **节点观测摘要**的载荷字段（v4.5：融合结果 → 资源调度适配层）。
 #:
@@ -199,6 +203,148 @@ class MeasurementMessage:
             "dropped": self.dropped,
             "drop_reason": self.drop_reason,
             **{f"payload_{k}": v for k, v in self.payload.items()},
+        }
+
+
+def _assert_track_value_clean(value: Any, field_name: str = "") -> None:
+    """对航迹溯源字段做递归真值隔离检查。
+
+    TrackMessage 不使用 MeasurementMessage 的测量白名单，因为它承载的是
+    已估计的状态；但它仍必须拒绝真值、误差标签和离线关联标签。
+    """
+    lowered = str(field_name).lower()
+    forbidden = ("truth", "true_", "ground_truth", "offline_association",
+                 "association_label", "error_label", "err_")
+    if any(token in lowered for token in forbidden):
+        raise PayloadViolation(
+            f"TrackMessage 出现禁止字段 {field_name!r}：不得携带真值、"
+            "离线关联标签或误差标签"
+        )
+    if isinstance(value, dict):
+        for key, nested in value.items():
+            _assert_track_value_clean(nested, str(key))
+    elif isinstance(value, (list, tuple)):
+        for nested in value:
+            _assert_track_value_clean(nested, field_name)
+
+
+@dataclass
+class TrackMessage:
+    """`global-track-v1` 的本地航迹通信消息。
+
+    本消息只传递当前节点已经形成的 local track 估计和可观测溯源；它不含
+    `truth_id`、真实位置、未来状态或离线关联标签。通信链路仍通过与测量
+    消息相同的 ``CommLink`` 处理延迟、丢包、带宽、过期和乱序。
+    """
+
+    message_id: str
+    source_node_id: str
+    local_track_id: str
+    sequence_no: int
+    state_timestamp_s: float
+    send_time_s: float
+    position_m: Tuple[float, float, float]
+    velocity_mps: Tuple[float, float, float]
+    covariance_position_m2: Tuple[float, float, float]
+    track_status: str
+    information_age_s: float
+    source_provenance: Dict[str, Any] = field(default_factory=dict)
+    size_bytes: float = 128.0
+    expires_at: float = float("inf")
+    dst_platform_id: str = ""
+    src_sensor_id: str = ""
+    schema_version: str = GLOBAL_TRACK_SCHEMA_VERSION
+    kind: str = MESSAGE_KIND_TRACK
+    arrived_at: Optional[float] = None
+    dropped: bool = False
+    drop_reason: str = ""
+
+    def __post_init__(self) -> None:
+        if self.schema_version != GLOBAL_TRACK_SCHEMA_VERSION:
+            raise ValueError(
+                f"TrackMessage schema_version 必须是 "
+                f"{GLOBAL_TRACK_SCHEMA_VERSION!r}"
+            )
+        if not self.message_id or not self.source_node_id or not self.local_track_id:
+            raise ValueError("TrackMessage 必须具有 message_id/source_node_id/local_track_id")
+        if self.sequence_no < 0 or self.state_timestamp_s < 0 or self.send_time_s < 0:
+            raise ValueError("TrackMessage 的序号和时间戳不能为负")
+        if self.information_age_s < 0 or self.size_bytes <= 0:
+            raise ValueError("TrackMessage 的信息年龄不能为负且字节数必须为正")
+        for name, vector in (
+            ("position_m", self.position_m),
+            ("velocity_mps", self.velocity_mps),
+            ("covariance_position_m2", self.covariance_position_m2),
+        ):
+            if (len(vector) != 3
+                    or not all(isinstance(v, (int, float)) and math.isfinite(float(v))
+                               for v in vector)):
+                raise ValueError(f"TrackMessage.{name} 必须是三个有限数值")
+        if any(float(value) < 0.0 for value in self.covariance_position_m2):
+            raise ValueError("TrackMessage 协方差对角项不能为负")
+        _assert_track_value_clean(self.source_provenance, "source_provenance")
+
+    # CommLink / CommBus 采用的兼容字段：保持链路实现不必分叉。
+    @property
+    def msg_id(self) -> str:
+        return self.message_id
+
+    @property
+    def seq(self) -> int:
+        return self.sequence_no
+
+    @property
+    def src_platform_id(self) -> str:
+        return self.source_node_id
+
+    @property
+    def generated_at(self) -> float:
+        return self.state_timestamp_s
+
+    @property
+    def sent_at(self) -> float:
+        return self.send_time_s
+
+    @property
+    def in_flight(self) -> bool:
+        return self.arrived_at is None and not self.dropped
+
+    def latency_s(self) -> Optional[float]:
+        return (None if self.arrived_at is None
+                else float(self.arrived_at) - float(self.state_timestamp_s))
+
+    def age_at(self, now: float) -> float:
+        return max(0.0, float(now) - float(self.state_timestamp_s))
+
+    def expired_at(self, now: float) -> bool:
+        return float(now) > float(self.expires_at)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "schema_version": self.schema_version,
+            "kind": self.kind,
+            "message_id": self.message_id,
+            "msg_id": self.message_id,
+            "source_node_id": self.source_node_id,
+            "local_track_id": self.local_track_id,
+            "sequence_no": self.sequence_no,
+            "state_timestamp_s": self.state_timestamp_s,
+            "send_time_s": self.send_time_s,
+            "position_m": list(self.position_m),
+            "velocity_mps": list(self.velocity_mps),
+            "covariance_position_m2": list(self.covariance_position_m2),
+            "track_status": self.track_status,
+            "information_age_s": self.information_age_s,
+            "source_provenance": dict(self.source_provenance),
+            "src_platform_id": self.source_node_id,
+            "dst_platform_id": self.dst_platform_id,
+            "src_sensor_id": self.src_sensor_id,
+            "arrived_at": self.arrived_at,
+            "expires_at": self.expires_at,
+            "latency_s": self.latency_s(),
+            "size_bytes": self.size_bytes,
+            "dropped": self.dropped,
+            "drop_reason": self.drop_reason,
         }
 
 
